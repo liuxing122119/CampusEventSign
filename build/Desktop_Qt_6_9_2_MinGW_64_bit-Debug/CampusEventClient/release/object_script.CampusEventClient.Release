@@ -1,0 +1,15 @@
+release/activityeditview.o
+release/adminview.o
+release/idatabase.o
+release/loginview.o
+release/main.o
+release/masterview.o
+release/sponsorview.o
+release/studentview.o
+release/moc_activityeditview.o
+release/moc_adminview.o
+release/moc_idatabase.o
+release/moc_loginview.o
+release/moc_masterview.o
+release/moc_sponsorview.o
+release/moc_studentview.o

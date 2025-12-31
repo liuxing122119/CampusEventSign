@@ -1,0 +1,15 @@
+debug/activityeditview.o
+debug/adminview.o
+debug/idatabase.o
+debug/loginview.o
+debug/main.o
+debug/masterview.o
+debug/sponsorview.o
+debug/studentview.o
+debug/moc_activityeditview.o
+debug/moc_adminview.o
+debug/moc_idatabase.o
+debug/moc_loginview.o
+debug/moc_masterview.o
+debug/moc_sponsorview.o
+debug/moc_studentview.o
