@@ -62,7 +62,6 @@ public:
     QLineEdit *usersearchEdit;
     QPushButton *searchButton;
     QPushButton *resetButton;
-    QPushButton *exportButton;
     QTableView *tableView_2;
     QHBoxLayout *horizontalLayout_3;
     QSpacerItem *horizontalSpacer_4;
@@ -249,11 +248,6 @@ public:
 
         horizontalLayout_2->addWidget(resetButton);
 
-        exportButton = new QPushButton(userpage);
-        exportButton->setObjectName("exportButton");
-
-        horizontalLayout_2->addWidget(exportButton);
-
 
         verticalLayout->addLayout(horizontalLayout_2);
 
@@ -296,7 +290,7 @@ public:
 
         retranslateUi(AdminView);
 
-        stackedWidget->setCurrentIndex(0);
+        stackedWidget->setCurrentIndex(1);
 
 
         QMetaObject::connectSlotsByName(AdminView);
@@ -347,7 +341,6 @@ public:
         usersearchEdit->setPlaceholderText(QCoreApplication::translate("AdminView", "\350\257\267\350\276\223\345\205\245\347\224\250\346\210\267\345\220\215\350\277\233\350\241\214\346\237\245\350\257\242", nullptr));
         searchButton->setText(QCoreApplication::translate("AdminView", "\346\220\234\347\264\242", nullptr));
         resetButton->setText(QCoreApplication::translate("AdminView", "\351\207\215\347\275\256", nullptr));
-        exportButton->setText(QCoreApplication::translate("AdminView", "\345\257\274\345\207\272", nullptr));
         btAdd->setText(QCoreApplication::translate("AdminView", "\346\226\260\345\242\236", nullptr));
         btUpdate->setText(QCoreApplication::translate("AdminView", "\344\277\256\346\224\271", nullptr));
         btDelete->setText(QCoreApplication::translate("AdminView", "\345\210\240\351\231\244", nullptr));

@@ -45,7 +45,7 @@
      <item>
       <widget class="QStackedWidget" name="stackedWidget">
        <property name="currentIndex">
-        <number>0</number>
+        <number>1</number>
        </property>
        <widget class="QWidget" name="checkpage">
         <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -346,13 +346,6 @@
             <widget class="QPushButton" name="resetButton">
              <property name="text">
               <string>重置</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="exportButton">
-             <property name="text">
-              <string>导出</string>
              </property>
             </widget>
            </item>

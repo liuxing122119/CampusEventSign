@@ -23,8 +23,6 @@ private slots:
 
     void on_btAdd_clicked();
 
-    void on_btRedo_clicked();
-
     void on_btUpdate_clicked();
 
     void on_btSearch_clicked();

@@ -23,7 +23,6 @@ SponsorView::SponsorView(QWidget *parent)
         ui->tableView->setSelectionModel(iDatabase.theActivitySelection);
     }
 
-    ui->btRedo->setEnabled(false);
     ui->btUpdate->setEnabled(false);
     connect(iDatabase.theActivitySelection, SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this, SLOT(onSelectionChanged()));
 }
@@ -49,12 +48,6 @@ void SponsorView::on_btAdd_clicked()
 {
     int curRow = IDatabase::getInstance().addNewActivity(m_currentUsername);
     emit goActivityEditView(curRow);
-}
-
-
-void SponsorView::on_btRedo_clicked()
-{
-
 }
 
 
@@ -99,7 +92,6 @@ void SponsorView::on_btReset_clicked()
 void SponsorView::onSelectionChanged()
 {
     bool hasSelectedRow = IDatabase::getInstance().theActivitySelection->hasSelection();
-    ui->btRedo->setEnabled(hasSelectedRow);
     ui->btUpdate->setEnabled(hasSelectedRow);
 }
 

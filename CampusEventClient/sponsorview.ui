@@ -146,11 +146,6 @@
                <string>已通过</string>
               </property>
              </item>
-             <item>
-              <property name="text">
-               <string>已撤回</string>
-              </property>
-             </item>
             </widget>
            </item>
            <item>
@@ -217,13 +212,6 @@
             <widget class="QPushButton" name="btAdd">
              <property name="text">
               <string>添加</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="btRedo">
-             <property name="text">
-              <string>撤回</string>
              </property>
             </widget>
            </item>

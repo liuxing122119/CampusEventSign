@@ -9,7 +9,7 @@ IDatabase::IDatabase(QObject *parent)
 void IDatabase::ininDatabase()
 {
     database = QSqlDatabase::addDatabase("QSQLITE");
-    QString aFile = "D:/code/QT/exp/exp.db";
+    QString aFile = "D:/code/QT/exp/CampusEventSign/exp.db";
     database.setDatabaseName(aFile);
 
     if (!database.open()) {
