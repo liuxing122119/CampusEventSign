@@ -53,15 +53,6 @@ void Server::userDisconnected(ServerWorker *sender)
 
 }
 
-void Server::broadcast(const QJsonObject &json, ServerWorker *exclude)
-{
-    for (ServerWorker *worker: m_clients) {
-        if (worker != exclude) {
-            worker->sendJson(json);
-        }
-    }
-}
-
 QJsonArray Server::getActivityCategories()
 {
 

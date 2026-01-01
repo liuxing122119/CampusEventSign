@@ -19,15 +19,6 @@ public:
     QString userLogin(QString useName, QString password);
     QString getUserRole(QString useName);
 
-    QSqlTableModel *activityTabModel;
-    QItemSelectionModel *theActivitySelection;
-
-    bool initActivityModel();
-    int addNewActivity(const QString &username);
-    bool submitActivityEdit();
-    void revertActivityEdit();
-    bool searchActivity(QString filter);
-
 signals:
 
 private:
@@ -38,6 +29,16 @@ private:
     QSqlDatabase database;
 
     void ininDatabase();
+
+public:
+    bool initActivityModel();
+    int addNewActivity(const QString &username);
+    bool submitActivityEdit();
+    void revertActivityEdit();
+    bool searchActivity(QString filter);
+
+    QSqlTableModel *activityTabModel;
+    QItemSelectionModel *theActivitySelection;
 };
 
 #endif // IDATABASE_H

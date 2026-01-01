@@ -116,3 +116,30 @@ bool IDatabase::searchActivity(QString filter)
     activityTabModel->setFilter(filter);
     return activityTabModel->select();
 }
+
+QJsonArray IDatabase::getActivityCategories()
+{
+    QJsonArray categoryArr;
+    QSqlQuery query(database);
+    query.exec("SELECT DISTINCT category FROM activity WHERE category IS NOT NULL");
+    while (query.next()) {
+        QJsonObject obj;
+        obj["category"] = query.value(0).toString();
+        categoryArr.append(obj);
+    }
+    return categoryArr;
+}
+
+QJsonArray IDatabase::getAnnouncements()
+{
+    QJsonArray annoArr;
+    QSqlQuery query(database);
+    query.exec("SELECT title, content FROM announcement ORDER BY id DESC");
+    while (query.next()) {
+        QJsonObject obj;
+        obj["title"] = query.value(0).toString();
+        obj["content"] = query.value(1).toString();
+        annoArr.append(obj);
+    }
+    return annoArr;
+}
