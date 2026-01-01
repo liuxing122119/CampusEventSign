@@ -1,5 +1,6 @@
 debug/activityeditview.o
 debug/adminview.o
+debug/client.o
 debug/idatabase.o
 debug/loginview.o
 debug/main.o
@@ -8,6 +9,7 @@ debug/sponsorview.o
 debug/studentview.o
 debug/moc_activityeditview.o
 debug/moc_adminview.o
+debug/moc_client.o
 debug/moc_idatabase.o
 debug/moc_loginview.o
 debug/moc_masterview.o

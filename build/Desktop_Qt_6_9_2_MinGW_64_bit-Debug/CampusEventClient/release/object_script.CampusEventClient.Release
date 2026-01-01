@@ -1,5 +1,6 @@
 release/activityeditview.o
 release/adminview.o
+release/client.o
 release/idatabase.o
 release/loginview.o
 release/main.o
@@ -8,6 +9,7 @@ release/sponsorview.o
 release/studentview.o
 release/moc_activityeditview.o
 release/moc_adminview.o
+release/moc_client.o
 release/moc_idatabase.o
 release/moc_loginview.o
 release/moc_masterview.o

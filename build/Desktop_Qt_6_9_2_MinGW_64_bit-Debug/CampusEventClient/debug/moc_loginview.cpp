@@ -42,7 +42,10 @@ template <> constexpr inline auto LoginView::qt_create_metaobjectdata<qt_meta_ta
         "loginSuccess",
         "",
         "username",
-        "on_loginButton_clicked"
+        "on_loginButton_clicked",
+        "connectedToServer",
+        "jsonReceived",
+        "docObj"
     };
 
     QtMocHelpers::UintData qt_methods {
@@ -52,6 +55,12 @@ template <> constexpr inline auto LoginView::qt_create_metaobjectdata<qt_meta_ta
         }}),
         // Slot 'on_loginButton_clicked'
         QtMocHelpers::SlotData<void()>(4, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'connectedToServer'
+        QtMocHelpers::SlotData<void()>(5, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'jsonReceived'
+        QtMocHelpers::SlotData<void(const QJsonObject &)>(6, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { QMetaType::QJsonObject, 7 },
+        }}),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -77,6 +86,8 @@ void LoginView::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         switch (_id) {
         case 0: _t->loginSuccess((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
         case 1: _t->on_loginButton_clicked(); break;
+        case 2: _t->connectedToServer(); break;
+        case 3: _t->jsonReceived((*reinterpret_cast< std::add_pointer_t<QJsonObject>>(_a[1]))); break;
         default: ;
         }
     }
@@ -105,14 +116,14 @@ int LoginView::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 2)
+        if (_id < 4)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 2;
+        _id -= 4;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 2)
+        if (_id < 4)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 2;
+        _id -= 4;
     }
     return _id;
 }

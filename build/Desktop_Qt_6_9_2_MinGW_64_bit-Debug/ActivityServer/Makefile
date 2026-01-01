@@ -431,6 +431,7 @@ Makefile: ../../../ActivityServer/ActivityServer.pro D:/software/QT/6.9.2/mingw_
 		../../../ActivityServer/ActivityServer.pro \
 		D:/software/QT/6.9.2/mingw_64/lib/Qt6Widgets.prl \
 		D:/software/QT/6.9.2/mingw_64/lib/Qt6Gui.prl \
+		D:/software/QT/6.9.2/mingw_64/lib/Qt6Network.prl \
 		D:/software/QT/6.9.2/mingw_64/lib/Qt6Core.prl \
 		D:/software/QT/6.9.2/mingw_64/lib/Qt6EntryPoint.prl \
 		D:/software/QT/6.9.2/mingw_64/mkspecs/features/build_pass.prf
@@ -796,6 +797,7 @@ D:/software/QT/6.9.2/mingw_64/mkspecs/features/lex.prf:
 ../../../ActivityServer/ActivityServer.pro:
 D:/software/QT/6.9.2/mingw_64/lib/Qt6Widgets.prl:
 D:/software/QT/6.9.2/mingw_64/lib/Qt6Gui.prl:
+D:/software/QT/6.9.2/mingw_64/lib/Qt6Network.prl:
 D:/software/QT/6.9.2/mingw_64/lib/Qt6Core.prl:
 D:/software/QT/6.9.2/mingw_64/lib/Qt6EntryPoint.prl:
 D:/software/QT/6.9.2/mingw_64/mkspecs/features/build_pass.prf:

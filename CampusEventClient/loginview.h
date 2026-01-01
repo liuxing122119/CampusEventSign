@@ -2,6 +2,7 @@
 #define LOGINVIEW_H
 
 #include <QWidget>
+#include "client.h"
 
 namespace Ui {
 class LoginView;
@@ -21,8 +22,13 @@ signals:
 private slots:
     void on_loginButton_clicked();
 
+    void connectedToServer();
+    void jsonReceived(const QJsonObject &docObj);
+
 private:
     Ui::LoginView *ui;
+
+    Client *m_client;
 };
 
 #endif // LOGINVIEW_H

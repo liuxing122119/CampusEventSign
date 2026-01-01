@@ -1,4 +1,4 @@
-QT       += core gui sql
+QT       += core gui sql network
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -11,6 +11,7 @@ CONFIG += c++17
 SOURCES += \
     activityeditview.cpp \
     adminview.cpp \
+    client.cpp \
     idatabase.cpp \
     loginview.cpp \
     main.cpp \
@@ -21,6 +22,7 @@ SOURCES += \
 HEADERS += \
     activityeditview.h \
     adminview.h \
+    client.h \
     idatabase.h \
     loginview.h \
     masterview.h \
