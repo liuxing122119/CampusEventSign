@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QTcpServer>
+#include <QJsonArray>
 #include "serverworker.h"
 
 class Server : public QTcpServer
@@ -10,6 +11,11 @@ class Server : public QTcpServer
     Q_OBJECT
 public:
     explicit Server(QObject *parent = nullptr);
+
+    int clientCount();
+
+    QJsonArray getActivityCategories();
+    QJsonArray getAnnouncements();
 
 protected:
     void incomingConnection(qintptr socketDescriptor) override;
@@ -20,12 +26,8 @@ signals:
 
 public slots:
     void stopServer();
-    void jsonReceived(ServerWorker *sender, const QJsonObject &docObj);
     void userDisconnected(ServerWorker *sender);
-
-private:
-    QJsonArray getActivityCategories();
-    QJsonArray getAnnouncements();
+    void jsonReceived(ServerWorker *sender,const QJsonObject &docObj);
 };
 
 #endif // SERVER_H

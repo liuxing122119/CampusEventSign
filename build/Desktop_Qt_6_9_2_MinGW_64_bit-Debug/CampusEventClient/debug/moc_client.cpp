@@ -41,12 +41,12 @@ template <> constexpr inline auto Client::qt_create_metaobjectdata<qt_meta_tag_Z
         "Client",
         "connected",
         "",
-        "messageReceived",
-        "text",
+        "disconnected",
         "jsonReceived",
         "docObj",
         "onReadyRead",
         "sendMessage",
+        "text",
         "type",
         "connectToServer",
         "QHostAddress",
@@ -58,23 +58,21 @@ template <> constexpr inline auto Client::qt_create_metaobjectdata<qt_meta_tag_Z
     QtMocHelpers::UintData qt_methods {
         // Signal 'connected'
         QtMocHelpers::SignalData<void()>(1, 2, QMC::AccessPublic, QMetaType::Void),
-        // Signal 'messageReceived'
-        QtMocHelpers::SignalData<void(const QString &)>(3, 2, QMC::AccessPublic, QMetaType::Void, {{
-            { QMetaType::QString, 4 },
-        }}),
+        // Signal 'disconnected'
+        QtMocHelpers::SignalData<void()>(3, 2, QMC::AccessPublic, QMetaType::Void),
         // Signal 'jsonReceived'
-        QtMocHelpers::SignalData<void(const QJsonObject &)>(5, 2, QMC::AccessPublic, QMetaType::Void, {{
-            { QMetaType::QJsonObject, 6 },
+        QtMocHelpers::SignalData<void(const QJsonObject &)>(4, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::QJsonObject, 5 },
         }}),
         // Slot 'onReadyRead'
-        QtMocHelpers::SlotData<void()>(7, 2, QMC::AccessPublic, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(6, 2, QMC::AccessPublic, QMetaType::Void),
         // Slot 'sendMessage'
-        QtMocHelpers::SlotData<void(const QString &, const QString &)>(8, 2, QMC::AccessPublic, QMetaType::Void, {{
-            { QMetaType::QString, 4 }, { QMetaType::QString, 9 },
+        QtMocHelpers::SlotData<void(const QString &, const QString &)>(7, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::QString, 8 }, { QMetaType::QString, 9 },
         }}),
         // Slot 'sendMessage'
-        QtMocHelpers::SlotData<void(const QString &)>(8, 2, QMC::AccessPublic | QMC::MethodCloned, QMetaType::Void, {{
-            { QMetaType::QString, 4 },
+        QtMocHelpers::SlotData<void(const QString &)>(7, 2, QMC::AccessPublic | QMC::MethodCloned, QMetaType::Void, {{
+            { QMetaType::QString, 8 },
         }}),
         // Slot 'connectToServer'
         QtMocHelpers::SlotData<void(const QHostAddress &, quint16)>(10, 2, QMC::AccessPublic, QMetaType::Void, {{
@@ -106,7 +104,7 @@ void Client::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
         case 0: _t->connected(); break;
-        case 1: _t->messageReceived((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 1: _t->disconnected(); break;
         case 2: _t->jsonReceived((*reinterpret_cast< std::add_pointer_t<QJsonObject>>(_a[1]))); break;
         case 3: _t->onReadyRead(); break;
         case 4: _t->sendMessage((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2]))); break;
@@ -119,7 +117,7 @@ void Client::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
     if (_c == QMetaObject::IndexOfMethod) {
         if (QtMocHelpers::indexOfMethod<void (Client::*)()>(_a, &Client::connected, 0))
             return;
-        if (QtMocHelpers::indexOfMethod<void (Client::*)(const QString & )>(_a, &Client::messageReceived, 1))
+        if (QtMocHelpers::indexOfMethod<void (Client::*)()>(_a, &Client::disconnected, 1))
             return;
         if (QtMocHelpers::indexOfMethod<void (Client::*)(const QJsonObject & )>(_a, &Client::jsonReceived, 2))
             return;
@@ -164,9 +162,9 @@ void Client::connected()
 }
 
 // SIGNAL 1
-void Client::messageReceived(const QString & _t1)
+void Client::disconnected()
 {
-    QMetaObject::activate<void>(this, &staticMetaObject, 1, nullptr, _t1);
+    QMetaObject::activate(this, &staticMetaObject, 1, nullptr);
 }
 
 // SIGNAL 2

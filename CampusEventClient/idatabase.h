@@ -37,6 +37,9 @@ public:
     void revertActivityEdit();
     bool searchActivity(QString filter);
 
+    QJsonArray getActivityCategories();
+    QJsonArray getAnnouncements();
+
     QSqlTableModel *activityTabModel;
     QItemSelectionModel *theActivitySelection;
 };

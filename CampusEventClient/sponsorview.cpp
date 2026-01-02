@@ -75,7 +75,6 @@ void SponsorView::on_btSearch_clicked()
 
     QString filter = filters.join(" AND ");
     IDatabase::getInstance().searchActivity(filter);
-    IDatabase::getInstance().searchActivity(filter);
 }
 
 

@@ -24,6 +24,8 @@ void MasterView::goLoginView()
 {
     qDebug() << "goLoginView";
     loginView = new LoginView(this);
+    m_client = Client::getInstance();
+    connect(m_client, SIGNAL(disconnected()), this, SLOT(onClientDisconnected()));
     pushWidgetToStackView(loginView);
 
     connect(loginView, SIGNAL(loginSuccess(QString)), this, SLOT(onLoginSuccess(QString)));
@@ -94,6 +96,19 @@ void MasterView::onLoginSuccess(QString username)
     }
 }
 
+void MasterView::onClientDisconnected()
+{
+    qDebug() << "检测到服务器断开连接，自动退出登录并返回登录页";
+    int stackCount = ui->stackedWidget->count();
+    for (int i = stackCount - 1; i >= 0; i--) {
+        QWidget *widget = ui->stackedWidget->widget(i);
+        if (widget != loginView) {
+            ui->stackedWidget->removeWidget(widget);
+            delete widget;
+        }
+    }
+}
+
 void MasterView::on_btBack_clicked()
 {
     goPreviousView();
@@ -101,6 +116,9 @@ void MasterView::on_btBack_clicked()
 
 void MasterView::on_btLogout_clicked()
 {
+    if (m_client) {
+        m_client->disconnectFromHost();
+    }
     goPreviousView();
 }
 

@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QDataWidgetMapper>
+#include "client.h"
 
 namespace Ui {
 class ActivityEditView;
@@ -21,12 +22,16 @@ private slots:
 
     void on_cancelButton_clicked();
 
+    void onJsonReceived(const QJsonObject &docObj);
+    void onClientConnected();
+
 signals:
     void goPreviousView();
 
 private:
     Ui::ActivityEditView *ui;
     QDataWidgetMapper *dataMapper;
+    Client *m_client;
 };
 
 #endif // ACTIVITYEDITVIEW_H

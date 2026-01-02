@@ -23,12 +23,12 @@ private slots:
     void on_loginButton_clicked();
 
     void connectedToServer();
-    void jsonReceived(const QJsonObject &docObj);
+    void onServerDisconnected();
 
 private:
     Ui::LoginView *ui;
-
     Client *m_client;
+    bool m_isServerConnected = false;
 };
 
 #endif // LOGINVIEW_H

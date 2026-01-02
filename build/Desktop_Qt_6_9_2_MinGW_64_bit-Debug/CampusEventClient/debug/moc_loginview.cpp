@@ -44,8 +44,7 @@ template <> constexpr inline auto LoginView::qt_create_metaobjectdata<qt_meta_ta
         "username",
         "on_loginButton_clicked",
         "connectedToServer",
-        "jsonReceived",
-        "docObj"
+        "onServerDisconnected"
     };
 
     QtMocHelpers::UintData qt_methods {
@@ -57,10 +56,8 @@ template <> constexpr inline auto LoginView::qt_create_metaobjectdata<qt_meta_ta
         QtMocHelpers::SlotData<void()>(4, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'connectedToServer'
         QtMocHelpers::SlotData<void()>(5, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'jsonReceived'
-        QtMocHelpers::SlotData<void(const QJsonObject &)>(6, 2, QMC::AccessPrivate, QMetaType::Void, {{
-            { QMetaType::QJsonObject, 7 },
-        }}),
+        // Slot 'onServerDisconnected'
+        QtMocHelpers::SlotData<void()>(6, 2, QMC::AccessPrivate, QMetaType::Void),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -87,7 +84,7 @@ void LoginView::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         case 0: _t->loginSuccess((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
         case 1: _t->on_loginButton_clicked(); break;
         case 2: _t->connectedToServer(); break;
-        case 3: _t->jsonReceived((*reinterpret_cast< std::add_pointer_t<QJsonObject>>(_a[1]))); break;
+        case 3: _t->onServerDisconnected(); break;
         default: ;
         }
     }

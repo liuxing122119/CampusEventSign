@@ -49,6 +49,7 @@ template <> constexpr inline auto MasterView::qt_create_metaobjectdata<qt_meta_t
         "goActivityEditView",
         "rowNo",
         "onLoginSuccess",
+        "onClientDisconnected",
         "on_btBack_clicked",
         "on_btLogout_clicked",
         "on_stackedWidget_currentChanged",
@@ -76,13 +77,15 @@ template <> constexpr inline auto MasterView::qt_create_metaobjectdata<qt_meta_t
         QtMocHelpers::SlotData<void(QString)>(10, 2, QMC::AccessPublic, QMetaType::Void, {{
             { QMetaType::QString, 6 },
         }}),
+        // Slot 'onClientDisconnected'
+        QtMocHelpers::SlotData<void()>(11, 2, QMC::AccessPublic, QMetaType::Void),
         // Slot 'on_btBack_clicked'
-        QtMocHelpers::SlotData<void()>(11, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'on_btLogout_clicked'
         QtMocHelpers::SlotData<void()>(12, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'on_btLogout_clicked'
+        QtMocHelpers::SlotData<void()>(13, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'on_stackedWidget_currentChanged'
-        QtMocHelpers::SlotData<void(int)>(13, 2, QMC::AccessPrivate, QMetaType::Void, {{
-            { QMetaType::Int, 14 },
+        QtMocHelpers::SlotData<void(int)>(14, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { QMetaType::Int, 15 },
         }}),
     };
     QtMocHelpers::UintData qt_properties {
@@ -114,9 +117,10 @@ void MasterView::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 4: _t->goStudentView(); break;
         case 5: _t->goActivityEditView((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
         case 6: _t->onLoginSuccess((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 7: _t->on_btBack_clicked(); break;
-        case 8: _t->on_btLogout_clicked(); break;
-        case 9: _t->on_stackedWidget_currentChanged((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
+        case 7: _t->onClientDisconnected(); break;
+        case 8: _t->on_btBack_clicked(); break;
+        case 9: _t->on_btLogout_clicked(); break;
+        case 10: _t->on_stackedWidget_currentChanged((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
         default: ;
         }
     }
@@ -141,14 +145,14 @@ int MasterView::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 10)
+        if (_id < 11)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 10;
+        _id -= 11;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 10)
+        if (_id < 11)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 10;
+        _id -= 11;
     }
     return _id;
 }

@@ -43,11 +43,11 @@ template <> constexpr inline auto Server::qt_create_metaobjectdata<qt_meta_tag_Z
         "",
         "msg",
         "stopServer",
-        "jsonReceived",
+        "userDisconnected",
         "ServerWorker*",
         "sender",
-        "docObj",
-        "userDisconnected"
+        "jsonReceived",
+        "docObj"
     };
 
     QtMocHelpers::UintData qt_methods {
@@ -57,13 +57,13 @@ template <> constexpr inline auto Server::qt_create_metaobjectdata<qt_meta_tag_Z
         }}),
         // Slot 'stopServer'
         QtMocHelpers::SlotData<void()>(4, 2, QMC::AccessPublic, QMetaType::Void),
-        // Slot 'jsonReceived'
-        QtMocHelpers::SlotData<void(ServerWorker *, const QJsonObject &)>(5, 2, QMC::AccessPublic, QMetaType::Void, {{
-            { 0x80000000 | 6, 7 }, { QMetaType::QJsonObject, 8 },
-        }}),
         // Slot 'userDisconnected'
-        QtMocHelpers::SlotData<void(ServerWorker *)>(9, 2, QMC::AccessPublic, QMetaType::Void, {{
+        QtMocHelpers::SlotData<void(ServerWorker *)>(5, 2, QMC::AccessPublic, QMetaType::Void, {{
             { 0x80000000 | 6, 7 },
+        }}),
+        // Slot 'jsonReceived'
+        QtMocHelpers::SlotData<void(ServerWorker *, const QJsonObject &)>(8, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { 0x80000000 | 6, 7 }, { QMetaType::QJsonObject, 9 },
         }}),
     };
     QtMocHelpers::UintData qt_properties {
@@ -90,8 +90,8 @@ void Server::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
         switch (_id) {
         case 0: _t->logMessage((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
         case 1: _t->stopServer(); break;
-        case 2: _t->jsonReceived((*reinterpret_cast< std::add_pointer_t<ServerWorker*>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QJsonObject>>(_a[2]))); break;
-        case 3: _t->userDisconnected((*reinterpret_cast< std::add_pointer_t<ServerWorker*>>(_a[1]))); break;
+        case 2: _t->userDisconnected((*reinterpret_cast< std::add_pointer_t<ServerWorker*>>(_a[1]))); break;
+        case 3: _t->jsonReceived((*reinterpret_cast< std::add_pointer_t<ServerWorker*>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QJsonObject>>(_a[2]))); break;
         default: ;
         }
     }

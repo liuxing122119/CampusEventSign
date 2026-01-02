@@ -37,9 +37,8 @@ void ServerWorker::onReadyRead()
         if (socketStream.commitTransaction()) {
             QJsonParseError parseError;
             const QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData, &parseError);
-            if (parseError.error == QJsonParseError::NoError) {
-                emit logMessage(QString("接收客户端[%1]数据: %2")
-                                    .arg(m_userName.isEmpty() ? "未登录" : m_userName)
+            if (parseError.error == QJsonParseError::NoError && jsonDoc.isObject()) {
+                emit logMessage(QString("接收客户端数据：%1")
                                     .arg(QString::fromUtf8(jsonDoc.toJson(QJsonDocument::Compact))));
                 emit jsonReceived(this, jsonDoc.object());
             }
@@ -51,21 +50,21 @@ void ServerWorker::onReadyRead()
 
 void ServerWorker::sendMessage(const QString &text, const QString &type)
 {
-    if (m_serverSocket->state() != QAbstractSocket::ConnectedState)
+    if (m_serverSocket->state() != QAbstractSocket::ConnectedState) {
+        emit logMessage("发送失败：客户端已断开连接");
         return;
-
+    }
     QJsonObject message;
     message["type"] = type;
     message["text"] = text.trimmed();
-    sendJson(message);
+    this->sendJson(message);
 }
 
 void ServerWorker::sendJson(const QJsonObject &json)
 {
     const QByteArray jsonData = QJsonDocument(json).toJson(QJsonDocument::Compact);
-    emit logMessage(QString("发送给[%1]: %2").arg(m_userName.isEmpty() ? "未登录" : m_userName)
+    emit logMessage(QString("发送给客户端数据：%1")
                         .arg(QString::fromUtf8(jsonData)));
-
     QDataStream socketStream(m_serverSocket);
     socketStream.setVersion(QDataStream::Qt_5_12);
     socketStream << jsonData;

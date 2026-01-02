@@ -161,11 +161,6 @@ public:
         verticalLayout_2->addWidget(actnameEdit);
 
         acttype = new QComboBox(ActivityEditView);
-        acttype->addItem(QString());
-        acttype->addItem(QString());
-        acttype->addItem(QString());
-        acttype->addItem(QString());
-        acttype->addItem(QString());
         acttype->setObjectName("acttype");
 
         verticalLayout_2->addWidget(acttype);
@@ -280,12 +275,6 @@ public:
         label_8->setText(QCoreApplication::translate("ActivityEditView", "\345\210\233\345\273\272\346\227\266\351\227\264\357\274\232", nullptr));
         label_10->setText(QCoreApplication::translate("ActivityEditView", "\345\217\221\350\265\267\344\272\272\357\274\232", nullptr));
         actnameEdit->setPlaceholderText(QCoreApplication::translate("ActivityEditView", "\350\257\267\350\276\223\345\205\245\346\264\273\345\212\250\345\220\215\347\247\260", nullptr));
-        acttype->setItemText(0, QCoreApplication::translate("ActivityEditView", "\345\276\267\350\202\262\346\225\231\350\202\262", nullptr));
-        acttype->setItemText(1, QCoreApplication::translate("ActivityEditView", "\345\210\233\346\226\260\345\210\233\344\270\232", nullptr));
-        acttype->setItemText(2, QCoreApplication::translate("ActivityEditView", "\347\211\271\350\211\262\344\275\223\350\202\262", nullptr));
-        acttype->setItemText(3, QCoreApplication::translate("ActivityEditView", "\351\253\230\351\233\205\347\276\216\350\202\262", nullptr));
-        acttype->setItemText(4, QCoreApplication::translate("ActivityEditView", "\345\212\263\345\212\250\346\225\231\350\202\262", nullptr));
-
         actstatus->setItemText(0, QCoreApplication::translate("ActivityEditView", "\345\276\205\345\256\241\346\240\270", nullptr));
         actstatus->setItemText(1, QCoreApplication::translate("ActivityEditView", "\345\267\262\351\200\232\350\277\207", nullptr));
         actstatus->setItemText(2, QCoreApplication::translate("ActivityEditView", "\346\234\252\351\200\232\350\277\207", nullptr));

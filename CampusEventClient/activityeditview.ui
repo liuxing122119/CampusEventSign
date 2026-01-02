@@ -161,33 +161,7 @@
           </widget>
          </item>
          <item>
-          <widget class="QComboBox" name="acttype">
-           <item>
-            <property name="text">
-             <string>德育教育</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>创新创业</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>特色体育</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>高雅美育</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>劳动教育</string>
-            </property>
-           </item>
-          </widget>
+          <widget class="QComboBox" name="acttype"/>
          </item>
          <item>
           <widget class="QComboBox" name="actstatus">

@@ -7,6 +7,7 @@
 #include "sponsorview.h"
 #include "studentview.h"
 #include "activityeditview.h"
+#include "client.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -31,6 +32,7 @@ public slots:
     void goActivityEditView(int rowNo);
 
     void onLoginSuccess(QString username);
+    void onClientDisconnected();
 
 private slots:
     void on_btBack_clicked();
@@ -49,5 +51,7 @@ private:
     SponsorView *sponsorView;
     StudentView *studentView;
     ActivityEditView *activityEditView;
+
+    Client *m_client;
 };
 #endif // MASTERVIEW_H

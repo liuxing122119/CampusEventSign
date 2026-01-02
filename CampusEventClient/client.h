@@ -8,15 +8,26 @@ class Client : public QObject
 {
     Q_OBJECT
 public:
+    static Client* getInstance() {
+        static Client instance;
+        return &instance;
+    }
+
+    bool isConnected();
+    void sendGetActivityCategoriesRequest();
+    void sendGetAnnouncementsRequest();
+
+private:
     explicit Client(QObject *parent = nullptr);
+    Client(Client const&) = delete;
+    void operator=(Client const&) = delete;
+
+    QTcpSocket *m_clientSocket;
 
 signals:
     void connected();
-    void messageReceived(const QString &text);
+    void disconnected();
     void jsonReceived(const QJsonObject &docObj);
-
-private:
-    QTcpSocket *m_clientSocket;
 
 public slots:
     void onReadyRead();
