@@ -45,7 +45,7 @@
      <item>
       <widget class="QStackedWidget" name="stackedWidget">
        <property name="currentIndex">
-        <number>1</number>
+        <number>0</number>
        </property>
        <widget class="QWidget" name="checkpage">
         <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -75,36 +75,6 @@
                <height>0</height>
               </size>
              </property>
-             <item>
-              <property name="text">
-               <string>全部</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>德育教育</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>创新创业</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>特色体育</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>高雅美育</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>劳动教育</string>
-              </property>
-             </item>
             </widget>
            </item>
            <item>

@@ -85,15 +85,25 @@ void MasterView::onLoginSuccess(QString username)
     qDebug() << "login success, username:" << username;
     QString userRole = IDatabase::getInstance().getUserRole(username);
 
-    if (userRole == "admin") {
-        goAdminView();
-    } else if (userRole == "sponsor") {
-        goSponsorView(username);
-    } else if (userRole == "student") {
-        goStudentView();
-    } else {
-        qDebug() << "invalid role";
-    }
+    // 1. 保存用户名和角色（用于延后创建）
+    m_saveUsername = username;
+    m_saveUserRole = userRole;
+
+    // 2. 创建定时器（老式写法，设置父对象，自动管理内存）
+    QTimer *delayCreateTimer = new QTimer(this);
+    delayCreateTimer->setSingleShot(true);
+    connect(delayCreateTimer, SIGNAL(timeout()), this, SLOT(delayCreateRoleView()));
+    delayCreateTimer->start(100);
+
+    // if (userRole == "admin") {
+    //     goAdminView();
+    // } else if (userRole == "sponsor") {
+    //     goSponsorView(username);
+    // } else if (userRole == "student") {
+    //     goStudentView();
+    // } else {
+    //     qDebug() << "invalid role";
+    // }
 }
 
 void MasterView::onClientDisconnected()
@@ -106,6 +116,19 @@ void MasterView::onClientDisconnected()
             ui->stackedWidget->removeWidget(widget);
             delete widget;
         }
+    }
+}
+
+void MasterView::delayCreateRoleView()
+{
+    if (m_saveUserRole == "admin") {
+        goAdminView();
+    } else if (m_saveUserRole == "sponsor") {
+        goSponsorView(m_saveUsername);
+    } else if (m_saveUserRole == "student") {
+        goStudentView();
+    } else {
+        qDebug() << "invalid role";
     }
 }
 

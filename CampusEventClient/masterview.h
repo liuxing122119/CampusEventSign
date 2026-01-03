@@ -33,6 +33,7 @@ public slots:
 
     void onLoginSuccess(QString username);
     void onClientDisconnected();
+    void delayCreateRoleView();
 
 private slots:
     void on_btBack_clicked();
@@ -53,5 +54,7 @@ private:
     ActivityEditView *activityEditView;
 
     Client *m_client;
+    QString m_saveUsername;
+    QString m_saveUserRole;
 };
 #endif // MASTERVIEW_H

@@ -1,7 +1,6 @@
 #include "loginview.h"
 #include "ui_loginview.h"
 #include "idatabase.h"
-#include "client.h"
 
 LoginView::LoginView(QWidget *parent)
     : QWidget(parent)

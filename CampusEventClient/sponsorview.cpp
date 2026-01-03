@@ -12,6 +12,8 @@ SponsorView::SponsorView(QWidget *parent)
     ui->listWidget->setCurrentRow(0);
     ui->stackedWidget->setCurrentWidget(ui->managepage);
 
+    m_client = Client::getInstance();
+
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -25,6 +27,11 @@ SponsorView::SponsorView(QWidget *parent)
 
     ui->btUpdate->setEnabled(false);
     connect(iDatabase.theActivitySelection, SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this, SLOT(onSelectionChanged()));
+
+    QStringList categoryList = m_client->getActivityCategories();
+    ui->acttype->clear();
+    ui->acttype->addItem("全部");
+    ui->acttype->addItems(categoryList);
 }
 
 SponsorView::~SponsorView()

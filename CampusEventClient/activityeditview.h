@@ -22,8 +22,8 @@ private slots:
 
     void on_cancelButton_clicked();
 
-    void onJsonReceived(const QJsonObject &docObj);
-    void onClientConnected();
+    // void onJsonReceived(const QJsonObject &docObj);
+    // void onClientConnected();
 
 signals:
     void goPreviousView();

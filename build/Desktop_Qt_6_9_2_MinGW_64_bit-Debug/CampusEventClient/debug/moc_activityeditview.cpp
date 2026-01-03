@@ -42,10 +42,7 @@ template <> constexpr inline auto ActivityEditView::qt_create_metaobjectdata<qt_
         "goPreviousView",
         "",
         "on_submitButton_clicked",
-        "on_cancelButton_clicked",
-        "onJsonReceived",
-        "docObj",
-        "onClientConnected"
+        "on_cancelButton_clicked"
     };
 
     QtMocHelpers::UintData qt_methods {
@@ -55,12 +52,6 @@ template <> constexpr inline auto ActivityEditView::qt_create_metaobjectdata<qt_
         QtMocHelpers::SlotData<void()>(3, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'on_cancelButton_clicked'
         QtMocHelpers::SlotData<void()>(4, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'onJsonReceived'
-        QtMocHelpers::SlotData<void(const QJsonObject &)>(5, 2, QMC::AccessPrivate, QMetaType::Void, {{
-            { QMetaType::QJsonObject, 6 },
-        }}),
-        // Slot 'onClientConnected'
-        QtMocHelpers::SlotData<void()>(7, 2, QMC::AccessPrivate, QMetaType::Void),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -87,8 +78,6 @@ void ActivityEditView::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int
         case 0: _t->goPreviousView(); break;
         case 1: _t->on_submitButton_clicked(); break;
         case 2: _t->on_cancelButton_clicked(); break;
-        case 3: _t->onJsonReceived((*reinterpret_cast< std::add_pointer_t<QJsonObject>>(_a[1]))); break;
-        case 4: _t->onClientConnected(); break;
         default: ;
         }
     }
@@ -117,14 +106,14 @@ int ActivityEditView::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 5)
+        if (_id < 3)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 5;
+        _id -= 3;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 5)
+        if (_id < 3)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 5;
+        _id -= 3;
     }
     return _id;
 }

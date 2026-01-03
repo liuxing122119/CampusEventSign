@@ -2,6 +2,7 @@
 #include <QDataStream>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QJsonArray>
 
 Client::Client(QObject *parent)
     : QObject{parent}
@@ -11,6 +12,7 @@ Client::Client(QObject *parent)
     connect(m_clientSocket,&QTcpSocket::connected,this,&Client::connected);
     connect(m_clientSocket,&QTcpSocket::readyRead,this,&Client::onReadyRead);
     connect(m_clientSocket, &QTcpSocket::disconnected, this, &Client::disconnected);
+    connect(this, &Client::connected, this, &Client::onClientConnected);
 }
 
 bool Client::isConnected()
@@ -32,6 +34,11 @@ void Client::sendGetActivityCategoriesRequest()
     QByteArray jsonData = QJsonDocument(request).toJson(QJsonDocument::Compact);
     serverStream << jsonData;
     qDebug() << "已发送获取活动类别请求";
+}
+
+QStringList Client::getActivityCategories()
+{
+    return m_activityCategories;
 }
 
 // void Client::sendGetAnnouncementsRequest()
@@ -60,7 +67,22 @@ void Client::onReadyRead()
             const QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData,&parseError);
             if (parseError.error == QJsonParseError::NoError) {
                 if (jsonDoc.isObject()) {
-                    emit jsonReceived(jsonDoc.object());
+                    QJsonObject docObj = jsonDoc.object();
+                    emit jsonReceived(docObj);
+                    // emit jsonReceived(jsonDoc.object());
+
+                    QString responseType = docObj["type"].toString();
+                    if (responseType == "activity_categories_response") {
+                        QJsonArray categoryArr = docObj["categories"].toArray();
+                        m_activityCategories.clear();
+                        qDebug() << "获取到活动类别数量：" << categoryArr.size();
+                        for (int i = 0; i < categoryArr.size(); ++i) {
+                            QJsonObject cateObj = categoryArr[i].toObject();
+                            QString cateName = cateObj["category"].toString();
+                            m_activityCategories.append(cateName);
+                            qDebug() << "添加活动类别：" << cateName;
+                        }
+                    }
                 }
             }
         } else {
@@ -89,4 +111,9 @@ void Client::connectToServer(const QHostAddress &address, quint16 port)
 void Client::disconnectFromHost()
 {
     m_clientSocket->disconnectFromHost();
+}
+
+void Client::onClientConnected()
+{
+    this->sendGetActivityCategoriesRequest();
 }

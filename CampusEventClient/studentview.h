@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QListWidgetItem>
+#include "client.h"
 
 namespace Ui {
 class StudentView;
@@ -21,6 +22,7 @@ private slots:
 
 private:
     Ui::StudentView *ui;
+    Client *m_client;
 };
 
 #endif // STUDENTVIEW_H

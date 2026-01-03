@@ -106,12 +106,6 @@ public:
         horizontalLayout_4->addWidget(label_2);
 
         acttype = new QComboBox(checkpage);
-        acttype->addItem(QString());
-        acttype->addItem(QString());
-        acttype->addItem(QString());
-        acttype->addItem(QString());
-        acttype->addItem(QString());
-        acttype->addItem(QString());
         acttype->setObjectName("acttype");
         QSizePolicy sizePolicy1(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Fixed);
         sizePolicy1.setHorizontalStretch(0);
@@ -290,7 +284,7 @@ public:
 
         retranslateUi(AdminView);
 
-        stackedWidget->setCurrentIndex(1);
+        stackedWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(AdminView);
@@ -309,13 +303,6 @@ public:
         listWidget->setSortingEnabled(__sortingEnabled);
 
         label_2->setText(QCoreApplication::translate("AdminView", "\346\264\273\345\212\250\347\261\273\345\236\213\357\274\232", nullptr));
-        acttype->setItemText(0, QCoreApplication::translate("AdminView", "\345\205\250\351\203\250", nullptr));
-        acttype->setItemText(1, QCoreApplication::translate("AdminView", "\345\276\267\350\202\262\346\225\231\350\202\262", nullptr));
-        acttype->setItemText(2, QCoreApplication::translate("AdminView", "\345\210\233\346\226\260\345\210\233\344\270\232", nullptr));
-        acttype->setItemText(3, QCoreApplication::translate("AdminView", "\347\211\271\350\211\262\344\275\223\350\202\262", nullptr));
-        acttype->setItemText(4, QCoreApplication::translate("AdminView", "\351\253\230\351\233\205\347\276\216\350\202\262", nullptr));
-        acttype->setItemText(5, QCoreApplication::translate("AdminView", "\345\212\263\345\212\250\346\225\231\350\202\262", nullptr));
-
         label->setText(QCoreApplication::translate("AdminView", "\346\264\273\345\212\250\347\212\266\346\200\201\357\274\232", nullptr));
         actstatus->setItemText(0, QCoreApplication::translate("AdminView", "\345\205\250\351\203\250", nullptr));
         actstatus->setItemText(1, QCoreApplication::translate("AdminView", "\345\276\205\345\256\241\346\240\270", nullptr));

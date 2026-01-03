@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QListWidgetItem>
+#include "client.h"
 
 namespace Ui {
 class SponsorView;
@@ -37,6 +38,7 @@ signals:
 private:
     Ui::SponsorView *ui;
     QString m_currentUsername;
+    Client *m_client;
 };
 
 #endif // SPONSORVIEW_H

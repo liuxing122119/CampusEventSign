@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QListWidgetItem>
+#include "client.h"
 
 namespace Ui {
 class AdminView;
@@ -21,6 +22,7 @@ private slots:
 
 private:
     Ui::AdminView *ui;
+    Client *m_client;
 };
 
 #endif // ADMINVIEW_H

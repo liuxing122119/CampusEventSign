@@ -9,6 +9,17 @@ StudentView::StudentView(QWidget *parent)
 
     ui->listWidget->setCurrentRow(0);
     ui->stackedWidget->setCurrentWidget(ui->actscanpage);
+
+    m_client = Client::getInstance();
+
+    QStringList categoryList = m_client->getActivityCategories();
+    ui->acttype->clear();
+    ui->acttype->addItem("全部");
+    ui->acttype->addItems(categoryList);
+
+    ui->myacttype->clear();
+    ui->myacttype->addItem("全部");
+    ui->myacttype->addItems(categoryList);
 }
 
 StudentView::~StudentView()

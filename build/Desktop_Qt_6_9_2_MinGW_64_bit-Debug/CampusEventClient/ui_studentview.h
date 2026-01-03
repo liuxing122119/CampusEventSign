@@ -81,7 +81,6 @@ public:
         listWidget = new QListWidget(StudentView);
         new QListWidgetItem(listWidget);
         new QListWidgetItem(listWidget);
-        new QListWidgetItem(listWidget);
         listWidget->setObjectName("listWidget");
         QSizePolicy sizePolicy(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Expanding);
         sizePolicy.setHorizontalStretch(0);
@@ -107,12 +106,6 @@ public:
         horizontalLayout_2->addWidget(label_5);
 
         myacttype = new QComboBox(myactpage);
-        myacttype->addItem(QString());
-        myacttype->addItem(QString());
-        myacttype->addItem(QString());
-        myacttype->addItem(QString());
-        myacttype->addItem(QString());
-        myacttype->addItem(QString());
         myacttype->setObjectName("myacttype");
         myacttype->setMinimumSize(QSize(90, 0));
 
@@ -203,12 +196,6 @@ public:
         horizontalLayout_4->addWidget(label);
 
         acttype = new QComboBox(actscanpage);
-        acttype->addItem(QString());
-        acttype->addItem(QString());
-        acttype->addItem(QString());
-        acttype->addItem(QString());
-        acttype->addItem(QString());
-        acttype->addItem(QString());
         acttype->setObjectName("acttype");
         sizePolicy1.setHeightForWidth(acttype->sizePolicy().hasHeightForWidth());
         acttype->setSizePolicy(sizePolicy1);
@@ -303,13 +290,6 @@ public:
         listWidget->setSortingEnabled(__sortingEnabled);
 
         label_5->setText(QCoreApplication::translate("StudentView", "\346\264\273\345\212\250\347\261\273\345\236\213\357\274\232", nullptr));
-        myacttype->setItemText(0, QCoreApplication::translate("StudentView", "\345\205\250\351\203\250", nullptr));
-        myacttype->setItemText(1, QCoreApplication::translate("StudentView", "\345\276\267\350\202\262\346\225\231\350\202\262", nullptr));
-        myacttype->setItemText(2, QCoreApplication::translate("StudentView", "\345\210\233\346\226\260\345\210\233\344\270\232", nullptr));
-        myacttype->setItemText(3, QCoreApplication::translate("StudentView", "\347\211\271\350\211\262\344\275\223\350\202\262", nullptr));
-        myacttype->setItemText(4, QCoreApplication::translate("StudentView", "\351\253\230\351\233\205\347\276\216\350\202\262", nullptr));
-        myacttype->setItemText(5, QCoreApplication::translate("StudentView", "\345\212\263\345\212\250\346\225\231\350\202\262", nullptr));
-
         label_6->setText(QCoreApplication::translate("StudentView", "\347\255\276\345\210\260\347\212\266\346\200\201\357\274\232", nullptr));
         signstatus->setItemText(0, QCoreApplication::translate("StudentView", "\345\205\250\351\203\250", nullptr));
         signstatus->setItemText(1, QCoreApplication::translate("StudentView", "\346\234\252\347\255\276\345\210\260", nullptr));
@@ -322,14 +302,7 @@ public:
         btCancelSign->setText(QCoreApplication::translate("StudentView", "\345\217\226\346\266\210\346\212\245\345\220\215", nullptr));
         btCancelWait->setText(QCoreApplication::translate("StudentView", "\345\217\226\346\266\210\345\200\231\350\241\245", nullptr));
         label->setText(QCoreApplication::translate("StudentView", "\346\264\273\345\212\250\347\261\273\345\236\213\357\274\232", nullptr));
-        acttype->setItemText(0, QCoreApplication::translate("StudentView", "\345\205\250\351\203\250", nullptr));
-        acttype->setItemText(1, QCoreApplication::translate("StudentView", "\345\276\267\350\202\262\346\225\231\350\202\262", nullptr));
-        acttype->setItemText(2, QCoreApplication::translate("StudentView", "\345\210\233\346\226\260\345\210\233\344\270\232", nullptr));
-        acttype->setItemText(3, QCoreApplication::translate("StudentView", "\347\211\271\350\211\262\344\275\223\350\202\262", nullptr));
-        acttype->setItemText(4, QCoreApplication::translate("StudentView", "\351\253\230\351\233\205\347\276\216\350\202\262", nullptr));
-        acttype->setItemText(5, QCoreApplication::translate("StudentView", "\345\212\263\345\212\250\346\225\231\350\202\262", nullptr));
-
-        acttype->setCurrentText(QCoreApplication::translate("StudentView", "\345\205\250\351\203\250", nullptr));
+        acttype->setCurrentText(QString());
         label_2->setText(QCoreApplication::translate("StudentView", "\346\264\273\345\212\250\346\227\266\351\227\264\357\274\232", nullptr));
         searchEdit->setPlaceholderText(QCoreApplication::translate("StudentView", "\350\257\267\350\276\223\345\205\245\346\264\273\345\212\250\345\220\215\347\247\260\350\277\233\350\241\214\346\237\245\350\257\242", nullptr));
         btSearch->setText(QCoreApplication::translate("StudentView", "\346\220\234\347\264\242", nullptr));
