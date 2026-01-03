@@ -33,7 +33,7 @@ signals:
 
 public slots:
     void onReadyRead();
-    void sendMessage(const QString &text,const QString &type = "message");
+    // void sendMessage(const QString &text,const QString &type = "message");
     void connectToServer(const QHostAddress &address,quint16 port);
     void disconnectFromHost();
     void onClientConnected();
