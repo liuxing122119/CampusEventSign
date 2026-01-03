@@ -34,18 +34,18 @@ void Client::sendGetActivityCategoriesRequest()
     qDebug() << "已发送获取活动类别请求";
 }
 
-void Client::sendGetAnnouncementsRequest()
-{
-    if (!isConnected()) {
-        return;
-    }
-    QJsonObject request;
-    request["type"] = "get_announcements";
-    QDataStream serverStream(m_clientSocket);
-    serverStream.setVersion(QDataStream::Qt_5_12);
-    QByteArray jsonData = QJsonDocument(request).toJson(QJsonDocument::Compact);
-    serverStream << jsonData;
-}
+// void Client::sendGetAnnouncementsRequest()
+// {
+//     if (!isConnected()) {
+//         return;
+//     }
+//     QJsonObject request;
+//     request["type"] = "get_announcements";
+//     QDataStream serverStream(m_clientSocket);
+//     serverStream.setVersion(QDataStream::Qt_5_12);
+//     QByteArray jsonData = QJsonDocument(request).toJson(QJsonDocument::Compact);
+//     serverStream << jsonData;
+// }
 
 void Client::onReadyRead()
 {

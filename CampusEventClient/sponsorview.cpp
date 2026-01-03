@@ -55,6 +55,7 @@ void SponsorView::on_btUpdate_clicked()
 {
     QModelIndex curIndex = IDatabase::getInstance().theActivitySelection->currentIndex();
     emit goActivityEditView(curIndex.row());
+    IDatabase::getInstance().theActivitySelection->clearSelection();
     onSelectionChanged();
 }
 
@@ -90,7 +91,8 @@ void SponsorView::on_btReset_clicked()
 
 void SponsorView::onSelectionChanged()
 {
-    bool hasSelectedRow = IDatabase::getInstance().theActivitySelection->hasSelection();
+    QItemSelectionModel *selectionModel = IDatabase::getInstance().theActivitySelection;
+    bool hasSelectedRow = selectionModel->hasSelection();
     ui->btUpdate->setEnabled(hasSelectedRow);
 }
 

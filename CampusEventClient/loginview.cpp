@@ -21,6 +21,13 @@ LoginView::~LoginView()
 
 void LoginView::on_loginButton_clicked()
 {
+    // QString username = ui->usernameEdit->text().trimmed();
+    // QString password = ui->passwordEdit->text().trimmed();
+    // QString status = IDatabase::getInstance().userLogin(username, password);
+    // if (status == "loginOK"){
+    //     emit loginSuccess(username);
+    // }
+
     if (m_isServerConnected) {
         QString username = ui->usernameEdit->text().trimmed();
         QString password = ui->passwordEdit->text().trimmed();

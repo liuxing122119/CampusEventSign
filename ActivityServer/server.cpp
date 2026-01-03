@@ -57,13 +57,12 @@ void Server::stopServer()
         worker->disconnect();
         worker->deleteLater();
     }
-
     m_clients.clear();
 }
 
 void Server::userDisconnected(ServerWorker *sender)
 {
-   emit logMessage("客户端断开连接");
+    emit logMessage("客户端断开连接");
     m_clients.removeOne(sender);
     sender->deleteLater();
 }

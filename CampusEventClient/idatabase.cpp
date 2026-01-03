@@ -130,16 +130,16 @@ QJsonArray IDatabase::getActivityCategories()
     return categoryArr;
 }
 
-QJsonArray IDatabase::getAnnouncements()
-{
-    QJsonArray annoArr;
-    QSqlQuery query(database);
-    query.exec("SELECT title, content FROM announcement ORDER BY id DESC");
-    while (query.next()) {
-        QJsonObject obj;
-        obj["title"] = query.value(0).toString();
-        obj["content"] = query.value(1).toString();
-        annoArr.append(obj);
-    }
-    return annoArr;
-}
+// QJsonArray IDatabase::getAnnouncements()
+// {
+//     QJsonArray annoArr;
+//     QSqlQuery query(database);
+//     query.exec("SELECT title, content FROM announcement ORDER BY id DESC");
+//     while (query.next()) {
+//         QJsonObject obj;
+//         obj["title"] = query.value(0).toString();
+//         obj["content"] = query.value(1).toString();
+//         annoArr.append(obj);
+//     }
+//     return annoArr;
+// }

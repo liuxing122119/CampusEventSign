@@ -15,7 +15,7 @@ public:
 
     bool isConnected();
     void sendGetActivityCategoriesRequest();
-    void sendGetAnnouncementsRequest();
+    // void sendGetAnnouncementsRequest();
 
 private:
     explicit Client(QObject *parent = nullptr);

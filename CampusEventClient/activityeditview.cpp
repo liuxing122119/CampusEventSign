@@ -52,7 +52,7 @@ ActivityEditView::~ActivityEditView()
 void ActivityEditView::on_submitButton_clicked()
 {
     dataMapper->submit();
-    IDatabase::getInstance().activityTabModel->select();
+    IDatabase::getInstance().submitActivityEdit();
     emit goPreviousView();
 }
 

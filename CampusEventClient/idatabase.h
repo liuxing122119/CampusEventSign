@@ -38,7 +38,7 @@ public:
     bool searchActivity(QString filter);
 
     QJsonArray getActivityCategories();
-    QJsonArray getAnnouncements();
+    // QJsonArray getAnnouncements();
 
     QSqlTableModel *activityTabModel;
     QItemSelectionModel *theActivitySelection;
