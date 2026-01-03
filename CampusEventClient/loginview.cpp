@@ -20,13 +20,6 @@ LoginView::~LoginView()
 
 void LoginView::on_loginButton_clicked()
 {
-    // QString username = ui->usernameEdit->text().trimmed();
-    // QString password = ui->passwordEdit->text().trimmed();
-    // QString status = IDatabase::getInstance().userLogin(username, password);
-    // if (status == "loginOK"){
-    //     emit loginSuccess(username);
-    // }
-
     if (m_isServerConnected) {
         QString username = ui->usernameEdit->text().trimmed();
         QString password = ui->passwordEdit->text().trimmed();
@@ -55,7 +48,7 @@ void LoginView::connectedToServer()
 
 void LoginView::onServerDisconnected()
 {
-    qDebug() << "LoginView：服务器断开连接";
+    qDebug() << "服务器断开连接";
     m_isServerConnected = false;
 }
 

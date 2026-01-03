@@ -14,6 +14,11 @@ SponsorView::SponsorView(QWidget *parent)
 
     m_client = Client::getInstance();
 
+    QStringList categoryList = m_client->getActivityCategories();
+    ui->acttype->clear();
+    ui->acttype->addItem("全部");
+    ui->acttype->addItems(categoryList);
+
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -27,11 +32,6 @@ SponsorView::SponsorView(QWidget *parent)
 
     ui->btUpdate->setEnabled(false);
     connect(iDatabase.theActivitySelection, SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this, SLOT(onSelectionChanged()));
-
-    QStringList categoryList = m_client->getActivityCategories();
-    ui->acttype->clear();
-    ui->acttype->addItem("全部");
-    ui->acttype->addItems(categoryList);
 }
 
 SponsorView::~SponsorView()
@@ -61,6 +61,10 @@ void SponsorView::on_btAdd_clicked()
 void SponsorView::on_btUpdate_clicked()
 {
     QModelIndex curIndex = IDatabase::getInstance().theActivitySelection->currentIndex();
+    QSqlTableModel *activityModel = IDatabase::getInstance().activityTabModel;
+    int statusColumn = activityModel->fieldIndex("STATUS");
+    QModelIndex statusIndex = activityModel->index(curIndex.row(), statusColumn);
+    QString activityStatus = activityModel->data(statusIndex).toString();
     emit goActivityEditView(curIndex.row());
     IDatabase::getInstance().theActivitySelection->clearSelection();
     onSelectionChanged();
@@ -100,6 +104,18 @@ void SponsorView::onSelectionChanged()
 {
     QItemSelectionModel *selectionModel = IDatabase::getInstance().theActivitySelection;
     bool hasSelectedRow = selectionModel->hasSelection();
-    ui->btUpdate->setEnabled(hasSelectedRow);
+    bool canEdit = false;
+
+    if (hasSelectedRow) {
+        QModelIndex curIndex = selectionModel->currentIndex();
+        QSqlTableModel *activityModel = IDatabase::getInstance().activityTabModel;
+        int statusColumn = activityModel->fieldIndex("STATUS");
+        QModelIndex statusIndex = activityModel->index(curIndex.row(), statusColumn);
+        QString activityStatus = activityModel->data(statusIndex).toString();
+        if (activityStatus == "待审核")
+            canEdit = true;
+    }
+    ui->btUpdate->setEnabled(canEdit);
+    ui->btAdd->setEnabled(!hasSelectedRow);
 }
 
