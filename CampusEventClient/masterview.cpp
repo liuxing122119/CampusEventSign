@@ -25,10 +25,10 @@ void MasterView::goLoginView()
     qDebug() << "goLoginView";
     loginView = new LoginView(this);
     m_client = Client::getInstance();
-    connect(m_client, SIGNAL(disconnected()), this, SLOT(onClientDisconnected()));
+    connect(m_client,SIGNAL(disconnected()),this,SLOT(onClientDisconnected()));
     pushWidgetToStackView(loginView);
 
-    connect(loginView, SIGNAL(loginSuccess(QString)), this, SLOT(onLoginSuccess(QString)));
+    connect(loginView,SIGNAL(loginSuccess(QString)),this,SLOT(onLoginSuccess(QString)));
 }
 
 void MasterView::goPreviousView()
@@ -36,7 +36,12 @@ void MasterView::goPreviousView()
     int count = ui->stackedWidget->count();
 
     if(count > 1){
-        IDatabase::getInstance().revertActivityEdit();
+        if (IDatabase::getInstance().activityTabModel != nullptr) {
+            IDatabase::getInstance().revertActivityEdit();
+        }
+        if (IDatabase::getInstance().userTabModel != nullptr) {
+            IDatabase::getInstance().revertUserEdit();
+        }
 
         ui->stackedWidget->setCurrentIndex(count - 2);
         ui->titlelabel->setText(ui->stackedWidget->currentWidget()->windowTitle());
@@ -52,6 +57,8 @@ void MasterView::goAdminView()
     qDebug() << "goAdminView";
     adminView = new AdminView(this);
     pushWidgetToStackView(adminView);
+
+    connect(adminView,SIGNAL(goUserEditView(int)),this,SLOT(goUserEditView(int)));
 }
 
 void MasterView::goSponsorView(const QString &username)
@@ -61,7 +68,7 @@ void MasterView::goSponsorView(const QString &username)
     sponsorView->setCurrentUsername(username);
     pushWidgetToStackView(sponsorView);
 
-    connect(sponsorView, SIGNAL(goActivityEditView(int)), this, SLOT(goActivityEditView(int)));
+    connect(sponsorView,SIGNAL(goActivityEditView(int)),this,SLOT(goActivityEditView(int)));
 }
 
 void MasterView::goStudentView()
@@ -74,23 +81,32 @@ void MasterView::goStudentView()
 void MasterView::goActivityEditView(int rowNo)
 {
     qDebug() << "goActivityEditView";
-    activityEditView = new ActivityEditView(this, rowNo);
+    activityEditView = new ActivityEditView(this,rowNo);
     pushWidgetToStackView(activityEditView);
 
-    connect(activityEditView, SIGNAL(goPreviousView()), this, SLOT(goPreviousView()));
+    connect(activityEditView,SIGNAL(goPreviousView()),this,SLOT(goPreviousView()));
+}
+
+void MasterView::goUserEditView(int rowNo)
+{
+    qDebug() << "goUserEditView";
+    userEditView = new UserEditView(this,rowNo);
+    pushWidgetToStackView(userEditView);
+
+    connect(userEditView,SIGNAL(goPreviousView()),this,SLOT(goPreviousView()));
 }
 
 void MasterView::onLoginSuccess(QString username)
 {
-    qDebug() << "login success, username:" << username;
+    qDebug() << "login success,username:" << username;
     QString userRole = IDatabase::getInstance().getUserRole(username);
 
-    m_saveUsername = username;
-    m_saveUserRole = userRole;
+    m_Username = username;
+    m_UserRole = userRole;
 
     QTimer *delayCreateTimer = new QTimer(this);
     delayCreateTimer->setSingleShot(true);
-    connect(delayCreateTimer, SIGNAL(timeout()), this, SLOT(delayCreateRoleView()));
+    connect(delayCreateTimer,SIGNAL(timeout()),this,SLOT(delayCreateRoleView()));
     delayCreateTimer->start(100);
 }
 
@@ -108,11 +124,11 @@ void MasterView::onClientDisconnected()
 
 void MasterView::delayCreateRoleView()
 {
-    if (m_saveUserRole == "admin") {
+    if (m_UserRole == "管理员") {
         goAdminView();
-    } else if (m_saveUserRole == "sponsor") {
-        goSponsorView(m_saveUsername);
-    } else if (m_saveUserRole == "student") {
+    } else if (m_UserRole == "发起人") {
+        goSponsorView(m_Username);
+    } else if (m_UserRole == "学生") {
         goStudentView();
     } else {
         qDebug() << "invalid role";

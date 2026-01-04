@@ -7,6 +7,7 @@
 #include "sponsorview.h"
 #include "studentview.h"
 #include "activityeditview.h"
+#include "usereditview.h"
 #include "client.h"
 
 QT_BEGIN_NAMESPACE
@@ -30,6 +31,7 @@ public slots:
     void goSponsorView(const QString &username);
     void goStudentView();
     void goActivityEditView(int rowNo);
+    void goUserEditView(int rowNo);
 
     void onLoginSuccess(QString username);
     void onClientDisconnected();
@@ -52,9 +54,10 @@ private:
     SponsorView *sponsorView;
     StudentView *studentView;
     ActivityEditView *activityEditView;
+    UserEditView *userEditView;
 
     Client *m_client;
-    QString m_saveUsername;
-    QString m_saveUserRole;
+    QString m_Username;
+    QString m_UserRole;
 };
 #endif // MASTERVIEW_H

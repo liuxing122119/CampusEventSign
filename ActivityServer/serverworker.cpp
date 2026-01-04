@@ -7,8 +7,8 @@ ServerWorker::ServerWorker(QObject *parent)
     : QObject{parent}
 {
     m_serverSocket = new QTcpSocket(this);
-    connect(m_serverSocket, &QTcpSocket::readyRead, this, &ServerWorker::onReadyRead);
-    connect(m_serverSocket, &QTcpSocket::disconnected, this, &ServerWorker::disconnectedFromClient);
+    connect(m_serverSocket,&QTcpSocket::readyRead,this,&ServerWorker::onReadyRead);
+    connect(m_serverSocket,&QTcpSocket::disconnected,this,&ServerWorker::disconnectedFromClient);
 }
 
 bool ServerWorker::setSocketDescriptor(qintptr socketDescriptor)
@@ -36,11 +36,11 @@ void ServerWorker::onReadyRead()
         socketStream >> jsonData;
         if (socketStream.commitTransaction()) {
             QJsonParseError parseError;
-            const QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData, &parseError);
+            const QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData,&parseError);
             if (parseError.error == QJsonParseError::NoError && jsonDoc.isObject()) {
                 emit logMessage(QString("接收客户端数据：%1")
                                     .arg(QString::fromUtf8(jsonDoc.toJson(QJsonDocument::Compact))));
-                emit jsonReceived(this, jsonDoc.object());
+                emit jsonReceived(this,jsonDoc.object());
             }
         } else {
             break;
@@ -48,7 +48,7 @@ void ServerWorker::onReadyRead()
     }
 }
 
-void ServerWorker::sendMessage(const QString &text, const QString &type)
+void ServerWorker::sendMessage(const QString &text,const QString &type)
 {
     if (m_serverSocket->state() != QAbstractSocket::ConnectedState) {
         emit logMessage("发送失败：客户端已断开连接");

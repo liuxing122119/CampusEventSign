@@ -69,17 +69,7 @@
          <item>
           <widget class="QLabel" name="label_2">
            <property name="text">
-            <string>活动类型：</string>
-           </property>
-           <property name="alignment">
-            <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_11">
-           <property name="text">
-            <string>活动状态：</string>
+            <string>活动类别：</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -164,36 +154,35 @@
           <widget class="QComboBox" name="acttype"/>
          </item>
          <item>
-          <widget class="QComboBox" name="actstatus">
-           <item>
-            <property name="text">
-             <string>待审核</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>已通过</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>未通过</string>
-            </property>
-           </item>
-           <item>
-            <property name="text">
-             <string>已撤回</string>
-            </property>
-           </item>
+          <widget class="QDateTimeEdit" name="acttimeEdit">
+           <property name="date">
+            <date>
+             <year>2025</year>
+             <month>12</month>
+             <day>1</day>
+            </date>
+           </property>
+           <property name="time">
+            <time>
+             <hour>0</hour>
+             <minute>0</minute>
+             <second>0</second>
+            </time>
+           </property>
           </widget>
-         </item>
-         <item>
-          <widget class="QDateTimeEdit" name="acttimeEdit"/>
          </item>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_2">
            <item>
-            <widget class="QDateTimeEdit" name="starttimeEdit"/>
+            <widget class="QDateTimeEdit" name="starttimeEdit">
+             <property name="date">
+              <date>
+               <year>2025</year>
+               <month>12</month>
+               <day>1</day>
+              </date>
+             </property>
+            </widget>
            </item>
            <item>
             <widget class="QLabel" name="label_9">
@@ -203,7 +192,15 @@
             </widget>
            </item>
            <item>
-            <widget class="QDateTimeEdit" name="endtimeEdit"/>
+            <widget class="QDateTimeEdit" name="endtimeEdit">
+             <property name="date">
+              <date>
+               <year>2025</year>
+               <month>12</month>
+               <day>1</day>
+              </date>
+             </property>
+            </widget>
            </item>
           </layout>
          </item>

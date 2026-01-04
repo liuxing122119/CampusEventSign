@@ -14,7 +14,7 @@ class ActivityEditView : public QWidget
     Q_OBJECT
 
 public:
-    explicit ActivityEditView(QWidget *parent = nullptr, int index = 0);
+    explicit ActivityEditView(QWidget *parent = nullptr,int index = 0);
     ~ActivityEditView();
 
 private slots:

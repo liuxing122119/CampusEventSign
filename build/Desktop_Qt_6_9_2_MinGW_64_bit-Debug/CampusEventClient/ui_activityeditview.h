@@ -9,6 +9,7 @@
 #ifndef UI_ACTIVITYEDITVIEW_H
 #define UI_ACTIVITYEDITVIEW_H
 
+#include <QtCore/QDate>
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QComboBox>
@@ -36,7 +37,6 @@ public:
     QLabel *label_7;
     QLabel *label;
     QLabel *label_2;
-    QLabel *label_11;
     QLabel *label_3;
     QLabel *label_4;
     QLabel *label_6;
@@ -47,7 +47,6 @@ public:
     QLineEdit *actidEdit;
     QLineEdit *actnameEdit;
     QComboBox *acttype;
-    QComboBox *actstatus;
     QDateTimeEdit *acttimeEdit;
     QHBoxLayout *horizontalLayout_2;
     QDateTimeEdit *starttimeEdit;
@@ -102,12 +101,6 @@ public:
         label_2->setAlignment(Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter);
 
         verticalLayout->addWidget(label_2);
-
-        label_11 = new QLabel(ActivityEditView);
-        label_11->setObjectName("label_11");
-        label_11->setAlignment(Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter);
-
-        verticalLayout->addWidget(label_11);
 
         label_3 = new QLabel(ActivityEditView);
         label_3->setObjectName("label_3");
@@ -165,17 +158,10 @@ public:
 
         verticalLayout_2->addWidget(acttype);
 
-        actstatus = new QComboBox(ActivityEditView);
-        actstatus->addItem(QString());
-        actstatus->addItem(QString());
-        actstatus->addItem(QString());
-        actstatus->addItem(QString());
-        actstatus->setObjectName("actstatus");
-
-        verticalLayout_2->addWidget(actstatus);
-
         acttimeEdit = new QDateTimeEdit(ActivityEditView);
         acttimeEdit->setObjectName("acttimeEdit");
+        acttimeEdit->setDate(QDate(2025, 12, 1));
+        acttimeEdit->setTime(QTime(0, 0, 0));
 
         verticalLayout_2->addWidget(acttimeEdit);
 
@@ -183,6 +169,7 @@ public:
         horizontalLayout_2->setObjectName("horizontalLayout_2");
         starttimeEdit = new QDateTimeEdit(ActivityEditView);
         starttimeEdit->setObjectName("starttimeEdit");
+        starttimeEdit->setDate(QDate(2025, 12, 1));
 
         horizontalLayout_2->addWidget(starttimeEdit);
 
@@ -193,6 +180,7 @@ public:
 
         endtimeEdit = new QDateTimeEdit(ActivityEditView);
         endtimeEdit->setObjectName("endtimeEdit");
+        endtimeEdit->setDate(QDate(2025, 12, 1));
 
         horizontalLayout_2->addWidget(endtimeEdit);
 
@@ -266,8 +254,7 @@ public:
         ActivityEditView->setWindowTitle(QCoreApplication::translate("ActivityEditView", "\347\274\226\350\276\221\346\264\273\345\212\250\344\277\241\346\201\257", nullptr));
         label_7->setText(QCoreApplication::translate("ActivityEditView", "\346\264\273\345\212\250\345\272\217\345\217\267\357\274\232", nullptr));
         label->setText(QCoreApplication::translate("ActivityEditView", "\346\264\273\345\212\250\345\220\215\347\247\260\357\274\232", nullptr));
-        label_2->setText(QCoreApplication::translate("ActivityEditView", "\346\264\273\345\212\250\347\261\273\345\236\213\357\274\232", nullptr));
-        label_11->setText(QCoreApplication::translate("ActivityEditView", "\346\264\273\345\212\250\347\212\266\346\200\201\357\274\232", nullptr));
+        label_2->setText(QCoreApplication::translate("ActivityEditView", "\346\264\273\345\212\250\347\261\273\345\210\253\357\274\232", nullptr));
         label_3->setText(QCoreApplication::translate("ActivityEditView", "\346\264\273\345\212\250\346\227\266\351\227\264\357\274\232", nullptr));
         label_4->setText(QCoreApplication::translate("ActivityEditView", "\346\212\245\345\220\215\346\227\266\351\227\264\357\274\232", nullptr));
         label_6->setText(QCoreApplication::translate("ActivityEditView", "\346\264\273\345\212\250\345\234\260\347\202\271\357\274\232", nullptr));
@@ -275,11 +262,6 @@ public:
         label_8->setText(QCoreApplication::translate("ActivityEditView", "\345\210\233\345\273\272\346\227\266\351\227\264\357\274\232", nullptr));
         label_10->setText(QCoreApplication::translate("ActivityEditView", "\345\217\221\350\265\267\344\272\272\357\274\232", nullptr));
         actnameEdit->setPlaceholderText(QCoreApplication::translate("ActivityEditView", "\350\257\267\350\276\223\345\205\245\346\264\273\345\212\250\345\220\215\347\247\260", nullptr));
-        actstatus->setItemText(0, QCoreApplication::translate("ActivityEditView", "\345\276\205\345\256\241\346\240\270", nullptr));
-        actstatus->setItemText(1, QCoreApplication::translate("ActivityEditView", "\345\267\262\351\200\232\350\277\207", nullptr));
-        actstatus->setItemText(2, QCoreApplication::translate("ActivityEditView", "\346\234\252\351\200\232\350\277\207", nullptr));
-        actstatus->setItemText(3, QCoreApplication::translate("ActivityEditView", "\345\267\262\346\222\244\345\233\236", nullptr));
-
         label_9->setText(QCoreApplication::translate("ActivityEditView", "\350\207\263", nullptr));
         submitButton->setText(QCoreApplication::translate("ActivityEditView", "\346\217\220\344\272\244", nullptr));
         cancelButton->setText(QCoreApplication::translate("ActivityEditView", "\345\217\226\346\266\210", nullptr));

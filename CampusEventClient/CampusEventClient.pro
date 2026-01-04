@@ -17,7 +17,8 @@ SOURCES += \
     main.cpp \
     masterview.cpp \
     sponsorview.cpp \
-    studentview.cpp
+    studentview.cpp \
+    usereditview.cpp
 
 HEADERS += \
     activityeditview.h \
@@ -27,7 +28,8 @@ HEADERS += \
     loginview.h \
     masterview.h \
     sponsorview.h \
-    studentview.h
+    studentview.h \
+    usereditview.h
 
 FORMS += \
     activityeditview.ui \
@@ -35,7 +37,8 @@ FORMS += \
     loginview.ui \
     masterview.ui \
     sponsorview.ui \
-    studentview.ui
+    studentview.ui \
+    usereditview.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

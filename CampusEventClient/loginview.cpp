@@ -9,8 +9,8 @@ LoginView::LoginView(QWidget *parent)
     ui->setupUi(this);
 
     m_client = Client::getInstance();
-    connect(m_client, &Client::connected, this, &LoginView::connectedToServer);
-    connect(m_client, &Client::disconnected, this, &LoginView::onServerDisconnected);
+    connect(m_client,&Client::connected,this,&LoginView::connectedToServer);
+    connect(m_client,&Client::disconnected,this,&LoginView::onServerDisconnected);
 }
 
 LoginView::~LoginView()
@@ -23,13 +23,13 @@ void LoginView::on_loginButton_clicked()
     if (m_isServerConnected) {
         QString username = ui->usernameEdit->text().trimmed();
         QString password = ui->passwordEdit->text().trimmed();
-        QString status = IDatabase::getInstance().userLogin(username, password);
+        QString status = IDatabase::getInstance().userLogin(username,password);
         if (status == "loginOK"){
             emit loginSuccess(username);
         }
         return;
     }
-    m_client->connectToServer(QHostAddress::LocalHost, 1967);
+    m_client->connectToServer(QHostAddress::LocalHost,1967);
 }
 
 void LoginView::connectedToServer()
@@ -39,7 +39,7 @@ void LoginView::connectedToServer()
     QString username = ui->usernameEdit->text().trimmed();
     QString password = ui->passwordEdit->text().trimmed();
     if (!username.isEmpty() && !password.isEmpty()) {
-        QString status = IDatabase::getInstance().userLogin(username, password);
+        QString status = IDatabase::getInstance().userLogin(username,password);
         if (status == "loginOK"){
             emit loginSuccess(username);
         }

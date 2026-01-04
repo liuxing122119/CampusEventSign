@@ -54,7 +54,7 @@
            <item>
             <widget class="QLabel" name="label_2">
              <property name="text">
-              <string>活动类型：</string>
+              <string>活动类别：</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -160,13 +160,6 @@
              </property>
             </widget>
            </item>
-           <item>
-            <widget class="QPushButton" name="btExport">
-             <property name="text">
-              <string>导出</string>
-             </property>
-            </widget>
-           </item>
           </layout>
          </item>
          <item>
@@ -215,7 +208,7 @@
            <item>
             <widget class="QLabel" name="label_3">
              <property name="text">
-              <string>用户类型：</string>
+              <string>用户角色：</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -223,7 +216,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QComboBox" name="usertype">
+            <widget class="QComboBox" name="userrole">
              <item>
               <property name="text">
                <string>全部</string>
@@ -242,47 +235,6 @@
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="label_4">
-             <property name="text">
-              <string>用户状态：</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QComboBox" name="userstatus">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="minimumSize">
-              <size>
-               <width>70</width>
-               <height>0</height>
-              </size>
-             </property>
-             <item>
-              <property name="text">
-               <string>全部</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>正常</string>
-              </property>
-             </item>
-             <item>
-              <property name="text">
-               <string>禁用</string>
-              </property>
-             </item>
-            </widget>
-           </item>
-           <item>
             <spacer name="horizontalSpacer_3">
              <property name="orientation">
               <enum>Qt::Orientation::Horizontal</enum>
@@ -292,7 +244,7 @@
              </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>13</width>
+               <width>20</width>
                <height>20</height>
               </size>
              </property>
@@ -322,7 +274,7 @@
           </layout>
          </item>
          <item>
-          <widget class="QTableView" name="tableView_2"/>
+          <widget class="QTableView" name="usertableView"/>
          </item>
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_3">

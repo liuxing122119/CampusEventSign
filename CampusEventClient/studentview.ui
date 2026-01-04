@@ -54,7 +54,7 @@
            <item>
             <widget class="QLabel" name="label_5">
              <property name="text">
-              <string>活动类型：</string>
+              <string>活动类别：</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -74,7 +74,7 @@
            <item>
             <widget class="QLabel" name="label_6">
              <property name="text">
-              <string>签到状态：</string>
+              <string>报名状态：</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -102,12 +102,17 @@
              </item>
              <item>
               <property name="text">
-               <string>未签到</string>
+               <string>未报名</string>
               </property>
              </item>
              <item>
               <property name="text">
-               <string>已签到</string>
+               <string>已报名</string>
+              </property>
+             </item>
+             <item>
+              <property name="text">
+               <string>候补中</string>
               </property>
              </item>
             </widget>
@@ -146,13 +151,6 @@
             <widget class="QPushButton" name="resetButton">
              <property name="text">
               <string>重置</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="exportButton">
-             <property name="text">
-              <string>导出</string>
              </property>
             </widget>
            </item>
@@ -204,7 +202,7 @@
            <item>
             <widget class="QLabel" name="label">
              <property name="text">
-              <string>活动类型：</string>
+              <string>活动类别：</string>
              </property>
              <property name="alignment">
               <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
@@ -237,19 +235,6 @@
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="label_2">
-             <property name="text">
-              <string>活动时间：</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QDateTimeEdit" name="acttimeEdit"/>
-           </item>
-           <item>
             <spacer name="horizontalSpacer_4">
              <property name="orientation">
               <enum>Qt::Orientation::Horizontal</enum>
@@ -259,7 +244,7 @@
              </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>13</width>
+               <width>20</width>
                <height>20</height>
               </size>
              </property>

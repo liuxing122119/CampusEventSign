@@ -45,7 +45,6 @@ public:
     QLineEdit *searchEdit;
     QPushButton *btSearch;
     QPushButton *btReset;
-    QPushButton *btExport;
     QTableView *tableView;
     QHBoxLayout *horizontalLayout_5;
     QSpacerItem *horizontalSpacer;
@@ -55,14 +54,12 @@ public:
     QVBoxLayout *verticalLayout;
     QHBoxLayout *horizontalLayout_2;
     QLabel *label_3;
-    QComboBox *usertype;
-    QLabel *label_4;
-    QComboBox *userstatus;
+    QComboBox *userrole;
     QSpacerItem *horizontalSpacer_3;
     QLineEdit *usersearchEdit;
     QPushButton *searchButton;
     QPushButton *resetButton;
-    QTableView *tableView_2;
+    QTableView *usertableView;
     QHBoxLayout *horizontalLayout_3;
     QSpacerItem *horizontalSpacer_4;
     QPushButton *btAdd;
@@ -153,11 +150,6 @@ public:
 
         horizontalLayout_4->addWidget(btReset);
 
-        btExport = new QPushButton(checkpage);
-        btExport->setObjectName("btExport");
-
-        horizontalLayout_4->addWidget(btExport);
-
 
         verticalLayout_2->addLayout(horizontalLayout_4);
 
@@ -198,32 +190,15 @@ public:
 
         horizontalLayout_2->addWidget(label_3);
 
-        usertype = new QComboBox(userpage);
-        usertype->addItem(QString());
-        usertype->addItem(QString());
-        usertype->addItem(QString());
-        usertype->setObjectName("usertype");
+        userrole = new QComboBox(userpage);
+        userrole->addItem(QString());
+        userrole->addItem(QString());
+        userrole->addItem(QString());
+        userrole->setObjectName("userrole");
 
-        horizontalLayout_2->addWidget(usertype);
+        horizontalLayout_2->addWidget(userrole);
 
-        label_4 = new QLabel(userpage);
-        label_4->setObjectName("label_4");
-        label_4->setAlignment(Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter);
-
-        horizontalLayout_2->addWidget(label_4);
-
-        userstatus = new QComboBox(userpage);
-        userstatus->addItem(QString());
-        userstatus->addItem(QString());
-        userstatus->addItem(QString());
-        userstatus->setObjectName("userstatus");
-        sizePolicy1.setHeightForWidth(userstatus->sizePolicy().hasHeightForWidth());
-        userstatus->setSizePolicy(sizePolicy1);
-        userstatus->setMinimumSize(QSize(70, 0));
-
-        horizontalLayout_2->addWidget(userstatus);
-
-        horizontalSpacer_3 = new QSpacerItem(13, 20, QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Minimum);
+        horizontalSpacer_3 = new QSpacerItem(20, 20, QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Minimum);
 
         horizontalLayout_2->addItem(horizontalSpacer_3);
 
@@ -245,10 +220,10 @@ public:
 
         verticalLayout->addLayout(horizontalLayout_2);
 
-        tableView_2 = new QTableView(userpage);
-        tableView_2->setObjectName("tableView_2");
+        usertableView = new QTableView(userpage);
+        usertableView->setObjectName("usertableView");
 
-        verticalLayout->addWidget(tableView_2);
+        verticalLayout->addWidget(usertableView);
 
         horizontalLayout_3 = new QHBoxLayout();
         horizontalLayout_3->setObjectName("horizontalLayout_3");
@@ -302,7 +277,7 @@ public:
         ___qlistwidgetitem1->setText(QCoreApplication::translate("AdminView", "\347\224\250\346\210\267\347\256\241\347\220\206", nullptr));
         listWidget->setSortingEnabled(__sortingEnabled);
 
-        label_2->setText(QCoreApplication::translate("AdminView", "\346\264\273\345\212\250\347\261\273\345\236\213\357\274\232", nullptr));
+        label_2->setText(QCoreApplication::translate("AdminView", "\346\264\273\345\212\250\347\261\273\345\210\253\357\274\232", nullptr));
         label->setText(QCoreApplication::translate("AdminView", "\346\264\273\345\212\250\347\212\266\346\200\201\357\274\232", nullptr));
         actstatus->setItemText(0, QCoreApplication::translate("AdminView", "\345\205\250\351\203\250", nullptr));
         actstatus->setItemText(1, QCoreApplication::translate("AdminView", "\345\276\205\345\256\241\346\240\270", nullptr));
@@ -312,18 +287,12 @@ public:
         searchEdit->setPlaceholderText(QCoreApplication::translate("AdminView", "\350\257\267\350\276\223\345\205\245\346\264\273\345\212\250\345\220\215\347\247\260/\345\217\221\350\265\267\344\272\272\350\277\233\350\241\214\346\237\245\350\257\242", nullptr));
         btSearch->setText(QCoreApplication::translate("AdminView", "\346\220\234\347\264\242", nullptr));
         btReset->setText(QCoreApplication::translate("AdminView", "\351\207\215\347\275\256", nullptr));
-        btExport->setText(QCoreApplication::translate("AdminView", "\345\257\274\345\207\272", nullptr));
         btReject->setText(QCoreApplication::translate("AdminView", "\346\213\222\347\273\235", nullptr));
         btPass->setText(QCoreApplication::translate("AdminView", "\351\200\232\350\277\207", nullptr));
-        label_3->setText(QCoreApplication::translate("AdminView", "\347\224\250\346\210\267\347\261\273\345\236\213\357\274\232", nullptr));
-        usertype->setItemText(0, QCoreApplication::translate("AdminView", "\345\205\250\351\203\250", nullptr));
-        usertype->setItemText(1, QCoreApplication::translate("AdminView", "\345\255\246\347\224\237", nullptr));
-        usertype->setItemText(2, QCoreApplication::translate("AdminView", "\345\217\221\350\265\267\344\272\272", nullptr));
-
-        label_4->setText(QCoreApplication::translate("AdminView", "\347\224\250\346\210\267\347\212\266\346\200\201\357\274\232", nullptr));
-        userstatus->setItemText(0, QCoreApplication::translate("AdminView", "\345\205\250\351\203\250", nullptr));
-        userstatus->setItemText(1, QCoreApplication::translate("AdminView", "\346\255\243\345\270\270", nullptr));
-        userstatus->setItemText(2, QCoreApplication::translate("AdminView", "\347\246\201\347\224\250", nullptr));
+        label_3->setText(QCoreApplication::translate("AdminView", "\347\224\250\346\210\267\350\247\222\350\211\262\357\274\232", nullptr));
+        userrole->setItemText(0, QCoreApplication::translate("AdminView", "\345\205\250\351\203\250", nullptr));
+        userrole->setItemText(1, QCoreApplication::translate("AdminView", "\345\255\246\347\224\237", nullptr));
+        userrole->setItemText(2, QCoreApplication::translate("AdminView", "\345\217\221\350\265\267\344\272\272", nullptr));
 
         usersearchEdit->setPlaceholderText(QCoreApplication::translate("AdminView", "\350\257\267\350\276\223\345\205\245\347\224\250\346\210\267\345\220\215\350\277\233\350\241\214\346\237\245\350\257\242", nullptr));
         searchButton->setText(QCoreApplication::translate("AdminView", "\346\220\234\347\264\242", nullptr));

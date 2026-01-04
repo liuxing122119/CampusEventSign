@@ -16,8 +16,8 @@ int Server::clientCount()
 QJsonArray Server::getActivityCategories()
 {
     QJsonArray categoryArray;
-    QStringList categories = {"德育教育", "创新创业", "特色体育", "高雅美育", "劳动教育", "知行活动"};
-    for (const QString &cate : categories) {
+    QStringList categories = {"德育教育","创新创业","特色体育","高雅美育","劳动教育","知行活动"};
+    for (const QString &cate: categories) {
         QJsonObject obj;
         obj["category"] = cate;
         categoryArray.append(obj);
@@ -39,7 +39,7 @@ void Server::incomingConnection(qintptr socketDescriptor)
         return;
     }
     connect(worker,&ServerWorker::logMessage,this,&Server::logMessage);
-    connect(worker, &ServerWorker::jsonReceived, this, &Server::jsonReceived);
+    connect(worker,&ServerWorker::jsonReceived,this,&Server::jsonReceived);
     connect(worker,&ServerWorker::disconnectedFromClient,this,
             std::bind(&Server::userDisconnected,this,worker));
     m_clients.append(worker);
@@ -50,7 +50,7 @@ void Server::stopServer()
 {
     this->close();
     for (ServerWorker *worker: m_clients) {
-        disconnect(worker, &ServerWorker::disconnectedFromClient, this, nullptr);
+        disconnect(worker,&ServerWorker::disconnectedFromClient,this,nullptr);
         if (worker->m_serverSocket->state() == QAbstractSocket::ConnectedState) {
             worker->m_serverSocket->disconnectFromHost();
         }
@@ -67,7 +67,7 @@ void Server::userDisconnected(ServerWorker *sender)
     sender->deleteLater();
 }
 
-void Server::jsonReceived(ServerWorker *sender, const QJsonObject &docObj)
+void Server::jsonReceived(ServerWorker *sender,const QJsonObject &docObj)
 {
     QString requestType = docObj["type"].toString();
     QJsonObject response;

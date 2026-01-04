@@ -187,7 +187,7 @@ public:
         ___qlistwidgetitem->setText(QCoreApplication::translate("SponsorView", "\346\210\221\347\232\204\346\264\273\345\212\250", nullptr));
         listWidget->setSortingEnabled(__sortingEnabled);
 
-        label_8->setText(QCoreApplication::translate("SponsorView", "\346\264\273\345\212\250\347\261\273\345\236\213\357\274\232", nullptr));
+        label_8->setText(QCoreApplication::translate("SponsorView", "\346\264\273\345\212\250\347\261\273\345\210\253\357\274\232", nullptr));
         label_7->setText(QCoreApplication::translate("SponsorView", "\346\264\273\345\212\250\347\212\266\346\200\201\357\274\232", nullptr));
         actstatus->setItemText(0, QCoreApplication::translate("SponsorView", "\345\205\250\351\203\250", nullptr));
         actstatus->setItemText(1, QCoreApplication::translate("SponsorView", "\345\276\205\345\256\241\346\240\270", nullptr));

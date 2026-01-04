@@ -11,8 +11,8 @@ Client::Client(QObject *parent)
 
     connect(m_clientSocket,&QTcpSocket::connected,this,&Client::connected);
     connect(m_clientSocket,&QTcpSocket::readyRead,this,&Client::onReadyRead);
-    connect(m_clientSocket, &QTcpSocket::disconnected, this, &Client::disconnected);
-    connect(this, &Client::connected, this, &Client::onClientConnected);
+    connect(m_clientSocket,&QTcpSocket::disconnected,this,&Client::disconnected);
+    connect(this,&Client::connected,this,&Client::onClientConnected);
 }
 
 bool Client::isConnected()
@@ -80,7 +80,6 @@ void Client::onReadyRead()
                             QJsonObject cateObj = categoryArr[i].toObject();
                             QString cateName = cateObj["category"].toString();
                             m_activityCategories.append(cateName);
-                            qDebug() << "添加活动类别：" << cateName;
                         }
                     }
                 }
@@ -91,7 +90,7 @@ void Client::onReadyRead()
     }
 }
 
-void Client::connectToServer(const QHostAddress &address, quint16 port)
+void Client::connectToServer(const QHostAddress &address,quint16 port)
 {
     m_clientSocket->connectToHost(address,port);
 }

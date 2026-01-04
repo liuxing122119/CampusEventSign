@@ -11,7 +11,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_server = new Server(this);
     ui->logEdit->setReadOnly(true);
 
-    connect(m_server, &Server::logMessage, this, &MainWindow::logMessage);
+    connect(m_server,&Server::logMessage,this,&MainWindow::logMessage);
 }
 
 MainWindow::~MainWindow()

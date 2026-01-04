@@ -31,7 +31,7 @@ SponsorView::SponsorView(QWidget *parent)
     }
 
     ui->btUpdate->setEnabled(false);
-    connect(iDatabase.theActivitySelection, SIGNAL(selectionChanged(QItemSelection, QItemSelection)), this, SLOT(onSelectionChanged()));
+    connect(iDatabase.theActivitySelection,SIGNAL(selectionChanged(QItemSelection,QItemSelection)),this,SLOT(onSelectionChanged()));
 }
 
 SponsorView::~SponsorView()
@@ -42,6 +42,8 @@ SponsorView::~SponsorView()
 void SponsorView::setCurrentUsername(const QString &username)
 {
     m_currentUsername = username;
+    IDatabase &iDatabase = IDatabase::getInstance();
+    iDatabase.searchActivity(QString("SPONSOR = '%1'").arg(m_currentUsername));
 }
 
 void SponsorView::on_listWidget_itemClicked(QListWidgetItem *item)
@@ -63,7 +65,7 @@ void SponsorView::on_btUpdate_clicked()
     QModelIndex curIndex = IDatabase::getInstance().theActivitySelection->currentIndex();
     QSqlTableModel *activityModel = IDatabase::getInstance().activityTabModel;
     int statusColumn = activityModel->fieldIndex("STATUS");
-    QModelIndex statusIndex = activityModel->index(curIndex.row(), statusColumn);
+    QModelIndex statusIndex = activityModel->index(curIndex.row(),statusColumn);
     QString activityStatus = activityModel->data(statusIndex).toString();
     emit goActivityEditView(curIndex.row());
     IDatabase::getInstance().theActivitySelection->clearSelection();
@@ -78,6 +80,7 @@ void SponsorView::on_btSearch_clicked()
     QString name = ui->searchEdit->text().trimmed();
 
     QStringList filters;
+    filters << QString("SPONSOR = '%1'").arg(m_currentUsername);
     if (type != "全部")
         filters << QString("TYPE = '%1'").arg(type);
     if (status != "全部")
@@ -98,6 +101,7 @@ void SponsorView::on_btReset_clicked()
 
     IDatabase::getInstance().activityTabModel->setFilter("");
     IDatabase::getInstance().activityTabModel->select();
+    IDatabase::getInstance().searchActivity(QString("SPONSOR = '%1'").arg(m_currentUsername));
 }
 
 void SponsorView::onSelectionChanged()
@@ -105,17 +109,15 @@ void SponsorView::onSelectionChanged()
     QItemSelectionModel *selectionModel = IDatabase::getInstance().theActivitySelection;
     bool hasSelectedRow = selectionModel->hasSelection();
     bool canEdit = false;
-
     if (hasSelectedRow) {
         QModelIndex curIndex = selectionModel->currentIndex();
         QSqlTableModel *activityModel = IDatabase::getInstance().activityTabModel;
         int statusColumn = activityModel->fieldIndex("STATUS");
-        QModelIndex statusIndex = activityModel->index(curIndex.row(), statusColumn);
+        QModelIndex statusIndex = activityModel->index(curIndex.row(),statusColumn);
         QString activityStatus = activityModel->data(statusIndex).toString();
         if (activityStatus == "待审核")
             canEdit = true;
     }
     ui->btUpdate->setEnabled(canEdit);
-    ui->btAdd->setEnabled(!hasSelectedRow);
 }
 

@@ -12,7 +12,6 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QComboBox>
-#include <QtWidgets/QDateTimeEdit>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
@@ -46,7 +45,6 @@ public:
     QLineEdit *inputSearch;
     QPushButton *searchButton;
     QPushButton *resetButton;
-    QPushButton *exportButton;
     QTableView *myacttableView;
     QHBoxLayout *horizontalLayout_3;
     QSpacerItem *horizontalSpacer_2;
@@ -57,8 +55,6 @@ public:
     QHBoxLayout *horizontalLayout_4;
     QLabel *label;
     QComboBox *acttype;
-    QLabel *label_2;
-    QDateTimeEdit *acttimeEdit;
     QSpacerItem *horizontalSpacer_4;
     QLineEdit *searchEdit;
     QPushButton *btSearch;
@@ -121,6 +117,7 @@ public:
         signstatus->addItem(QString());
         signstatus->addItem(QString());
         signstatus->addItem(QString());
+        signstatus->addItem(QString());
         signstatus->setObjectName("signstatus");
         QSizePolicy sizePolicy1(QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Fixed);
         sizePolicy1.setHorizontalStretch(0);
@@ -149,11 +146,6 @@ public:
         resetButton->setObjectName("resetButton");
 
         horizontalLayout_2->addWidget(resetButton);
-
-        exportButton = new QPushButton(myactpage);
-        exportButton->setObjectName("exportButton");
-
-        horizontalLayout_2->addWidget(exportButton);
 
 
         verticalLayout->addLayout(horizontalLayout_2);
@@ -204,18 +196,7 @@ public:
 
         horizontalLayout_4->addWidget(acttype);
 
-        label_2 = new QLabel(actscanpage);
-        label_2->setObjectName("label_2");
-        label_2->setAlignment(Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter);
-
-        horizontalLayout_4->addWidget(label_2);
-
-        acttimeEdit = new QDateTimeEdit(actscanpage);
-        acttimeEdit->setObjectName("acttimeEdit");
-
-        horizontalLayout_4->addWidget(acttimeEdit);
-
-        horizontalSpacer_4 = new QSpacerItem(13, 20, QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Minimum);
+        horizontalSpacer_4 = new QSpacerItem(20, 20, QSizePolicy::Policy::Fixed, QSizePolicy::Policy::Minimum);
 
         horizontalLayout_4->addItem(horizontalSpacer_4);
 
@@ -289,21 +270,20 @@ public:
         ___qlistwidgetitem1->setText(QCoreApplication::translate("StudentView", "\346\210\221\347\232\204\346\264\273\345\212\250", nullptr));
         listWidget->setSortingEnabled(__sortingEnabled);
 
-        label_5->setText(QCoreApplication::translate("StudentView", "\346\264\273\345\212\250\347\261\273\345\236\213\357\274\232", nullptr));
-        label_6->setText(QCoreApplication::translate("StudentView", "\347\255\276\345\210\260\347\212\266\346\200\201\357\274\232", nullptr));
+        label_5->setText(QCoreApplication::translate("StudentView", "\346\264\273\345\212\250\347\261\273\345\210\253\357\274\232", nullptr));
+        label_6->setText(QCoreApplication::translate("StudentView", "\346\212\245\345\220\215\347\212\266\346\200\201\357\274\232", nullptr));
         signstatus->setItemText(0, QCoreApplication::translate("StudentView", "\345\205\250\351\203\250", nullptr));
-        signstatus->setItemText(1, QCoreApplication::translate("StudentView", "\346\234\252\347\255\276\345\210\260", nullptr));
-        signstatus->setItemText(2, QCoreApplication::translate("StudentView", "\345\267\262\347\255\276\345\210\260", nullptr));
+        signstatus->setItemText(1, QCoreApplication::translate("StudentView", "\346\234\252\346\212\245\345\220\215", nullptr));
+        signstatus->setItemText(2, QCoreApplication::translate("StudentView", "\345\267\262\346\212\245\345\220\215", nullptr));
+        signstatus->setItemText(3, QCoreApplication::translate("StudentView", "\345\200\231\350\241\245\344\270\255", nullptr));
 
         inputSearch->setPlaceholderText(QCoreApplication::translate("StudentView", "\350\257\267\350\276\223\345\205\245\346\264\273\345\212\250\345\220\215\347\247\260\350\277\233\350\241\214\346\237\245\350\257\242", nullptr));
         searchButton->setText(QCoreApplication::translate("StudentView", "\346\220\234\347\264\242", nullptr));
         resetButton->setText(QCoreApplication::translate("StudentView", "\351\207\215\347\275\256", nullptr));
-        exportButton->setText(QCoreApplication::translate("StudentView", "\345\257\274\345\207\272", nullptr));
         btCancelSign->setText(QCoreApplication::translate("StudentView", "\345\217\226\346\266\210\346\212\245\345\220\215", nullptr));
         btCancelWait->setText(QCoreApplication::translate("StudentView", "\345\217\226\346\266\210\345\200\231\350\241\245", nullptr));
-        label->setText(QCoreApplication::translate("StudentView", "\346\264\273\345\212\250\347\261\273\345\236\213\357\274\232", nullptr));
+        label->setText(QCoreApplication::translate("StudentView", "\346\264\273\345\212\250\347\261\273\345\210\253\357\274\232", nullptr));
         acttype->setCurrentText(QString());
-        label_2->setText(QCoreApplication::translate("StudentView", "\346\264\273\345\212\250\346\227\266\351\227\264\357\274\232", nullptr));
         searchEdit->setPlaceholderText(QCoreApplication::translate("StudentView", "\350\257\267\350\276\223\345\205\245\346\264\273\345\212\250\345\220\215\347\247\260\350\277\233\350\241\214\346\237\245\350\257\242", nullptr));
         btSearch->setText(QCoreApplication::translate("StudentView", "\346\220\234\347\264\242", nullptr));
         btReset->setText(QCoreApplication::translate("StudentView", "\351\207\215\347\275\256", nullptr));

@@ -39,8 +39,10 @@ template <> constexpr inline auto AdminView::qt_create_metaobjectdata<qt_meta_ta
     namespace QMC = QtMocConstants;
     QtMocHelpers::StringRefStorage qt_stringData {
         "AdminView",
-        "on_listWidget_itemClicked",
+        "goUserEditView",
         "",
+        "index",
+        "on_listWidget_itemClicked",
         "QListWidgetItem*",
         "item",
         "on_btReject_clicked",
@@ -56,30 +58,34 @@ template <> constexpr inline auto AdminView::qt_create_metaobjectdata<qt_meta_ta
     };
 
     QtMocHelpers::UintData qt_methods {
+        // Signal 'goUserEditView'
+        QtMocHelpers::SignalData<void(int)>(1, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::Int, 3 },
+        }}),
         // Slot 'on_listWidget_itemClicked'
-        QtMocHelpers::SlotData<void(QListWidgetItem *)>(1, 2, QMC::AccessPrivate, QMetaType::Void, {{
-            { 0x80000000 | 3, 4 },
+        QtMocHelpers::SlotData<void(QListWidgetItem *)>(4, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { 0x80000000 | 5, 6 },
         }}),
         // Slot 'on_btReject_clicked'
-        QtMocHelpers::SlotData<void()>(5, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'on_btPass_clicked'
-        QtMocHelpers::SlotData<void()>(6, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'on_btSearch_clicked'
         QtMocHelpers::SlotData<void()>(7, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'on_btReset_clicked'
+        // Slot 'on_btPass_clicked'
         QtMocHelpers::SlotData<void()>(8, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'on_btAdd_clicked'
+        // Slot 'on_btSearch_clicked'
         QtMocHelpers::SlotData<void()>(9, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'on_btUpdate_clicked'
+        // Slot 'on_btReset_clicked'
         QtMocHelpers::SlotData<void()>(10, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'on_btDelete_clicked'
+        // Slot 'on_btAdd_clicked'
         QtMocHelpers::SlotData<void()>(11, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'on_searchButton_clicked'
+        // Slot 'on_btUpdate_clicked'
         QtMocHelpers::SlotData<void()>(12, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'on_resetButton_clicked'
+        // Slot 'on_btDelete_clicked'
         QtMocHelpers::SlotData<void()>(13, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'onSelectionChanged'
+        // Slot 'on_searchButton_clicked'
         QtMocHelpers::SlotData<void()>(14, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'on_resetButton_clicked'
+        QtMocHelpers::SlotData<void()>(15, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'onSelectionChanged'
+        QtMocHelpers::SlotData<void()>(16, 2, QMC::AccessPrivate, QMetaType::Void),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -103,19 +109,24 @@ void AdminView::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
     auto *_t = static_cast<AdminView *>(_o);
     if (_c == QMetaObject::InvokeMetaMethod) {
         switch (_id) {
-        case 0: _t->on_listWidget_itemClicked((*reinterpret_cast< std::add_pointer_t<QListWidgetItem*>>(_a[1]))); break;
-        case 1: _t->on_btReject_clicked(); break;
-        case 2: _t->on_btPass_clicked(); break;
-        case 3: _t->on_btSearch_clicked(); break;
-        case 4: _t->on_btReset_clicked(); break;
-        case 5: _t->on_btAdd_clicked(); break;
-        case 6: _t->on_btUpdate_clicked(); break;
-        case 7: _t->on_btDelete_clicked(); break;
-        case 8: _t->on_searchButton_clicked(); break;
-        case 9: _t->on_resetButton_clicked(); break;
-        case 10: _t->onSelectionChanged(); break;
+        case 0: _t->goUserEditView((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
+        case 1: _t->on_listWidget_itemClicked((*reinterpret_cast< std::add_pointer_t<QListWidgetItem*>>(_a[1]))); break;
+        case 2: _t->on_btReject_clicked(); break;
+        case 3: _t->on_btPass_clicked(); break;
+        case 4: _t->on_btSearch_clicked(); break;
+        case 5: _t->on_btReset_clicked(); break;
+        case 6: _t->on_btAdd_clicked(); break;
+        case 7: _t->on_btUpdate_clicked(); break;
+        case 8: _t->on_btDelete_clicked(); break;
+        case 9: _t->on_searchButton_clicked(); break;
+        case 10: _t->on_resetButton_clicked(); break;
+        case 11: _t->onSelectionChanged(); break;
         default: ;
         }
+    }
+    if (_c == QMetaObject::IndexOfMethod) {
+        if (QtMocHelpers::indexOfMethod<void (AdminView::*)(int )>(_a, &AdminView::goUserEditView, 0))
+            return;
     }
 }
 
@@ -138,15 +149,21 @@ int AdminView::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 11)
+        if (_id < 12)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 11;
+        _id -= 12;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 11)
+        if (_id < 12)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 11;
+        _id -= 12;
     }
     return _id;
+}
+
+// SIGNAL 0
+void AdminView::goUserEditView(int _t1)
+{
+    QMetaObject::activate<void>(this, &staticMetaObject, 0, nullptr, _t1);
 }
 QT_WARNING_POP

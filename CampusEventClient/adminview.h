@@ -41,9 +41,11 @@ private slots:
 
     void onSelectionChanged();
 
+signals:
+    void goUserEditView(int index);
+
 private:
     Ui::AdminView *ui;
-    QDataWidgetMapper *dataMapper;
     Client *m_client;
 };
 

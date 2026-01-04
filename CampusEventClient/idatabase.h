@@ -16,7 +16,7 @@ public:
         return instance;
     }
 
-    QString userLogin(QString useName, QString password);
+    QString userLogin(QString useName,QString password);
     QString getUserRole(QString useName);
 
 signals:
@@ -37,11 +37,29 @@ public:
     void revertActivityEdit();
     bool searchActivity(QString filter);
 
-    QJsonArray getActivityCategories();
-    // QJsonArray getAnnouncements();
-
     QSqlTableModel *activityTabModel;
     QItemSelectionModel *theActivitySelection;
+
+    bool initUserModel();
+    int addNewUser();
+    bool deleteCurrentUser();
+    bool submitUserEdit();
+    void revertUserEdit();
+    bool searchUser(QString filter);
+
+    QSqlTableModel *userTabModel;
+    QItemSelectionModel *theUserSelection;
+
+    bool initSignRecordModel();
+    int addNewSignRecord(const QString &studentName,const QString &actName);
+    bool submitSignRecordEdit();
+    void revertSignRecordEdit();
+    bool searchSignRecord(QString filter);
+
+    QSqlTableModel *signRecordTabModel;
+    QItemSelectionModel *theSignRecordSelection;
+
+    bool checkSignConflict(const QString &studentName,const QString &actName,QString &conflictMsg);
 };
 
 #endif // IDATABASE_H
