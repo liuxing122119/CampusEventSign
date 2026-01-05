@@ -44,12 +44,14 @@ template <> constexpr inline auto MasterView::qt_create_metaobjectdata<qt_meta_t
         "goPreviousView",
         "goAdminView",
         "goSponsorView",
-        "username",
+        "sponsorname",
         "goStudentView",
+        "studentname",
         "goActivityEditView",
         "rowNo",
         "goUserEditView",
         "onLoginSuccess",
+        "username",
         "onClientDisconnected",
         "delayCreateRoleView",
         "on_btBack_clicked",
@@ -70,30 +72,32 @@ template <> constexpr inline auto MasterView::qt_create_metaobjectdata<qt_meta_t
             { QMetaType::QString, 6 },
         }}),
         // Slot 'goStudentView'
-        QtMocHelpers::SlotData<void()>(7, 2, QMC::AccessPublic, QMetaType::Void),
+        QtMocHelpers::SlotData<void(const QString &)>(7, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::QString, 8 },
+        }}),
         // Slot 'goActivityEditView'
-        QtMocHelpers::SlotData<void(int)>(8, 2, QMC::AccessPublic, QMetaType::Void, {{
-            { QMetaType::Int, 9 },
+        QtMocHelpers::SlotData<void(int)>(9, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::Int, 10 },
         }}),
         // Slot 'goUserEditView'
-        QtMocHelpers::SlotData<void(int)>(10, 2, QMC::AccessPublic, QMetaType::Void, {{
-            { QMetaType::Int, 9 },
+        QtMocHelpers::SlotData<void(int)>(11, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::Int, 10 },
         }}),
         // Slot 'onLoginSuccess'
-        QtMocHelpers::SlotData<void(QString)>(11, 2, QMC::AccessPublic, QMetaType::Void, {{
-            { QMetaType::QString, 6 },
+        QtMocHelpers::SlotData<void(QString)>(12, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::QString, 13 },
         }}),
         // Slot 'onClientDisconnected'
-        QtMocHelpers::SlotData<void()>(12, 2, QMC::AccessPublic, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(14, 2, QMC::AccessPublic, QMetaType::Void),
         // Slot 'delayCreateRoleView'
-        QtMocHelpers::SlotData<void()>(13, 2, QMC::AccessPublic, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(15, 2, QMC::AccessPublic, QMetaType::Void),
         // Slot 'on_btBack_clicked'
-        QtMocHelpers::SlotData<void()>(14, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(16, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'on_btLogout_clicked'
-        QtMocHelpers::SlotData<void()>(15, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(17, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'on_stackedWidget_currentChanged'
-        QtMocHelpers::SlotData<void(int)>(16, 2, QMC::AccessPrivate, QMetaType::Void, {{
-            { QMetaType::Int, 17 },
+        QtMocHelpers::SlotData<void(int)>(18, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { QMetaType::Int, 19 },
         }}),
     };
     QtMocHelpers::UintData qt_properties {
@@ -122,7 +126,7 @@ void MasterView::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 1: _t->goPreviousView(); break;
         case 2: _t->goAdminView(); break;
         case 3: _t->goSponsorView((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
-        case 4: _t->goStudentView(); break;
+        case 4: _t->goStudentView((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
         case 5: _t->goActivityEditView((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
         case 6: _t->goUserEditView((*reinterpret_cast< std::add_pointer_t<int>>(_a[1]))); break;
         case 7: _t->onLoginSuccess((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;

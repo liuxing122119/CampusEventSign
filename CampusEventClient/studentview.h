@@ -32,9 +32,12 @@ public:
     explicit StudentView(QWidget *parent = nullptr);
     ~StudentView();
 
+    void onConflictCheckResult(bool isOk, QString msg);
+    void onSelectionChanged();
     void setCurrentStudentName(const QString &studentName);
     QString getSelectedActName();
-    int getTargetSignRecordRow(const QString &stuName,const QString &actName);
+    int getTargetSignRecordRow(const QString &stuName, const QString &actName);
+    void autoWaitSign(const QString &actName);
 
 private slots:
     void on_listWidget_itemClicked(QListWidgetItem *item);
@@ -54,9 +57,6 @@ private slots:
     void on_searchButton_clicked();
 
     void on_resetButton_clicked();
-
-    void onConflictCheckResult(bool isOk,QString msg);
-    void onSelectionChanged();
 
 private:
     Ui::StudentView *ui;

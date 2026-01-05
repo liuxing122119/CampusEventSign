@@ -160,8 +160,8 @@ public:
 
         acttimeEdit = new QDateTimeEdit(ActivityEditView);
         acttimeEdit->setObjectName("acttimeEdit");
-        acttimeEdit->setDate(QDate(2025, 12, 1));
-        acttimeEdit->setTime(QTime(0, 0, 0));
+        acttimeEdit->setDate(QDate(2026, 1, 1));
+        acttimeEdit->setTime(QTime(8, 0, 0));
 
         verticalLayout_2->addWidget(acttimeEdit);
 
@@ -169,7 +169,8 @@ public:
         horizontalLayout_2->setObjectName("horizontalLayout_2");
         starttimeEdit = new QDateTimeEdit(ActivityEditView);
         starttimeEdit->setObjectName("starttimeEdit");
-        starttimeEdit->setDate(QDate(2025, 12, 1));
+        starttimeEdit->setDate(QDate(2026, 1, 1));
+        starttimeEdit->setTime(QTime(8, 0, 0));
 
         horizontalLayout_2->addWidget(starttimeEdit);
 
@@ -180,7 +181,8 @@ public:
 
         endtimeEdit = new QDateTimeEdit(ActivityEditView);
         endtimeEdit->setObjectName("endtimeEdit");
-        endtimeEdit->setDate(QDate(2025, 12, 1));
+        endtimeEdit->setDate(QDate(2026, 1, 1));
+        endtimeEdit->setTime(QTime(8, 0, 0));
 
         horizontalLayout_2->addWidget(endtimeEdit);
 

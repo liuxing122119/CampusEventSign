@@ -28,8 +28,8 @@ public slots:
     void goLoginView();
     void goPreviousView();
     void goAdminView();
-    void goSponsorView(const QString &username);
-    void goStudentView();
+    void goSponsorView(const QString &sponsorname);
+    void goStudentView(const QString &studentname);
     void goActivityEditView(int rowNo);
     void goUserEditView(int rowNo);
 

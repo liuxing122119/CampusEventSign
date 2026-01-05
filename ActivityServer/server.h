@@ -15,7 +15,6 @@ public:
     int clientCount();
 
     QJsonArray getActivityCategories();
-    // QJsonArray getAnnouncements();
 
 protected:
     void incomingConnection(qintptr socketDescriptor) override;

@@ -147,11 +147,7 @@ template <> constexpr inline auto StudentView::qt_create_metaobjectdata<qt_meta_
         "on_btCancelSign_clicked",
         "on_btCancelWait_clicked",
         "on_searchButton_clicked",
-        "on_resetButton_clicked",
-        "onConflictCheckResult",
-        "isOk",
-        "msg",
-        "onSelectionChanged"
+        "on_resetButton_clicked"
     };
 
     QtMocHelpers::UintData qt_methods {
@@ -175,12 +171,6 @@ template <> constexpr inline auto StudentView::qt_create_metaobjectdata<qt_meta_
         QtMocHelpers::SlotData<void()>(11, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'on_resetButton_clicked'
         QtMocHelpers::SlotData<void()>(12, 2, QMC::AccessPrivate, QMetaType::Void),
-        // Slot 'onConflictCheckResult'
-        QtMocHelpers::SlotData<void(bool, QString)>(13, 2, QMC::AccessPrivate, QMetaType::Void, {{
-            { QMetaType::Bool, 14 }, { QMetaType::QString, 15 },
-        }}),
-        // Slot 'onSelectionChanged'
-        QtMocHelpers::SlotData<void()>(16, 2, QMC::AccessPrivate, QMetaType::Void),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -213,8 +203,6 @@ void StudentView::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
         case 6: _t->on_btCancelWait_clicked(); break;
         case 7: _t->on_searchButton_clicked(); break;
         case 8: _t->on_resetButton_clicked(); break;
-        case 9: _t->onConflictCheckResult((*reinterpret_cast< std::add_pointer_t<bool>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2]))); break;
-        case 10: _t->onSelectionChanged(); break;
         default: ;
         }
     }
@@ -239,14 +227,14 @@ int StudentView::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 11)
+        if (_id < 9)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 11;
+        _id -= 9;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 11)
+        if (_id < 9)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 11;
+        _id -= 9;
     }
     return _id;
 }

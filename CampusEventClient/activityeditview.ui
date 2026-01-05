@@ -157,14 +157,14 @@
           <widget class="QDateTimeEdit" name="acttimeEdit">
            <property name="date">
             <date>
-             <year>2025</year>
-             <month>12</month>
+             <year>2026</year>
+             <month>1</month>
              <day>1</day>
             </date>
            </property>
            <property name="time">
             <time>
-             <hour>0</hour>
+             <hour>8</hour>
              <minute>0</minute>
              <second>0</second>
             </time>
@@ -177,10 +177,17 @@
             <widget class="QDateTimeEdit" name="starttimeEdit">
              <property name="date">
               <date>
-               <year>2025</year>
-               <month>12</month>
+               <year>2026</year>
+               <month>1</month>
                <day>1</day>
               </date>
+             </property>
+             <property name="time">
+              <time>
+               <hour>8</hour>
+               <minute>0</minute>
+               <second>0</second>
+              </time>
              </property>
             </widget>
            </item>
@@ -195,10 +202,17 @@
             <widget class="QDateTimeEdit" name="endtimeEdit">
              <property name="date">
               <date>
-               <year>2025</year>
-               <month>12</month>
+               <year>2026</year>
+               <month>1</month>
                <day>1</day>
               </date>
+             </property>
+             <property name="time">
+              <time>
+               <hour>8</hour>
+               <minute>0</minute>
+               <second>0</second>
+              </time>
              </property>
             </widget>
            </item>

@@ -78,7 +78,7 @@ int IDatabase::addNewActivity(const QString &username)
 
     // 自动生成活动ID（自增+1）
     QSqlQuery query;
-    query.exec("SELECT MAX(ACTID) FROM activity");
+    query.exec("select MAX(ACTID) from activity");
     int maxId = 0;
     if (query.first() && query.value(0).isValid())
         maxId = query.value(0).toInt();
@@ -131,7 +131,7 @@ int IDatabase::addNewUser()
 
     // 自动生成用户ID（自增+1）
     QSqlQuery query;
-    query.exec("SELECT MAX(USERID) FROM user");
+    query.exec("select MAX(USERID) from user");
     int maxId = 0;
     if (query.first() && query.value(0).isValid())
         maxId = query.value(0).toInt();
@@ -189,7 +189,7 @@ int IDatabase::addNewSignRecord(const QString &studentName,const QString &actNam
 
     // 自动生成活动ID（自增+1）
     QSqlQuery query;
-    query.exec("SELECT MAX(SIGNID) FROM signrecord");
+    query.exec("select MAX(SIGNID) from signrecord");
     int newSignId = (query.first() && query.value(0).isValid()) ? query.value(0).toInt() + 1 : 1;
 
     // 自动生成创建时间
@@ -224,17 +224,19 @@ bool IDatabase::checkSignConflict(const QString &studentName,const QString &actN
     QSqlQuery query;
 
     // 时间冲突（报名已截止）
-    query.prepare(R"(
-        SELECT ENDTIME,MAXCOUNT,ACTTIME
-        FROM activity
-        WHERE ACTNAME = :ACTNAME AND STATUS = '已通过'
-    )");
+    query.prepare("select ENDTIME,MAXCOUNT,ACTTIME from activity where ACTNAME = :ACTNAME and STATUS = '已通过'");
     query.bindValue(":ACTNAME",actName);
+    query.exec();
+    qDebug() << query.lastQuery() << query.first();
 
     // 报名截止时间
-    QString endTime = query.value("ENDTIME").toString();
-    QDateTime applyEndTime = QDateTime::fromString(endTime,"yyyy-MM-dd HH:mm:ss");
-    QDateTime currentTime = QDateTime::currentDateTime(); // 当前时间
+    QString endTime;
+    if (query.value("ENDTIME").isValid()) {
+        endTime = query.value("ENDTIME").toString();
+        endTime = endTime.split(".").first();
+    }
+    QDateTime applyEndTime = QDateTime::fromString(endTime,"yyyy-MM-ddTHH:mm:ss");
+    QDateTime currentTime = QDateTime::currentDateTime();// 当前时间
     if (currentTime > applyEndTime) {
         conflictMsg = QString("【时间冲突】该活动报名已截止（截止时间：%1），无法报名").arg(applyEndTime.toString("yyyy-MM-dd HH:mm:ss"));
         return true;
@@ -243,41 +245,68 @@ bool IDatabase::checkSignConflict(const QString &studentName,const QString &actN
     // 名额冲突（名额已满）
     int currentSignCount = 0;
     QSqlQuery countQuery;
-    countQuery.prepare(R"(
-        SELECT COUNT(*)
-        FROM signrecord
-        WHERE ACTIVITY = :ACTIVITY AND WAITRANK = 0
-    )");
+    countQuery.prepare("select COUNT(*) from signrecord where ACTIVITY = :ACTIVITY and WAITRANK = 0");
     countQuery.bindValue(":ACTIVITY",actName);
-    if (countQuery.exec() && countQuery.first()) {
+    countQuery.exec();
+
+    if (countQuery.first() && countQuery.value(0).isValid()) {
         currentSignCount = countQuery.value(0).toInt();
     }
+
     // 活动最大名额
-    int maxCount = query.value("MAXCOUNT").toInt();
+    int maxCount = 0;
+    if (query.value("MAXCOUNT").isValid()) {
+        maxCount = query.value("MAXCOUNT").toInt();
+    }
     if (currentSignCount >= maxCount) {
         conflictMsg = QString("【名额冲突】该活动名额已爆满（当前：%1人/最大：%2人），进入候补队列").arg(currentSignCount).arg(maxCount);
         return true;
     }
 
+    // 重复报名冲突
+    QSqlQuery signQuery;
+    // 查询该学生是否已正式报名该活动
+    signQuery.prepare("select * from signrecord where STUDENT = :STUDENT and ACTIVITY = :ACTIVITY and WAITRANK = 0");
+    signQuery.bindValue(":STUDENT", studentName);
+    signQuery.bindValue(":ACTIVITY", actName);
+    signQuery.exec();
+    qDebug() << signQuery.lastQuery() << signQuery.first();
+
+    // 判断是否存在已报名记录
+    if (signQuery.first()) {
+        conflictMsg = QString("【重复报名冲突】您已正式报名该活动《%1》").arg(actName);
+        return true;
+    }
+
     // 空间冲突（时间段重合）
-    QDateTime targetActTime = QDateTime::fromString(query.value("ACTTIME").toString(),"yyyy-MM-dd HH:mm:ss");
+    QDateTime targetActTime;
+    if (query.value("ACTTIME").isValid()) {
+        QString actTimeStr = query.value("ACTTIME").toString();
+        targetActTime = QDateTime::fromString(actTimeStr,"yyyy-MM-dd HH:mm:ss");
+    }
     int activityDuration = 3600;// 目标活动持续时间（默认一小时）
-    QDateTime targetActEndTime = targetActTime.addSecs(activityDuration); // 目标活动结束时间
+    QDateTime targetActEndTime = targetActTime.addSecs(activityDuration);// 目标活动结束时间
 
     // 查询学生已报名的所有正式活动
     QSqlQuery existActQuery;
-    existActQuery.prepare(R"(
-        SELECT a.ACTNAME,a.ACTTIME
-        FROM signrecord s
-        LEFT JOIN activity a ON s.ACTIVITY = a.ACTNAME
-        WHERE s.STUDENT = :STUDENT AND s.WAITRANK = 0
-    )");
+    existActQuery.prepare("select a.ACTNAME,a.ACTTIME from signrecord s "
+                          "left join activity a ON s.ACTIVITY = a.ACTNAME where s.STUDENT = :STUDENT and s.WAITRANK = 0");
     existActQuery.bindValue(":STUDENT",studentName);
+    existActQuery.exec();
 
     // 判断时间段是否重合
     while (existActQuery.next()) {
-        QDateTime existActTime = QDateTime::fromString(existActQuery.value("ACTTIME").toString(),"yyyy-MM-dd HH:mm:ss");
-        QDateTime existActEndTime = existActTime.addSecs(activityDuration); // 已报名活动结束时间
+        QString existActName;
+        QDateTime existActTime;
+        if (existActQuery.value("ACTNAME").isValid() && existActQuery.value("ACTTIME").isValid()) {
+            existActName = existActQuery.value("ACTNAME").toString();
+            QString existActTimeStr = existActQuery.value("ACTTIME").toString();
+            existActTime = QDateTime::fromString(existActTimeStr,"yyyy-MM-dd HH:mm:ss");
+        } else {
+            continue;
+        }
+
+        QDateTime existActEndTime = existActTime.addSecs(activityDuration);// 已报名活动结束时间
 
         bool isTimeOverlap = (targetActTime >= existActTime && targetActTime < existActEndTime)
                              || (targetActEndTime > existActTime && targetActEndTime <= existActEndTime)
@@ -285,12 +314,12 @@ bool IDatabase::checkSignConflict(const QString &studentName,const QString &actN
                              || (existActEndTime > targetActTime && existActEndTime <= targetActEndTime);
 
         if (isTimeOverlap) {
-            conflictMsg = QString("【空间冲突】您已报名同时间段活动：《%1》（时间：%2-%3）").arg(existActQuery.value("ACTNAME").toString()).arg(existActTime.toString("yyyy-MM-dd HH:mm:ss")).arg(existActEndTime.toString("HH:mm:ss"));
+            conflictMsg = QString("【空间冲突】您已报名同时间段活动：《%1》（时间：%2-%3）").arg(existActName).arg(existActTime.toString("yyyy-MM-dd HH:mm:ss")).arg(existActEndTime.toString("HH:mm:ss"));
             return true;
         }
     }
 
-    conflictMsg = "无报名冲突，可正常报名";
+    conflictMsg = QString("学生《%1》报名活动《%2》：报名成功").arg(studentName).arg(actName);
     return false;
 }
 

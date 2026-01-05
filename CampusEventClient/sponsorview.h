@@ -17,7 +17,7 @@ public:
     explicit SponsorView(QWidget *parent = nullptr);
     ~SponsorView();
 
-    void setCurrentUsername(const QString &username);
+    void setCurrentSponsorName(const QString &sponsorName);
 
 private slots:
     void on_listWidget_itemClicked(QListWidgetItem *item);
@@ -37,7 +37,7 @@ signals:
 
 private:
     Ui::SponsorView *ui;
-    QString m_currentUsername;
+    QString m_currentSponsorname;
     Client *m_client;
 };
 

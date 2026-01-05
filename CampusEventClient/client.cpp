@@ -12,7 +12,6 @@ Client::Client(QObject *parent)
     connect(m_clientSocket,&QTcpSocket::connected,this,&Client::connected);
     connect(m_clientSocket,&QTcpSocket::readyRead,this,&Client::onReadyRead);
     connect(m_clientSocket,&QTcpSocket::disconnected,this,&Client::disconnected);
-    connect(this,&Client::connected,this,&Client::onClientConnected);
 }
 
 bool Client::isConnected()
@@ -33,26 +32,12 @@ void Client::sendGetActivityCategoriesRequest()
     serverStream.setVersion(QDataStream::Qt_5_12);
     QByteArray jsonData = QJsonDocument(request).toJson(QJsonDocument::Compact);
     serverStream << jsonData;
-    qDebug() << "已发送获取活动类别请求";
 }
 
 QStringList Client::getActivityCategories()
 {
     return m_activityCategories;
 }
-
-// void Client::sendGetAnnouncementsRequest()
-// {
-//     if (!isConnected()) {
-//         return;
-//     }
-//     QJsonObject request;
-//     request["type"] = "get_announcements";
-//     QDataStream serverStream(m_clientSocket);
-//     serverStream.setVersion(QDataStream::Qt_5_12);
-//     QByteArray jsonData = QJsonDocument(request).toJson(QJsonDocument::Compact);
-//     serverStream << jsonData;
-// }
 
 void Client::onReadyRead()
 {
@@ -76,7 +61,7 @@ void Client::onReadyRead()
                         QJsonArray categoryArr = docObj["categories"].toArray();
                         m_activityCategories.clear();
                         qDebug() << "获取到活动类别数量：" << categoryArr.size();
-                        for (int i = 0; i < categoryArr.size(); ++i) {
+                        for (int i = 0;i < categoryArr.size();++i) {
                             QJsonObject cateObj = categoryArr[i].toObject();
                             QString cateName = cateObj["category"].toString();
                             m_activityCategories.append(cateName);

@@ -39,11 +39,11 @@ SponsorView::~SponsorView()
     delete ui;
 }
 
-void SponsorView::setCurrentUsername(const QString &username)
+void SponsorView::setCurrentSponsorName(const QString &sponsorName)
 {
-    m_currentUsername = username;
+    m_currentSponsorname = sponsorName;
     IDatabase &iDatabase = IDatabase::getInstance();
-    iDatabase.searchActivity(QString("SPONSOR = '%1'").arg(m_currentUsername));
+    iDatabase.searchActivity(QString("SPONSOR = '%1'").arg(m_currentSponsorname));
 }
 
 void SponsorView::on_listWidget_itemClicked(QListWidgetItem *item)
@@ -55,7 +55,7 @@ void SponsorView::on_listWidget_itemClicked(QListWidgetItem *item)
 
 void SponsorView::on_btAdd_clicked()
 {
-    int curRow = IDatabase::getInstance().addNewActivity(m_currentUsername);
+    int curRow = IDatabase::getInstance().addNewActivity(m_currentSponsorname);
     emit goActivityEditView(curRow);
 }
 
@@ -80,7 +80,7 @@ void SponsorView::on_btSearch_clicked()
     QString name = ui->searchEdit->text().trimmed();
 
     QStringList filters;
-    filters << QString("SPONSOR = '%1'").arg(m_currentUsername);
+    filters << QString("SPONSOR = '%1'").arg(m_currentSponsorname);
     if (type != "全部")
         filters << QString("TYPE = '%1'").arg(type);
     if (status != "全部")
@@ -101,7 +101,7 @@ void SponsorView::on_btReset_clicked()
 
     IDatabase::getInstance().activityTabModel->setFilter("");
     IDatabase::getInstance().activityTabModel->select();
-    IDatabase::getInstance().searchActivity(QString("SPONSOR = '%1'").arg(m_currentUsername));
+    IDatabase::getInstance().searchActivity(QString("SPONSOR = '%1'").arg(m_currentSponsorname));
 }
 
 void SponsorView::onSelectionChanged()

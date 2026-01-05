@@ -61,20 +61,21 @@ void MasterView::goAdminView()
     connect(adminView,SIGNAL(goUserEditView(int)),this,SLOT(goUserEditView(int)));
 }
 
-void MasterView::goSponsorView(const QString &username)
+void MasterView::goSponsorView(const QString &sponsorname)
 {
     qDebug() << "goSponsorView";
     sponsorView = new SponsorView(this);
-    sponsorView->setCurrentUsername(username);
+    sponsorView->setCurrentSponsorName(sponsorname);
     pushWidgetToStackView(sponsorView);
 
     connect(sponsorView,SIGNAL(goActivityEditView(int)),this,SLOT(goActivityEditView(int)));
 }
 
-void MasterView::goStudentView()
+void MasterView::goStudentView(const QString &studentname)
 {
     qDebug() << "goStudentView";
     studentView = new StudentView(this);
+    studentView->setCurrentStudentName(studentname);
     pushWidgetToStackView(studentView);
 }
 
@@ -104,6 +105,11 @@ void MasterView::onLoginSuccess(QString username)
     m_Username = username;
     m_UserRole = userRole;
 
+    if (m_client && m_client->isConnected()) {
+        m_client->sendGetActivityCategoriesRequest();
+        qDebug() << "发送获取活动类别请求";
+    }
+
     QTimer *delayCreateTimer = new QTimer(this);
     delayCreateTimer->setSingleShot(true);
     connect(delayCreateTimer,SIGNAL(timeout()),this,SLOT(delayCreateRoleView()));
@@ -113,7 +119,7 @@ void MasterView::onLoginSuccess(QString username)
 void MasterView::onClientDisconnected()
 {
     int stackCount = ui->stackedWidget->count();
-    for (int i = stackCount - 1; i >= 0; i--) {
+    for (int i = stackCount - 1;i >= 0;i--) {
         QWidget *widget = ui->stackedWidget->widget(i);
         if (widget != loginView) {
             ui->stackedWidget->removeWidget(widget);
@@ -129,7 +135,7 @@ void MasterView::delayCreateRoleView()
     } else if (m_UserRole == "发起人") {
         goSponsorView(m_Username);
     } else if (m_UserRole == "学生") {
-        goStudentView();
+        goStudentView(m_Username);
     } else {
         qDebug() << "invalid role";
     }
