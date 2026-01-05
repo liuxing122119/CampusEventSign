@@ -27,6 +27,9 @@ AdminView::AdminView(QWidget *parent)
     if (iDatabase.initActivityModel()){
         ui->tableView->setModel(iDatabase.activityTabModel);
         ui->tableView->setSelectionModel(iDatabase.theActivitySelection);
+
+        int statusCol = iDatabase.activityTabModel->fieldIndex("SIGNSTATUS");
+        ui->tableView->hideColumn(statusCol);
     }
 
     ui->btReject->setEnabled(false);

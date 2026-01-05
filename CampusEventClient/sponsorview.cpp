@@ -28,6 +28,9 @@ SponsorView::SponsorView(QWidget *parent)
     if (iDatabase.initActivityModel()){
         ui->tableView->setModel(iDatabase.activityTabModel);
         ui->tableView->setSelectionModel(iDatabase.theActivitySelection);
+
+        int statusCol = iDatabase.activityTabModel->fieldIndex("SIGNSTATUS");
+        ui->tableView->hideColumn(statusCol);
     }
 
     ui->btUpdate->setEnabled(false);

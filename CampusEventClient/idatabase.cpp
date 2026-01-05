@@ -89,6 +89,8 @@ int IDatabase::addNewActivity(const QString &username)
     activityTabModel->setRecord(curRecNo,curRec);
     activityTabModel->setData(activityTabModel->index(curRecNo,
                                                       activityTabModel->fieldIndex("STATUS")),"待审核");
+    activityTabModel->setData(activityTabModel->index(curRecNo,
+                                                      activityTabModel->fieldIndex("SIGNSTATUS")),"未报名");
     return curIndex.row();
 }
 
@@ -198,6 +200,7 @@ int IDatabase::addNewSignRecord(const QString &studentName,const QString &actNam
     signRecordTabModel->setData(signRecordTabModel->index(newRow, signRecordTabModel->fieldIndex("STUDENT")), studentName);
     signRecordTabModel->setData(signRecordTabModel->index(newRow, signRecordTabModel->fieldIndex("ACTIVITY")), actName);
     signRecordTabModel->setData(signRecordTabModel->index(newRow, signRecordTabModel->fieldIndex("SIGNSTATUS")), "已报名");
+    signRecordTabModel->setData(signRecordTabModel->index(newRow, signRecordTabModel->fieldIndex("CHECKSTATUS")), "未签到");
     signRecordTabModel->setData(signRecordTabModel->index(newRow, signRecordTabModel->fieldIndex("WAITRANK")), 0);
 
     return newRow;
@@ -222,6 +225,21 @@ bool IDatabase::searchSignRecord(QString filter)
 bool IDatabase::checkSignConflict(const QString &studentName,const QString &actName,QString &conflictMsg)
 {
     QSqlQuery query;
+
+    // 重复报名冲突
+    QSqlQuery signQuery;
+    // 查询该学生是否已正式报名该活动
+    signQuery.prepare("select * from signrecord where STUDENT = :STUDENT and ACTIVITY = :ACTIVITY and WAITRANK = 0");
+    signQuery.bindValue(":STUDENT", studentName);
+    signQuery.bindValue(":ACTIVITY", actName);
+    signQuery.exec();
+    qDebug() << signQuery.lastQuery() << signQuery.first();
+
+    // 判断是否存在已报名记录
+    if (signQuery.first()) {
+        conflictMsg = QString("【重复报名冲突】您已正式报名该活动《%1》").arg(actName);
+        return true;
+    }
 
     // 时间冲突（报名已截止）
     query.prepare("select ENDTIME,MAXCOUNT,ACTTIME from activity where ACTNAME = :ACTNAME and STATUS = '已通过'");
@@ -263,26 +281,12 @@ bool IDatabase::checkSignConflict(const QString &studentName,const QString &actN
         return true;
     }
 
-    // 重复报名冲突
-    QSqlQuery signQuery;
-    // 查询该学生是否已正式报名该活动
-    signQuery.prepare("select * from signrecord where STUDENT = :STUDENT and ACTIVITY = :ACTIVITY and WAITRANK = 0");
-    signQuery.bindValue(":STUDENT", studentName);
-    signQuery.bindValue(":ACTIVITY", actName);
-    signQuery.exec();
-    qDebug() << signQuery.lastQuery() << signQuery.first();
-
-    // 判断是否存在已报名记录
-    if (signQuery.first()) {
-        conflictMsg = QString("【重复报名冲突】您已正式报名该活动《%1》").arg(actName);
-        return true;
-    }
-
     // 空间冲突（时间段重合）
     QDateTime targetActTime;
     if (query.value("ACTTIME").isValid()) {
         QString actTimeStr = query.value("ACTTIME").toString();
-        targetActTime = QDateTime::fromString(actTimeStr,"yyyy-MM-dd HH:mm:ss");
+        actTimeStr = actTimeStr.split(".").first();
+        targetActTime = QDateTime::fromString(actTimeStr,"yyyy-MM-ddTHH:mm:ss");
     }
     int activityDuration = 3600;// 目标活动持续时间（默认一小时）
     QDateTime targetActEndTime = targetActTime.addSecs(activityDuration);// 目标活动结束时间
@@ -301,9 +305,8 @@ bool IDatabase::checkSignConflict(const QString &studentName,const QString &actN
         if (existActQuery.value("ACTNAME").isValid() && existActQuery.value("ACTTIME").isValid()) {
             existActName = existActQuery.value("ACTNAME").toString();
             QString existActTimeStr = existActQuery.value("ACTTIME").toString();
-            existActTime = QDateTime::fromString(existActTimeStr,"yyyy-MM-dd HH:mm:ss");
-        } else {
-            continue;
+            existActTimeStr = existActTimeStr.split(".").first();
+            existActTime = QDateTime::fromString(existActTimeStr,"yyyy-MM-ddTHH:mm:ss");
         }
 
         QDateTime existActEndTime = existActTime.addSecs(activityDuration);// 已报名活动结束时间
