@@ -44,8 +44,6 @@ private slots:
 
     void on_btSign_clicked();
 
-    void on_btWait_clicked();
-
     void on_btSearch_clicked();
 
     void on_btReset_clicked();

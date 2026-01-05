@@ -63,7 +63,6 @@ public:
     QHBoxLayout *horizontalLayout_5;
     QSpacerItem *horizontalSpacer_3;
     QPushButton *btSign;
-    QPushButton *btWait;
 
     void setupUi(QWidget *StudentView)
     {
@@ -114,7 +113,6 @@ public:
         horizontalLayout_2->addWidget(label_6);
 
         signstatus = new QComboBox(myactpage);
-        signstatus->addItem(QString());
         signstatus->addItem(QString());
         signstatus->addItem(QString());
         signstatus->addItem(QString());
@@ -234,11 +232,6 @@ public:
 
         horizontalLayout_5->addWidget(btSign);
 
-        btWait = new QPushButton(actscanpage);
-        btWait->setObjectName("btWait");
-
-        horizontalLayout_5->addWidget(btWait);
-
 
         verticalLayout_2->addLayout(horizontalLayout_5);
 
@@ -252,7 +245,7 @@ public:
 
         retranslateUi(StudentView);
 
-        stackedWidget->setCurrentIndex(1);
+        stackedWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(StudentView);
@@ -273,9 +266,8 @@ public:
         label_5->setText(QCoreApplication::translate("StudentView", "\346\264\273\345\212\250\347\261\273\345\210\253\357\274\232", nullptr));
         label_6->setText(QCoreApplication::translate("StudentView", "\346\212\245\345\220\215\347\212\266\346\200\201\357\274\232", nullptr));
         signstatus->setItemText(0, QCoreApplication::translate("StudentView", "\345\205\250\351\203\250", nullptr));
-        signstatus->setItemText(1, QCoreApplication::translate("StudentView", "\346\234\252\346\212\245\345\220\215", nullptr));
-        signstatus->setItemText(2, QCoreApplication::translate("StudentView", "\345\267\262\346\212\245\345\220\215", nullptr));
-        signstatus->setItemText(3, QCoreApplication::translate("StudentView", "\345\200\231\350\241\245\344\270\255", nullptr));
+        signstatus->setItemText(1, QCoreApplication::translate("StudentView", "\345\267\262\346\212\245\345\220\215", nullptr));
+        signstatus->setItemText(2, QCoreApplication::translate("StudentView", "\345\200\231\350\241\245\344\270\255", nullptr));
 
         inputSearch->setPlaceholderText(QCoreApplication::translate("StudentView", "\350\257\267\350\276\223\345\205\245\346\264\273\345\212\250\345\220\215\347\247\260\350\277\233\350\241\214\346\237\245\350\257\242", nullptr));
         searchButton->setText(QCoreApplication::translate("StudentView", "\346\220\234\347\264\242", nullptr));
@@ -288,7 +280,6 @@ public:
         btSearch->setText(QCoreApplication::translate("StudentView", "\346\220\234\347\264\242", nullptr));
         btReset->setText(QCoreApplication::translate("StudentView", "\351\207\215\347\275\256", nullptr));
         btSign->setText(QCoreApplication::translate("StudentView", "\346\212\245\345\220\215", nullptr));
-        btWait->setText(QCoreApplication::translate("StudentView", "\345\200\231\350\241\245", nullptr));
     } // retranslateUi
 
 };

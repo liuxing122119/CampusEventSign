@@ -30,7 +30,6 @@ QString IDatabase::userLogin(QString useName,QString password)
     if (query.first() && query.value("username").isValid()) {
         QString passwd = query.value("password").toString();
         if (passwd == password) {
-            qDebug() << "login ok";
             return "loginOK";
         } else {
             qDebug() << "wrong password";
@@ -200,7 +199,6 @@ int IDatabase::addNewSignRecord(const QString &studentName,const QString &actNam
     signRecordTabModel->setData(signRecordTabModel->index(newRow, signRecordTabModel->fieldIndex("STUDENT")), studentName);
     signRecordTabModel->setData(signRecordTabModel->index(newRow, signRecordTabModel->fieldIndex("ACTIVITY")), actName);
     signRecordTabModel->setData(signRecordTabModel->index(newRow, signRecordTabModel->fieldIndex("SIGNSTATUS")), "已报名");
-    signRecordTabModel->setData(signRecordTabModel->index(newRow, signRecordTabModel->fieldIndex("CHECKSTATUS")), "未签到");
     signRecordTabModel->setData(signRecordTabModel->index(newRow, signRecordTabModel->fieldIndex("WAITRANK")), 0);
 
     return newRow;
