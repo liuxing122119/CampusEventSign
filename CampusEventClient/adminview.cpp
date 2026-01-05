@@ -172,34 +172,36 @@ void AdminView::on_resetButton_clicked()
 
 void AdminView::onSelectionChanged()
 {
-    QItemSelectionModel *selectionModel = IDatabase::getInstance().theActivitySelection;
-    bool hasSelectedRow = selectionModel->hasSelection();
-    bool canEdit = false;
-    if (hasSelectedRow) {
-        QModelIndex curIndex = selectionModel->currentIndex();
-        QSqlTableModel *activityModel = IDatabase::getInstance().activityTabModel;
-        int statusColumn = activityModel->fieldIndex("STATUS");
-        QModelIndex statusIndex = activityModel->index(curIndex.row(),statusColumn);
-        QString activityStatus = activityModel->data(statusIndex).toString();
-        if (activityStatus == "待审核")
-            canEdit = true;
-    }
-    ui->btReject->setEnabled(canEdit);
-    ui->btPass->setEnabled(canEdit);
-
-    QItemSelectionModel *userSelectionModel = IDatabase::getInstance().theUserSelection;
-    bool hasSelectedUser = userSelectionModel->hasSelection();
-    bool canUpdateUser = hasSelectedUser;
-    if (hasSelectedUser) {
-        QModelIndex curUserIndex = userSelectionModel->currentIndex();
-        QSqlTableModel *userModel = IDatabase::getInstance().userTabModel;
-        int roleColumn = userModel->fieldIndex("ROLE");
-        QModelIndex roleIndex = userModel->index(curUserIndex.row(),roleColumn);
-        QString userRole = userModel->data(roleIndex).toString().trimmed();
-        if (userRole == "管理员") {
-            canUpdateUser = false;
+    if (ui->stackedWidget->currentWidget() == ui->checkpage) {
+        QItemSelectionModel *selectionModel = IDatabase::getInstance().theActivitySelection;
+        bool hasSelectedRow = selectionModel->hasSelection();
+        bool canEdit = false;
+        if (hasSelectedRow) {
+            QModelIndex curIndex = selectionModel->currentIndex();
+            QSqlTableModel *activityModel = IDatabase::getInstance().activityTabModel;
+            int statusColumn = activityModel->fieldIndex("STATUS");
+            QModelIndex statusIndex = activityModel->index(curIndex.row(),statusColumn);
+            QString activityStatus = activityModel->data(statusIndex).toString();
+            if (activityStatus == "待审核")
+                canEdit = true;
         }
+        ui->btReject->setEnabled(canEdit);
+        ui->btPass->setEnabled(canEdit);
+    } else if (ui->stackedWidget->currentWidget() == ui->userpage) {
+        QItemSelectionModel *userSelectionModel = IDatabase::getInstance().theUserSelection;
+        bool hasSelectedUser = userSelectionModel->hasSelection();
+        bool canUpdateUser = hasSelectedUser;
+        if (hasSelectedUser) {
+            QModelIndex curUserIndex = userSelectionModel->currentIndex();
+            QSqlTableModel *userModel = IDatabase::getInstance().userTabModel;
+            int roleColumn = userModel->fieldIndex("ROLE");
+            QModelIndex roleIndex = userModel->index(curUserIndex.row(),roleColumn);
+            QString userRole = userModel->data(roleIndex).toString().trimmed();
+            if (userRole == "管理员") {
+                canUpdateUser = false;
+            }
+        }
+        ui->btUpdate->setEnabled(canUpdateUser);
+        ui->btDelete->setEnabled(canUpdateUser);
     }
-    ui->btUpdate->setEnabled(canUpdateUser);
-    ui->btDelete->setEnabled(canUpdateUser);
 }
