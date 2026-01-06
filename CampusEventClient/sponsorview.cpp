@@ -2,6 +2,7 @@
 #include "ui_sponsorview.h"
 #include "idatabase.h"
 #include <QFileDialog>
+#include <QInputDialog>
 
 SponsorView::SponsorView(QWidget *parent)
     : QWidget(parent)
@@ -119,123 +120,123 @@ void SponsorView::onSelectionChanged()
 
 void SponsorView::on_btExport_clicked()
 {
-    // QString actName = getSelectedActName();
-    // if (actName.isEmpty()) {
-    //     qDebug() << "[导出提示] 请先选中要导出数据的活动！";
-    //     return;
-    // }
+    QString actName = getSelectedActName();
+    if (actName.isEmpty()) {
+        qDebug() << "[导出提示] 请先选中要导出数据的活动！";
+        return;
+    }
 
-    // QStringList exportTypes;
-    // exportTypes << "报名名单(CSV)" << "统计报表(CSV)";
-    // bool isOk;
-    // QString selectType = QInputDialog::getItem(this,"选择导出类型",
-    //                                            "请选择导出内容：",exportTypes,0,false,&isOk);
-    // if (!isOk || selectType.isEmpty()) {
-    //     qDebug() << "[导出提示] 用户取消选择导出类型！";
-    //     return;// 用户取消选择
-    // }
+    QStringList exportTypes;
+    exportTypes << "报名名单(CSV)" << "统计报表(CSV)";
+    bool isOk;
+    QString selectType = QInputDialog::getItem(this,"选择导出类型",
+                                               "请选择导出内容：",exportTypes,0,false,&isOk);
+    if (!isOk || selectType.isEmpty()) {
+        qDebug() << "[导出提示] 用户取消选择导出类型！";
+        return;// 用户取消选择
+    }
 
-    // // 选择保存路径
-    // QString savePath = QFileDialog::getSaveFileName(
-    //     this,
-    //     "选择CSV文件保存路径",
-    //     "",
-    //     "CSV文件 (*.csv);;所有文件 (*)"
-    //     );
-    // if (savePath.isEmpty()) {
-    //     qDebug() << "[导出提示] 用户取消选择保存路径！";
-    //     return;// 用户取消保存
-    // }
+    // 选择保存路径
+    QString savePath = QFileDialog::getSaveFileName(
+        this,
+        "选择CSV文件保存路径",
+        "",
+        "CSV文件 (*.csv);;所有文件 (*)"
+        );
+    if (savePath.isEmpty()) {
+        qDebug() << "[导出提示] 用户取消选择保存路径！";
+        return;// 用户取消保存
+    }
 
-    // if (!savePath.endsWith(".csv",Qt::CaseInsensitive)) {
-    //     savePath += ".csv";
-    //     qDebug() << "[导出提示] 自动补充.csv后缀，最终路径：" << savePath;
-    // }
+    if (!savePath.endsWith(".csv",Qt::CaseInsensitive)) {
+        savePath += ".csv";
+        qDebug() << "[导出提示] 自动补充.csv后缀，最终路径：" << savePath;
+    }
 
-    // // 打开文件 + 设置 UTF-8 编码
-    // QFile file(savePath);
-    // if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-    //     qDebug() << "[导出错误] 文件打开失败：" << file.errorString();
-    //     return;
-    // }
-    // QTextStream out(&file);
-    // out.setEncoding(QStringConverter::Utf8);
-    // out << "\xef\xbb\xbf";
+    // 打开文件 + 设置 UTF-8 编码
+    QFile file(savePath);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        qDebug() << "[导出错误] 文件打开失败：" << file.errorString();
+        return;
+    }
+    QTextStream out(&file);
+    out.setEncoding(QStringConverter::Utf8);
+    out << "\xef\xbb\xbf";
 
-    // // 导出报名名单
-    // if (selectType == "报名名单(CSV)") {
-    //     out << "学生姓名,活动名称,报名状态,报名时间,候补排名\n";
+    // 导出报名名单
+    if (selectType == "报名名单(CSV)") {
+        out << "学生姓名,活动名称,报名状态,报名时间,候补排名\n";
 
-    //     // 查询该活动的所有报名记录
-    //     QSqlQuery query;
-    //     query.prepare("select STUDENT,ACTIVITY,SIGNSTATUS,SIGNTIME,WAITRANK from signrecord where ACTIVITY = :actName");
-    //     query.bindValue(":actName",actName);
-    //     if (!query.exec()) {
-    //         qDebug() << "[导出错误] 查询报名数据失败：" << query.lastError().text();
-    //         file.close();
-    //         return;
-    //     }
+        // 查询该活动的所有报名记录
+        QSqlQuery query;
+        query.prepare("select STUDENT,ACTIVITY,SIGNSTATUS,SIGNTIME,WAITRANK from signrecord where ACTIVITY = :actName");
+        query.bindValue(":actName",actName);
+        if (!query.exec()) {
+            qDebug() << "[导出错误] 查询报名数据失败：" << query.lastError().text();
+            file.close();
+            return;
+        }
 
-    //     // 遍历写入每条报名记录
-    //     int recordCount = 0;
-    //     while (query.next()) {
-    //         QString student = query.value(0).toString().trimmed();
-    //         QString activity = query.value(1).toString().trimmed();
-    //         QString status = query.value(2).toString().trimmed();
-    //         QString waitRank = query.value(3).toInt() > 0 ? query.value(3).toString() : "无";
-    //         QString signTime = query.value(4).toString().trimmed();
+        // 遍历写入每条报名记录
+        int recordCount = 0;
+        while (query.next()) {
+            QString student = query.value(0).toString().trimmed();
+            QString activity = query.value(1).toString().trimmed();
+            QString status = query.value(2).toString().trimmed();
+            QString waitRank = query.value(3).toInt() > 0 ? query.value(3).toString() : "无";
+            QString signTime = query.value(4).toString().trimmed();
 
-    //         out << student << "," << activity << "," << status << "," << waitRank << "," << signTime << "\n";
-    //         recordCount++;
-    //     }
+            out << student << "," << activity << "," << status << "," << waitRank << "," << signTime << "\n";
+            recordCount++;
+        }
 
-    //     if (recordCount > 0) {
-    //         qDebug() << "[导出成功] 报名名单导出完成！共导出" << recordCount << "条记录，文件路径：" << savePath;
-    //     } else {
-    //         qDebug() << "[导出提示] 该活动暂无报名数据，已生成空CSV文件，文件路径：" << savePath;
-    //     }
-    // }
-    // // 导出统计报表（汇总数据）
-    // else if (selectType == "统计报表(CSV)") {
-    //     out << "统计项,数值\n";
+        if (recordCount > 0) {
+            qDebug() << "[导出成功] 报名名单导出完成！共导出" << recordCount << "条记录，文件路径：" << savePath;
+        } else {
+            qDebug() << "[导出提示] 该活动暂无报名数据，已生成空CSV文件，文件路径：" << savePath;
+        }
+    }
+    // 导出统计报表（汇总数据）
+    else if (selectType == "统计报表(CSV)") {
+        out << "统计项,数值\n";
 
-    //     // 总报名人数
-    //     int total = 0;
-    //     QSqlQuery qTotal;
-    //     qTotal.exec(QString("SELECT COUNT(*) FROM signrecord WHERE ACTIVITY = '%1'").arg(actName));
-    //     if (qTotal.next()) total = qTotal.value(0).toInt();
-    //     out << "总报名人数," << total << "\n";
+        // 总报名人数
+        int total = 0;
+        QSqlQuery qTotal;
+        qTotal.exec(QString("SELECT COUNT(*) FROM signrecord WHERE ACTIVITY = '%1'").arg(actName));
+        if (qTotal.next()) total = qTotal.value(0).toInt();
+        out << "总报名人数," << total << "\n";
 
-    //     // 已报名人数
-    //     int signedNum = 0;
-    //     QSqlQuery qSigned;
-    //     qSigned.exec(QString("SELECT COUNT(*) FROM signrecord WHERE ACTIVITY = '%1' AND SIGNSTATUS = '已报名'").arg(actName));
-    //     if (qSigned.next()) signedNum = qSigned.value(0).toInt();
-    //     out << "已报名人数," << signedNum << "\n";
+        // 已报名人数
+        int signedNum = 0;
+        QSqlQuery qSigned;
+        qSigned.exec(QString("SELECT COUNT(*) FROM signrecord WHERE ACTIVITY = '%1' AND SIGNSTATUS = '已报名'").arg(actName));
+        if (qSigned.next()) signedNum = qSigned.value(0).toInt();
+        out << "已报名人数," << signedNum << "\n";
 
-    //     // 候补人数
-    //     int waitNum = 0;
-    //     QSqlQuery qWait;
-    //     qWait.exec(QString("SELECT COUNT(*) FROM signrecord WHERE ACTIVITY = '%1' AND SIGNSTATUS = '候补中'").arg(actName));
-    //     if (qWait.next()) waitNum = qWait.value(0).toInt();
-    //     out << "候补人数," << waitNum << "\n";
+        // 候补人数
+        int waitNum = 0;
+        QSqlQuery qWait;
+        qWait.exec(QString("SELECT COUNT(*) FROM signrecord WHERE ACTIVITY = '%1' AND SIGNSTATUS = '候补中'").arg(actName));
+        if (qWait.next()) waitNum = qWait.value(0).toInt();
+        out << "候补人数," << waitNum << "\n";
 
-    //     // 活动最大名额
-    //     int maxQuota = 0;
-    //     QSqlQuery qQuota;
-    //     qQuota.exec(QString("SELECT MAXCOUNT FROM activity WHERE ACTNAME = '%1'").arg(actName));
-    //     if (qQuota.next()) maxQuota = qQuota.value(0).toInt();
-    //     out << "活动最大名额," << maxQuota << "\n";
+        // 活动最大名额
+        int maxQuota = 0;
+        QSqlQuery qQuota;
+        qQuota.exec(QString("SELECT MAXCOUNT FROM activity WHERE ACTNAME = '%1'").arg(actName));
+        if (qQuota.next()) maxQuota = qQuota.value(0).toInt();
+        out << "活动最大名额," << maxQuota << "\n";
 
-    //     // 名额使用率（百分比）
-    //     double usageRate = maxQuota > 0 ? (signedNum * 100.0 / maxQuota) : 0;
-    //     out << "名额使用率," << QString::asprintf("%.1f%%",usageRate) << "\n";
+        // 名额使用率（百分比）
+        double usageRate = maxQuota > 0 ? (signedNum * 100.0 / maxQuota) : 0;
+        out << "名额使用率," << QString::asprintf("%.1f%%",usageRate) << "\n";
 
-    //     qDebug() << "[导出成功] 统计报表导出完成！文件路径：" << savePath;
-    // }
+        qDebug() << "[导出成功] 统计报表导出完成！文件路径：" << savePath;
+    }
 
-    // // 关闭文件
-    // file.close();
+    // 关闭文件
+    file.close();
 }
 
 QString SponsorView::getSelectedActName()
