@@ -52,6 +52,7 @@ public:
 
     bool initSignRecordModel();
     int addNewSignRecord(const QString &studentName,const QString &actName);
+    bool deleteCurrentSignRecord();
     bool submitSignRecordEdit();
     void revertSignRecordEdit();
     bool searchSignRecord(QString filter);

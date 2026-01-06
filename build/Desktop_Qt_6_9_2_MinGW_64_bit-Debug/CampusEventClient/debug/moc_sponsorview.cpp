@@ -49,7 +49,8 @@ template <> constexpr inline auto SponsorView::qt_create_metaobjectdata<qt_meta_
         "on_btUpdate_clicked",
         "on_btSearch_clicked",
         "on_btReset_clicked",
-        "onSelectionChanged"
+        "onSelectionChanged",
+        "on_btExport_clicked"
     };
 
     QtMocHelpers::UintData qt_methods {
@@ -71,6 +72,8 @@ template <> constexpr inline auto SponsorView::qt_create_metaobjectdata<qt_meta_
         QtMocHelpers::SlotData<void()>(10, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'onSelectionChanged'
         QtMocHelpers::SlotData<void()>(11, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'on_btExport_clicked'
+        QtMocHelpers::SlotData<void()>(12, 2, QMC::AccessPrivate, QMetaType::Void),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -101,6 +104,7 @@ void SponsorView::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
         case 4: _t->on_btSearch_clicked(); break;
         case 5: _t->on_btReset_clicked(); break;
         case 6: _t->onSelectionChanged(); break;
+        case 7: _t->on_btExport_clicked(); break;
         default: ;
         }
     }
@@ -129,14 +133,14 @@ int SponsorView::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 7)
+        if (_id < 8)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 7;
+        _id -= 8;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 7)
+        if (_id < 8)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 7;
+        _id -= 8;
     }
     return _id;
 }

@@ -54,6 +54,9 @@ StudentView::StudentView(QWidget *parent)
         ui->acttableView->hideColumn(statusCol);
     }
 
+    ui->btSign->setEnabled(false);
+    connect(iDatabase.theActivitySelection,SIGNAL(selectionChanged(QItemSelection,QItemSelection)),this,SLOT(onSelectionChanged()));
+
     ui->myacttableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->myacttableView->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->myacttableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -62,19 +65,15 @@ StudentView::StudentView(QWidget *parent)
     if (iDatabase.initSignRecordModel()){
         ui->myacttableView->setModel(iDatabase.signRecordTabModel);
         ui->myacttableView->setSelectionModel(iDatabase.theSignRecordSelection);
-        iDatabase.searchSignRecord("SIGNSTATUS != '未报名'");
     }
+
+    ui->btCancelSign->setEnabled(false);
+    ui->btCancelWait->setEnabled(false);
+    connect(iDatabase.theSignRecordSelection,SIGNAL(selectionChanged(QItemSelection,QItemSelection)),this,SLOT(onSelectionChanged()));
 
     m_conflictThread = new SignConflictCheckThread(this);
     connect(m_conflictThread,&SignConflictCheckThread::conflictCheckResult,
             this,&StudentView::onConflictCheckResult);
-
-    ui->btSign->setEnabled(false);
-    ui->btCancelSign->setEnabled(false);
-    ui->btCancelWait->setEnabled(false);
-
-    connect(iDatabase.theActivitySelection,SIGNAL(selectionChanged(QItemSelection,QItemSelection)),this,SLOT(onSelectionChanged()));
-     connect(iDatabase.theSignRecordSelection,SIGNAL(selectionChanged(QItemSelection,QItemSelection)),this,SLOT(onSelectionChanged()));
 }
 
 StudentView::~StudentView()
@@ -88,10 +87,6 @@ void StudentView::on_listWidget_itemClicked(QListWidgetItem *item)
         ui->stackedWidget->setCurrentWidget(ui->actscanpage);
     } else if (item->text() == "我的活动") {
         ui->stackedWidget->setCurrentWidget(ui->myactpage);
-        IDatabase &iDatabase = IDatabase::getInstance();
-        if (!m_curStudentName.isEmpty()) {
-            iDatabase.searchSignRecord(QString("STUDENT = '%1'").arg(m_curStudentName));
-        }
     }
 }
 
@@ -126,7 +121,6 @@ void StudentView::on_btReset_clicked()
 
     IDatabase::getInstance().activityTabModel->setFilter("");
     IDatabase::getInstance().activityTabModel->select();
-
     IDatabase::getInstance().searchActivity("STATUS = '已通过'");
 }
 
@@ -134,38 +128,18 @@ void StudentView::on_btReset_clicked()
 void StudentView::on_btCancelSign_clicked()
 {
     QModelIndexList selectedIndexes = ui->myacttableView->selectionModel()->selectedRows();
-    IDatabase &iDatabase = IDatabase::getInstance();
-    QSqlTableModel *signModel = iDatabase.signRecordTabModel;
-
-    int targetRow = selectedIndexes.first().row();
-    int statusCol = signModel->fieldIndex("SIGNSTATUS");
-    int waitRankCol = signModel->fieldIndex("WAITRANK");
-
-    signModel->setData(signModel->index(targetRow, statusCol), "未报名");
-    signModel->setData(signModel->index(targetRow, waitRankCol), 0);
-
-    iDatabase.submitSignRecordEdit();
-    iDatabase.theSignRecordSelection->clearSelection();
-    iDatabase.searchSignRecord(QString("STUDENT = '%1'").arg(m_curStudentName));
+    IDatabase::getInstance().deleteCurrentSignRecord();
+    IDatabase::getInstance().theSignRecordSelection->clearSelection();
+    onSelectionChanged();
 }
 
 
 void StudentView::on_btCancelWait_clicked()
 {
     QModelIndexList selectedIndexes = ui->myacttableView->selectionModel()->selectedRows();
-    IDatabase &iDatabase = IDatabase::getInstance();
-    QSqlTableModel *signModel = iDatabase.signRecordTabModel;
-
-    int targetRow = selectedIndexes.first().row();
-    int statusCol = signModel->fieldIndex("SIGNSTATUS");
-    int waitRankCol = signModel->fieldIndex("WAITRANK");
-
-    signModel->setData(signModel->index(targetRow, statusCol), "未报名");
-    signModel->setData(signModel->index(targetRow, waitRankCol), 0);
-
-    iDatabase.submitSignRecordEdit();
-    iDatabase.theSignRecordSelection->clearSelection();
-    iDatabase.searchSignRecord(QString("STUDENT = '%1'").arg(m_curStudentName));
+    IDatabase::getInstance().deleteCurrentSignRecord();
+    IDatabase::getInstance().theSignRecordSelection->clearSelection();
+    onSelectionChanged();
 }
 
 
@@ -200,73 +174,13 @@ void StudentView::on_resetButton_clicked()
     IDatabase::getInstance().searchSignRecord(QString("STUDENT = '%1'").arg(m_curStudentName));
 }
 
-void StudentView::onConflictCheckResult(bool isOk, QString msg) {
-    QString actName = getSelectedActName();
-    if (!isOk) {
-        qDebug() << "failed to sign: " << msg;
-        if (msg.startsWith("【名额冲突】")) {
-            autoWaitSign(actName);// 自动候补
-        }
-        return;
-    }
-
-    IDatabase &iDatabase = IDatabase::getInstance();
-    QSqlTableModel *signModel = iDatabase.signRecordTabModel;
-
-    int targetRow = getTargetSignRecordRow(m_curStudentName, actName);
-    int statusCol = signModel->fieldIndex("SIGNSTATUS");
-    int waitRankCol = signModel->fieldIndex("WAITRANK");
-    signModel->setData(signModel->index(targetRow, statusCol), "已报名");
-    signModel->setData(signModel->index(targetRow, waitRankCol), 0);
-    qDebug() << "sign success";
-
-    iDatabase.submitSignRecordEdit();
-    iDatabase.theSignRecordSelection->clearSelection();
-    iDatabase.searchSignRecord(QString("STUDENT = '%1'").arg(m_curStudentName));
-}
-
-void StudentView::onSelectionChanged() {
-    ui->btSign->setEnabled(IDatabase::getInstance().theActivitySelection->hasSelection());
-    
-    QItemSelectionModel *signSelectModel = IDatabase::getInstance().theSignRecordSelection;
-    if (signSelectModel && signSelectModel->hasSelection()) {
-        QModelIndex curIndex = signSelectModel->currentIndex();
-        if (curIndex.isValid()) {
-            QSqlTableModel *signModel = IDatabase::getInstance().signRecordTabModel;
-            int statusCol = signModel->fieldIndex("SIGNSTATUS");
-            if (statusCol != -1) {
-                QModelIndex statusIndex = signModel->index(curIndex.row(), statusCol);
-                QString signStatus = signModel->data(statusIndex).toString().trimmed();
-
-                if (signStatus == "已报名")
-                    ui->btCancelSign->setEnabled(true);
-                else if (signStatus == "候补中")
-                    ui->btCancelWait->setEnabled(true);
-            }
-        }
-    }
-}
-
 void StudentView::setCurrentStudentName(const QString &studentName) {
     m_curStudentName = studentName;
-    IDatabase &iDatabase = IDatabase::getInstance();
-    iDatabase.searchSignRecord(QString("STUDENT = '%1'").arg(m_curStudentName));
+    IDatabase::getInstance().searchSignRecord(QString("STUDENT = '%1'").arg(m_curStudentName));
 }
 
-QString StudentView::getSelectedActName() {
-    QModelIndexList selectedIndexes =
-        ui->acttableView->selectionModel()->selectedRows();
-    IDatabase &iDatabase = IDatabase::getInstance();
-    QModelIndex actNameIndex = ui->acttableView->model()->index(
-        selectedIndexes.first().row(),
-        iDatabase.activityTabModel->fieldIndex("ACTNAME"));
-    return ui->acttableView->model()->data(actNameIndex).toString().trimmed();
-}
-
-int StudentView::getTargetSignRecordRow(const QString &stuName,
-                                        const QString &actName) {
-    IDatabase &iDatabase = IDatabase::getInstance();
-    QSqlTableModel *signModel = iDatabase.signRecordTabModel;
+int StudentView::getTargetSignRecordRow(const QString &stuName,const QString &actName) {
+    QSqlTableModel *signModel = IDatabase::getInstance().signRecordTabModel;
     int stuCol = signModel->fieldIndex("STUDENT");
     int actCol = signModel->fieldIndex("ACTIVITY");
     int targetRow = -1;
@@ -283,15 +197,14 @@ int StudentView::getTargetSignRecordRow(const QString &stuName,
     }
 
     if (targetRow == -1) {
-        targetRow = iDatabase.addNewSignRecord(stuName, actName);
+        targetRow = IDatabase::getInstance().addNewSignRecord(stuName, actName);
     }
     return targetRow;
 }
 
 void StudentView::autoWaitSign(const QString &actName)
 {
-    IDatabase &iDatabase = IDatabase::getInstance();
-    QSqlTableModel *signModel = iDatabase.signRecordTabModel;
+    QSqlTableModel *signModel = IDatabase::getInstance().signRecordTabModel;
 
     int targetRow = getTargetSignRecordRow(m_curStudentName, actName);
 
@@ -307,7 +220,70 @@ void StudentView::autoWaitSign(const QString &actName)
     signModel->setData(signModel->index(targetRow, statusCol), "候补中");
     signModel->setData(signModel->index(targetRow, waitRankCol), maxWaitRank + 1);
 
-    iDatabase.submitSignRecordEdit();
-    iDatabase.theSignRecordSelection->clearSelection();
-    iDatabase.searchSignRecord(QString("STUDENT = '%1'").arg(m_curStudentName));
+    IDatabase::getInstance().submitSignRecordEdit();
+    IDatabase::getInstance().theSignRecordSelection->clearSelection();
+    IDatabase::getInstance().searchSignRecord(QString("STUDENT = '%1'").arg(m_curStudentName));
 }
+
+void StudentView::onConflictCheckResult(bool isOk, QString msg) {
+    QString actName = getSelectedActName();
+    if (!isOk) {
+        qDebug() << "failed to sign: " << msg;
+        if (msg.startsWith("【名额冲突】")) {
+            autoWaitSign(actName); // 自动候补
+        }
+        return;
+    }
+
+    QSqlTableModel *signModel = IDatabase::getInstance().signRecordTabModel;
+
+    int targetRow = getTargetSignRecordRow(m_curStudentName, actName);
+    int statusCol = signModel->fieldIndex("SIGNSTATUS");
+    int waitRankCol = signModel->fieldIndex("WAITRANK");
+    signModel->setData(signModel->index(targetRow, statusCol), "已报名");
+    signModel->setData(signModel->index(targetRow, waitRankCol), 0);
+    qDebug() << "sign success";
+
+    IDatabase::getInstance().submitSignRecordEdit();
+    IDatabase::getInstance().theSignRecordSelection->clearSelection();
+    IDatabase::getInstance().searchSignRecord(QString("STUDENT = '%1'").arg(m_curStudentName));
+}
+
+void StudentView::onSelectionChanged() {
+    if (ui->stackedWidget->currentWidget() == ui->actscanpage) {
+        QItemSelectionModel *selectionModel = IDatabase::getInstance().theActivitySelection;
+        bool canSign = selectionModel->hasSelection();
+        ui->btSign->setEnabled(canSign);
+    } else if (ui->stackedWidget->currentWidget() == ui->myactpage) {
+        QItemSelectionModel *userSelectionModel =
+            IDatabase::getInstance().theSignRecordSelection;
+        bool hasSelectedUser = userSelectionModel->hasSelection();
+        bool canCancelSign = false;
+        bool canCancelWait = false;
+        if (hasSelectedUser) {
+            QModelIndex curUserIndex = userSelectionModel->currentIndex();
+            QSqlTableModel *signModel = IDatabase::getInstance().signRecordTabModel;
+            int statusColumn = signModel->fieldIndex("SIGNSTATUS");
+            QModelIndex roleIndex =
+                signModel->index(curUserIndex.row(), statusColumn);
+            QString signStatus = signModel->data(roleIndex).toString().trimmed();
+
+            if (signStatus == "已报名")
+                canCancelSign = true;
+            else if (signStatus == "候补中")
+                canCancelWait = true;
+        }
+        ui->btCancelSign->setEnabled(canCancelSign);
+        ui->btCancelWait->setEnabled(canCancelWait);
+    }
+}
+
+QString StudentView::getSelectedActName() {
+    QModelIndexList selectedIndexes =
+        ui->acttableView->selectionModel()->selectedRows();
+    QModelIndex actNameIndex = ui->acttableView->model()->index(
+        selectedIndexes.first().row(),
+        IDatabase::getInstance().activityTabModel->fieldIndex("ACTNAME"));
+    return ui->acttableView->model()->data(actNameIndex).toString().trimmed();
+}
+

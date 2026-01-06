@@ -45,6 +45,7 @@ public:
     QLineEdit *searchEdit;
     QPushButton *btSearch;
     QPushButton *btReset;
+    QPushButton *btExport;
     QTableView *tableView;
     QHBoxLayout *horizontalLayout_3;
     QSpacerItem *horizontalSpacer_3;
@@ -134,6 +135,11 @@ public:
 
         horizontalLayout_2->addWidget(btReset);
 
+        btExport = new QPushButton(managepage);
+        btExport->setObjectName("btExport");
+
+        horizontalLayout_2->addWidget(btExport);
+
 
         verticalLayout->addLayout(horizontalLayout_2);
 
@@ -197,6 +203,7 @@ public:
         searchEdit->setPlaceholderText(QCoreApplication::translate("SponsorView", "\350\257\267\350\276\223\345\205\245\346\264\273\345\212\250\345\220\215\347\247\260\350\277\233\350\241\214\346\237\245\350\257\242", nullptr));
         btSearch->setText(QCoreApplication::translate("SponsorView", "\346\220\234\347\264\242", nullptr));
         btReset->setText(QCoreApplication::translate("SponsorView", "\351\207\215\347\275\256", nullptr));
+        btExport->setText(QCoreApplication::translate("SponsorView", "\345\257\274\345\207\272", nullptr));
         btAdd->setText(QCoreApplication::translate("SponsorView", "\346\267\273\345\212\240", nullptr));
         btUpdate->setText(QCoreApplication::translate("SponsorView", "\344\277\256\346\224\271", nullptr));
     } // retranslateUi

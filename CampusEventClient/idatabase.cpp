@@ -88,8 +88,6 @@ int IDatabase::addNewActivity(const QString &username)
     activityTabModel->setRecord(curRecNo,curRec);
     activityTabModel->setData(activityTabModel->index(curRecNo,
                                                       activityTabModel->fieldIndex("STATUS")),"待审核");
-    activityTabModel->setData(activityTabModel->index(curRecNo,
-                                                      activityTabModel->fieldIndex("SIGNSTATUS")),"未报名");
     return curIndex.row();
 }
 
@@ -204,6 +202,15 @@ int IDatabase::addNewSignRecord(const QString &studentName,const QString &actNam
     return newRow;
 }
 
+bool IDatabase::deleteCurrentSignRecord()
+{
+    QModelIndex curIndex = theSignRecordSelection->currentIndex();
+    signRecordTabModel->removeRow(curIndex.row());
+    signRecordTabModel->submitAll();
+    signRecordTabModel->select();
+    return true;
+}
+
 bool IDatabase::submitSignRecordEdit()
 {
     return signRecordTabModel->submitAll();
@@ -227,7 +234,7 @@ bool IDatabase::checkSignConflict(const QString &studentName,const QString &actN
     // 重复报名冲突
     QSqlQuery signQuery;
     // 查询该学生是否已正式报名该活动
-    signQuery.prepare("select * from signrecord where STUDENT = :STUDENT and ACTIVITY = :ACTIVITY and WAITRANK = 0");
+    signQuery.prepare("select * from signrecord where STUDENT = :STUDENT and ACTIVITY = :ACTIVITY and SIGNSTATUS IN ('已报名', '候补中')");
     signQuery.bindValue(":STUDENT", studentName);
     signQuery.bindValue(":ACTIVITY", actName);
     signQuery.exec();
@@ -239,11 +246,24 @@ bool IDatabase::checkSignConflict(const QString &studentName,const QString &actN
         return true;
     }
 
-    // 时间冲突（报名已截止）
-    query.prepare("select ENDTIME,MAXCOUNT,ACTTIME from activity where ACTNAME = :ACTNAME and STATUS = '已通过'");
+    // 时间冲突（未到报名时间/报名已截止）
+    query.prepare("select STARTTIME, ENDTIME,MAXCOUNT,ACTTIME from activity where ACTNAME = :ACTNAME");
     query.bindValue(":ACTNAME",actName);
     query.exec();
     qDebug() << query.lastQuery() << query.first();
+
+    // 报名开始时间
+    QString startTime;
+    if (query.value("STARTTIME").isValid()) {
+        startTime = query.value("STARTTIME").toString();
+        startTime = startTime.split(".").first();
+    }
+    QDateTime applyStartTime = QDateTime::fromString(startTime,"yyyy-MM-ddTHH:mm:ss");
+    QDateTime currentTime = QDateTime::currentDateTime();// 当前时间
+    if (currentTime < applyStartTime) {
+        conflictMsg = QString("【时间冲突】该活动报名尚未开始（开始时间：%1），无法报名").arg(applyStartTime.toString("yyyy-MM-dd HH:mm:ss"));
+        return true;
+    }
 
     // 报名截止时间
     QString endTime;
@@ -252,7 +272,6 @@ bool IDatabase::checkSignConflict(const QString &studentName,const QString &actN
         endTime = endTime.split(".").first();
     }
     QDateTime applyEndTime = QDateTime::fromString(endTime,"yyyy-MM-ddTHH:mm:ss");
-    QDateTime currentTime = QDateTime::currentDateTime();// 当前时间
     if (currentTime > applyEndTime) {
         conflictMsg = QString("【时间冲突】该活动报名已截止（截止时间：%1），无法报名").arg(applyEndTime.toString("yyyy-MM-dd HH:mm:ss"));
         return true;
@@ -319,7 +338,6 @@ bool IDatabase::checkSignConflict(const QString &studentName,const QString &actN
             return true;
         }
     }
-
     conflictMsg = QString("学生《%1》报名活动《%2》：报名成功").arg(studentName).arg(actName);
     return false;
 }

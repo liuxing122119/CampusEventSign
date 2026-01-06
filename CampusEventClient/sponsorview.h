@@ -32,6 +32,8 @@ private slots:
 
     void onSelectionChanged();
 
+    void on_btExport_clicked();
+
 signals:
     void goActivityEditView(int index);
 
@@ -39,6 +41,8 @@ private:
     Ui::SponsorView *ui;
     QString m_currentSponsorname;
     Client *m_client;
+
+    QString getSelectedActName();
 };
 
 #endif // SPONSORVIEW_H
