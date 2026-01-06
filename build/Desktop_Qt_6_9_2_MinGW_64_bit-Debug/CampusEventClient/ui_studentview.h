@@ -245,7 +245,7 @@ public:
 
         retranslateUi(StudentView);
 
-        stackedWidget->setCurrentIndex(1);
+        stackedWidget->setCurrentIndex(0);
 
 
         QMetaObject::connectSlotsByName(StudentView);

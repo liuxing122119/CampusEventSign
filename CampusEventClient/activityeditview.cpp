@@ -50,10 +50,8 @@ void ActivityEditView::on_submitButton_clicked()
     emit goPreviousView();
 }
 
-
 void ActivityEditView::on_cancelButton_clicked()
 {
     IDatabase::getInstance().revertActivityEdit();
     emit goPreviousView();
 }
-

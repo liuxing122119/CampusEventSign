@@ -35,7 +35,7 @@ public:
     QString getSelectedActName();
 
     void setCurrentStudentName(const QString &studentName);
-    int getTargetSignRecordRow(const QString &stuName, const QString &actName);
+    int getTargetSignRecordRow(const QString &stuName,const QString &actName);
     void autoWaitSign(const QString &actName);
 
 private slots:
@@ -55,7 +55,7 @@ private slots:
 
     void on_resetButton_clicked();
 
-    void onConflictCheckResult(bool isOk, QString msg);
+    void onConflictCheckResult(bool isOk,QString msg);
     void onSelectionChanged();
 
 private:

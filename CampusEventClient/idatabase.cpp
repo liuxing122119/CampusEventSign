@@ -18,7 +18,6 @@ void IDatabase::ininDatabase()
         qDebug() << "open database is ok" << database.connectionName();
 }
 
-
 QString IDatabase::userLogin(QString useName,QString password)
 {
     QSqlQuery query;
@@ -29,9 +28,9 @@ QString IDatabase::userLogin(QString useName,QString password)
 
     if (query.first() && query.value("username").isValid()) {
         QString passwd = query.value("password").toString();
-        if (passwd == password) {
+        if (passwd == password)
             return "loginOK";
-        } else {
+        else {
             qDebug() << "wrong password";
             return "wrongPassword";
         }
@@ -48,11 +47,10 @@ QString IDatabase::getUserRole(QString useName)
     query.bindValue(":USER",useName);
     query.exec();
 
-    if (query.first() && query.value("role").isValid()) {
+    if (query.first() && query.value("role").isValid())
         return query.value("role").toString().trimmed();
-    } else {
+    else
         return "invalidRole";
-    }
 }
 
 bool IDatabase::initActivityModel()
@@ -117,7 +115,6 @@ bool IDatabase::initUserModel()
         return false;
     theUserSelection = new QItemSelectionModel(userTabModel);
     return true;
-
 }
 
 int IDatabase::addNewUser()
@@ -183,7 +180,7 @@ bool IDatabase::initSignRecordModel()
 
 int IDatabase::addNewSignRecord(const QString &studentName,const QString &actName)
 {
-    signRecordTabModel->insertRow(signRecordTabModel->rowCount(), QModelIndex());
+    signRecordTabModel->insertRow(signRecordTabModel->rowCount(),QModelIndex());
     int newRow = signRecordTabModel->rowCount()-1;
 
     // 自动生成活动ID（自增+1）
@@ -192,12 +189,13 @@ int IDatabase::addNewSignRecord(const QString &studentName,const QString &actNam
     int newSignId = (query.first() && query.value(0).isValid()) ? query.value(0).toInt() + 1 : 1;
 
     // 自动生成创建时间
-    signRecordTabModel->setData(signRecordTabModel->index(newRow, signRecordTabModel->fieldIndex("SIGNID")), newSignId);
-    signRecordTabModel->setData(signRecordTabModel->index(newRow, signRecordTabModel->fieldIndex("SIGNTIME")), QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss"));
-    signRecordTabModel->setData(signRecordTabModel->index(newRow, signRecordTabModel->fieldIndex("STUDENT")), studentName);
-    signRecordTabModel->setData(signRecordTabModel->index(newRow, signRecordTabModel->fieldIndex("ACTIVITY")), actName);
-    signRecordTabModel->setData(signRecordTabModel->index(newRow, signRecordTabModel->fieldIndex("SIGNSTATUS")), "已报名");
-    signRecordTabModel->setData(signRecordTabModel->index(newRow, signRecordTabModel->fieldIndex("WAITRANK")), 0);
+    signRecordTabModel->setData(signRecordTabModel->index(newRow,signRecordTabModel->fieldIndex("SIGNID")),newSignId);
+    signRecordTabModel->setData(signRecordTabModel->index(newRow,signRecordTabModel->fieldIndex("SIGNTIME")),
+                                QDateTime::currentDateTime().toString("yyyy-MM-dd HH:mm:ss"));
+    signRecordTabModel->setData(signRecordTabModel->index(newRow,signRecordTabModel->fieldIndex("STUDENT")),studentName);
+    signRecordTabModel->setData(signRecordTabModel->index(newRow,signRecordTabModel->fieldIndex("ACTIVITY")),actName);
+    signRecordTabModel->setData(signRecordTabModel->index(newRow,signRecordTabModel->fieldIndex("SIGNSTATUS")),"已报名");
+    signRecordTabModel->setData(signRecordTabModel->index(newRow,signRecordTabModel->fieldIndex("WAITRANK")),0);
 
     return newRow;
 }
@@ -234,9 +232,9 @@ bool IDatabase::checkSignConflict(const QString &studentName,const QString &actN
     // 重复报名冲突
     QSqlQuery signQuery;
     // 查询该学生是否已正式报名该活动
-    signQuery.prepare("select * from signrecord where STUDENT = :STUDENT and ACTIVITY = :ACTIVITY and SIGNSTATUS IN ('已报名', '候补中')");
-    signQuery.bindValue(":STUDENT", studentName);
-    signQuery.bindValue(":ACTIVITY", actName);
+    signQuery.prepare("select * from signrecord where STUDENT = :STUDENT and ACTIVITY = :ACTIVITY and SIGNSTATUS IN ('已报名','候补中')");
+    signQuery.bindValue(":STUDENT",studentName);
+    signQuery.bindValue(":ACTIVITY",actName);
     signQuery.exec();
     qDebug() << signQuery.lastQuery() << signQuery.first();
 
@@ -247,7 +245,7 @@ bool IDatabase::checkSignConflict(const QString &studentName,const QString &actN
     }
 
     // 时间冲突（未到报名时间/报名已截止）
-    query.prepare("select STARTTIME, ENDTIME,MAXCOUNT,ACTTIME from activity where ACTNAME = :ACTNAME");
+    query.prepare("select STARTTIME,ENDTIME,MAXCOUNT,ACTTIME from activity where ACTNAME = :ACTNAME");
     query.bindValue(":ACTNAME",actName);
     query.exec();
     qDebug() << query.lastQuery() << query.first();
@@ -341,4 +339,3 @@ bool IDatabase::checkSignConflict(const QString &studentName,const QString &actN
     conflictMsg = QString("学生《%1》报名活动《%2》：报名成功").arg(studentName).arg(actName);
     return false;
 }
-

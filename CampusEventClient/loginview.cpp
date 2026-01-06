@@ -24,9 +24,8 @@ void LoginView::on_loginButton_clicked()
         QString username = ui->usernameEdit->text().trimmed();
         QString password = ui->passwordEdit->text().trimmed();
         QString status = IDatabase::getInstance().userLogin(username,password);
-        if (status == "loginOK"){
+        if (status == "loginOK")
             emit loginSuccess(username);
-        }
         return;
     }
     m_client->connectToServer(QHostAddress::LocalHost,1967);
@@ -40,9 +39,8 @@ void LoginView::connectedToServer()
     QString password = ui->passwordEdit->text().trimmed();
     if (!username.isEmpty() && !password.isEmpty()) {
         QString status = IDatabase::getInstance().userLogin(username,password);
-        if (status == "loginOK"){
+        if (status == "loginOK")
             emit loginSuccess(username);
-        }
     }
 }
 
@@ -51,4 +49,3 @@ void LoginView::onServerDisconnected()
     qDebug() << "服务器断开连接";
     m_isServerConnected = false;
 }
-

@@ -23,9 +23,8 @@ bool Client::isConnected()
 
 void Client::sendGetActivityCategoriesRequest()
 {
-    if (!isConnected()) {
+    if (!isConnected())
         return;
-    }
     QJsonObject request;
     request["type"] = "get_activity_categories";
     QDataStream serverStream(m_clientSocket);
@@ -44,6 +43,7 @@ void Client::onReadyRead()
     QByteArray jsonData;
     QDataStream socketStream(m_clientSocket);
     socketStream.setVersion(QDataStream::Qt_5_12);
+
     for (;;) {
         socketStream.startTransaction();
         socketStream >> jsonData;
@@ -54,7 +54,6 @@ void Client::onReadyRead()
                 if (jsonDoc.isObject()) {
                     QJsonObject docObj = jsonDoc.object();
                     emit jsonReceived(docObj);
-                    // emit jsonReceived(jsonDoc.object());
 
                     QString responseType = docObj["type"].toString();
                     if (responseType == "activity_categories_response") {

@@ -15,6 +15,7 @@ public:
 
     bool isConnected();
     void sendGetActivityCategoriesRequest();
+
     QStringList getActivityCategories();
 
 private:

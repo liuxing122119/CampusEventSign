@@ -53,4 +53,3 @@ void UserEditView::on_cancelButton_clicked()
     IDatabase::getInstance().revertUserEdit();
     emit goPreviousView();
 }
-

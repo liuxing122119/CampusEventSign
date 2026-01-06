@@ -35,13 +35,11 @@ void MasterView::goPreviousView()
 {
     int count = ui->stackedWidget->count();
 
-    if(count > 1){
-        if (IDatabase::getInstance().activityTabModel != nullptr) {
+    if(count > 1) {
+        if (IDatabase::getInstance().activityTabModel != nullptr)
             IDatabase::getInstance().revertActivityEdit();
-        }
-        if (IDatabase::getInstance().userTabModel != nullptr) {
+        if (IDatabase::getInstance().userTabModel != nullptr)
             IDatabase::getInstance().revertUserEdit();
-        }
 
         ui->stackedWidget->setCurrentIndex(count - 2);
         ui->titlelabel->setText(ui->stackedWidget->currentWidget()->windowTitle());
@@ -130,15 +128,14 @@ void MasterView::onClientDisconnected()
 
 void MasterView::delayCreateRoleView()
 {
-    if (m_UserRole == "管理员") {
+    if (m_UserRole == "管理员")
         goAdminView();
-    } else if (m_UserRole == "发起人") {
+    else if (m_UserRole == "发起人")
         goSponsorView(m_Username);
-    } else if (m_UserRole == "学生") {
+    else if (m_UserRole == "学生")
         goStudentView(m_Username);
-    } else {
+    else
         qDebug() << "invalid role";
-    }
 }
 
 void MasterView::on_btBack_clicked()
@@ -148,9 +145,8 @@ void MasterView::on_btBack_clicked()
 
 void MasterView::on_btLogout_clicked()
 {
-    if (m_client) {
+    if (m_client)
         m_client->disconnectFromHost();
-    }
     goPreviousView();
 }
 

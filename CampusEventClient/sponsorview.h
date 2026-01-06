@@ -19,6 +19,8 @@ public:
 
     void setCurrentSponsorName(const QString &sponsorName);
 
+    QString getSelectedActName();
+
 private slots:
     void on_listWidget_itemClicked(QListWidgetItem *item);
 
@@ -41,8 +43,6 @@ private:
     Ui::SponsorView *ui;
     QString m_currentSponsorname;
     Client *m_client;
-
-    QString getSelectedActName();
 };
 
 #endif // SPONSORVIEW_H

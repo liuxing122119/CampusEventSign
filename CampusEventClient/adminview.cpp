@@ -24,7 +24,7 @@ AdminView::AdminView(QWidget *parent)
     ui->tableView->setAlternatingRowColors(true);
 
     IDatabase &iDatabase = IDatabase::getInstance();
-    if (iDatabase.initActivityModel()){
+    if (iDatabase.initActivityModel()) {
         ui->tableView->setModel(iDatabase.activityTabModel);
         ui->tableView->setSelectionModel(iDatabase.theActivitySelection);
     }
@@ -38,7 +38,7 @@ AdminView::AdminView(QWidget *parent)
     ui->usertableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->usertableView->setAlternatingRowColors(true);
 
-    if (iDatabase.initUserModel()){
+    if (iDatabase.initUserModel()) {
         ui->usertableView->setModel(iDatabase.userTabModel);
         ui->usertableView->setSelectionModel(iDatabase.theUserSelection);
     }
@@ -55,13 +55,11 @@ AdminView::~AdminView()
 
 void AdminView::on_listWidget_itemClicked(QListWidgetItem *item)
 {
-    if (item->text() == "活动审核") {
+    if (item->text() == "活动审核")
         ui->stackedWidget->setCurrentWidget(ui->checkpage);
-    } else if (item->text() == "用户管理") {
+    else if (item->text() == "用户管理")
         ui->stackedWidget->setCurrentWidget(ui->userpage);
-    }
 }
-
 
 void AdminView::on_btReject_clicked()
 {
@@ -74,7 +72,6 @@ void AdminView::on_btReject_clicked()
     onSelectionChanged();
 }
 
-
 void AdminView::on_btPass_clicked()
 {
     QModelIndexList selectedIndexes = ui->tableView->selectionModel()->selectedRows();
@@ -85,7 +82,6 @@ void AdminView::on_btPass_clicked()
     IDatabase::getInstance().theActivitySelection->clearSelection();
     onSelectionChanged();
 }
-
 
 void AdminView::on_btSearch_clicked()
 {
@@ -105,7 +101,6 @@ void AdminView::on_btSearch_clicked()
     IDatabase::getInstance().searchActivity(filter);
 }
 
-
 void AdminView::on_btReset_clicked()
 {
     ui->searchEdit->clear();
@@ -116,13 +111,11 @@ void AdminView::on_btReset_clicked()
     IDatabase::getInstance().activityTabModel->select();
 }
 
-
 void AdminView::on_btAdd_clicked()
 {
     int currow = IDatabase::getInstance().addNewUser();
     emit goUserEditView(currow);
 }
-
 
 void AdminView::on_btUpdate_clicked()
 {
@@ -132,14 +125,12 @@ void AdminView::on_btUpdate_clicked()
     onSelectionChanged();
 }
 
-
 void AdminView::on_btDelete_clicked()
 {
     IDatabase::getInstance().deleteCurrentUser();
     IDatabase::getInstance().theUserSelection->clearSelection();
     onSelectionChanged();
 }
-
 
 void AdminView::on_searchButton_clicked()
 {
@@ -156,7 +147,6 @@ void AdminView::on_searchButton_clicked()
     IDatabase::getInstance().searchUser(filter);
 }
 
-
 void AdminView::on_resetButton_clicked()
 {
     ui->usersearchEdit->clear();
@@ -165,7 +155,6 @@ void AdminView::on_resetButton_clicked()
     IDatabase::getInstance().userTabModel->setFilter("");
     IDatabase::getInstance().userTabModel->select();
 }
-
 
 void AdminView::onSelectionChanged()
 {
