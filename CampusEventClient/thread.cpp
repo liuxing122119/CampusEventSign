@@ -9,18 +9,24 @@ Thread::Thread(QObject *parent)
 
 void Thread::run()
 {
-    QString msg;
-    bool success = false;
-    success = IDatabase::getInstance().exportData(m_savePath,m_exportData,msg);
-    emit exportFinished(success,msg);
-
+    if (m_isCheck) {
+        QString conflictMsg;
+        bool hasConflict = IDatabase::getInstance().checkSignConflict(m_studentName, m_actName, conflictMsg);
+        emit conflictCheckResult(!hasConflict, conflictMsg);
+        m_isCheck = false;
+    } else {
+        QString msg;
+        bool success = IDatabase::getInstance().exportData(m_savePath,m_exportData,msg);
+        emit exportFinished(success,msg);
+    }
 }
 
 void Thread::doCheck(const QString &studentName,const QString &actName)
 {
-    QString conflictMsg;
-    bool hasConflict = IDatabase::getInstance().checkSignConflict(studentName,actName,conflictMsg);
-    emit conflictCheckResult(!hasConflict,conflictMsg);
+    m_isCheck = true;
+    m_studentName = studentName;
+    m_actName = actName;
+    start();
 }
 
 void Thread::startExport(const QString &savePath,const QString &exportData)

@@ -22,9 +22,11 @@ public slots:
     void startExport(const QString &savePath,const QString &exportData);
 
 private:
+    QString m_studentName;
     QString m_actName;
     QString m_savePath;
     QString m_exportData;
+    bool m_isCheck = false;
 };
 
 #endif // THREAD_H
