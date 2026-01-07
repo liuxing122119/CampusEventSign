@@ -168,9 +168,8 @@ int StudentView::getTargetSignRecordRow(const QString &stuName,const QString &ac
         }
     }
 
-    if (targetRow == -1) {
+    if (targetRow == -1)
         targetRow = IDatabase::getInstance().addNewSignRecord(stuName,actName);
-    }
     return targetRow;
 }
 
@@ -182,9 +181,8 @@ void StudentView::autoWaitSign(const QString &actName)
 
     QSqlQuery query;
     query.exec(QString("select MAX(WAITRANK) from signrecord where ACTIVITY = '%1' and SIGNSTATUS = '候补中'").arg(actName));
-    if (query.first() && query.value(0).isValid()) {
+    if (query.first() && query.value(0).isValid())
         maxWaitRank = query.value(0).toInt();
-    }
 
     int statusCol = signModel->fieldIndex("SIGNSTATUS");
     int waitRankCol = signModel->fieldIndex("WAITRANK");
@@ -199,9 +197,8 @@ void StudentView::onConflictCheckResult(bool isOk,QString msg) {
     QString actName = getSelectedActName();
     if (!isOk) {
         qDebug() << "failed to sign: " << msg;
-        if (msg.startsWith("【名额冲突】")) {
+        if (msg.startsWith("【名额冲突】"))
             autoWaitSign(actName);// 自动候补
-        }
         return;
     }
 

@@ -3,18 +3,18 @@
 IDatabase::IDatabase(QObject *parent)
     : QObject{parent}
 {
-    ininDatabase();
+    initDatabase();
 }
 
-void IDatabase::ininDatabase()
+void IDatabase::initDatabase()
 {
     database = QSqlDatabase::addDatabase("QSQLITE");
     QString aFile = "D:/code/QT/exp/CampusEventSign/exp.db";
     database.setDatabaseName(aFile);
 
-    if (!database.open()) {
+    if (!database.open())
         qDebug() << "failed to open database";
-    } else
+    else
         qDebug() << "open database is ok" << database.connectionName();
 }
 
@@ -283,15 +283,13 @@ bool IDatabase::checkSignConflict(const QString &studentName,const QString &actN
     countQuery.bindValue(":ACTIVITY",actName);
     countQuery.exec();
 
-    if (countQuery.first() && countQuery.value(0).isValid()) {
+    if (countQuery.first() && countQuery.value(0).isValid())
         currentSignCount = countQuery.value(0).toInt();
-    }
 
     // 活动最大名额
     int maxCount = 0;
-    if (query.value("MAXCOUNT").isValid()) {
+    if (query.value("MAXCOUNT").isValid())
         maxCount = query.value("MAXCOUNT").toInt();
-    }
     if (currentSignCount >= maxCount) {
         conflictMsg = QString("【名额冲突】该活动名额已爆满（当前：%1人/最大：%2人），进入候补队列").arg(currentSignCount).arg(maxCount);
         return true;
@@ -333,7 +331,8 @@ bool IDatabase::checkSignConflict(const QString &studentName,const QString &actN
                              || (existActEndTime > targetActTime && existActEndTime <= targetActEndTime);
 
         if (isTimeOverlap) {
-            conflictMsg = QString("【空间冲突】您已报名同时间段活动：《%1》（时间：%2-%3）").arg(existActName).arg(existActTime.toString("yyyy-MM-dd HH:mm:ss")).arg(existActEndTime.toString("HH:mm:ss"));
+            conflictMsg = QString("【空间冲突】您已报名同时间段活动：《%1》（时间：%2-%3）").arg(existActName)
+                              .arg(existActTime.toString("yyyy-MM-dd HH:mm:ss")).arg(existActEndTime.toString("HH:mm:ss"));
             return true;
         }
     }
@@ -341,99 +340,114 @@ bool IDatabase::checkSignConflict(const QString &studentName,const QString &actN
     return false;
 }
 
-bool IDatabase::exportData(const QString &actName,const QString &savePath,const QString &exportType,QString &msg)
+QString IDatabase::getExportData(const QString &actName,const QString &exportType,bool &success,QString &msg)
 {
-    // 打开文件并设置 UTF-8 编码
-    QFile file(savePath);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        qDebug() << "文件打开失败：" << file.errorString();
-        return false;
-    }
-    QTextStream out(&file);
-    out.setEncoding(QStringConverter::Utf8);
-    out << "\xef\xbb\xbf";
+    QString exportContent;
+    success = false;
 
-    // 导出报名名单
+    // 报名名单
     if (exportType == "报名名单(CSV)") {
-        out << "学生姓名,活动名称,报名状态,报名时间,候补排名,签到状态\n";
+        exportContent = "学生姓名,活动名称,报名状态,报名时间,候补排名,签到状态\n";
 
-        // 查询该活动的所有报名记录
         QSqlQuery query;
         query.prepare("select STUDENT,ACTIVITY,SIGNSTATUS,SIGNTIME,WAITRANK,CHECKSTATUS from signrecord where ACTIVITY = :actName");
         query.bindValue(":actName",actName);
-        if (!query.exec()) {
-            qDebug() << "[导出错误] 查询报名数据失败：" << query.lastError().text();
-            file.close();
-            return false;
-        }
+        query.exec();
 
-        // 遍历写入每条报名记录
         int recordCount = 0;
         while (query.next()) {
             QString student = query.value(0).toString().trimmed();
             QString activity = query.value(1).toString().trimmed();
             QString status = query.value(2).toString().trimmed();
-            QString waitRank = query.value(3).toInt() > 0 ? query.value(3).toString() : "无";
-            QString signTime = query.value(4).toString().trimmed();
+            QString signTime = query.value(3).toString().trimmed();
+            QString waitRank = query.value(4).toString().trimmed();
             QString checkStatus = query.value(5).toString().trimmed();
 
-            out << student << "," << activity << "," << status << "," << waitRank << "," << signTime << "," << checkStatus << "\n";
+            exportContent += QString("%1,%2,%3,%4,%5,%6\n").arg(student).arg(activity).arg(status)
+                                 .arg(signTime).arg(waitRank).arg(checkStatus);
             recordCount++;
         }
 
-        if (recordCount > 0) {
-            qDebug() << "[导出成功] 报名名单导出完成！共导出" << recordCount << "条记录，文件路径：" << savePath;
-        } else {
-            qDebug() << "[导出提示] 该活动暂无报名数据，已生成空CSV文件，文件路径：" << savePath;
+        if (recordCount == 0)
+            msg = "[导出提示] 该活动暂无报名数据";
+        else {
+            msg = QString("[导出成功] 报名名单共%1条记录").arg(recordCount);
+            success = true;
         }
     }
-    // 导出统计报表（汇总数据）
+    // 统计报表
     else if (exportType == "统计报表(CSV)") {
-        out << "统计项,数值\n";
+        exportContent = "统计项,数值\n";
 
         // 总报名人数
         int total = 0;
         QSqlQuery qTotal;
-        qTotal.exec(QString("SELECT COUNT(*) FROM signrecord WHERE ACTIVITY = '%1'").arg(actName));
-        if (qTotal.next()) total = qTotal.value(0).toInt();
-        out << "总报名人数," << total << "\n";
+        qTotal.exec(QString("select COUNT(*) from signrecord where ACTIVITY = '%1'").arg(actName));
+        if (qTotal.next())
+            total = qTotal.value(0).toInt();
+        exportContent += QString("总报名人数,%1\n").arg(total);
 
         // 已报名人数
         int signedNum = 0;
         QSqlQuery qSigned;
-        qSigned.exec(QString("SELECT COUNT(*) FROM signrecord WHERE ACTIVITY = '%1' AND SIGNSTATUS = '已报名'").arg(actName));
-        if (qSigned.next()) signedNum = qSigned.value(0).toInt();
-        out << "已报名人数," << signedNum << "\n";
+        qSigned.exec(QString("select COUNT(*) from signrecord where ACTIVITY = '%1' and SIGNSTATUS = '已报名'").arg(actName));
+        if (qSigned.next())
+            signedNum = qSigned.value(0).toInt();
+        exportContent += QString("已报名人数,%1\n").arg(signedNum);
 
         // 候补人数
         int waitNum = 0;
         QSqlQuery qWait;
-        qWait.exec(QString("SELECT COUNT(*) FROM signrecord WHERE ACTIVITY = '%1' AND SIGNSTATUS = '候补中'").arg(actName));
-        if (qWait.next()) waitNum = qWait.value(0).toInt();
-        out << "候补人数," << waitNum << "\n";
+        qWait.exec(QString("select COUNT(*) from signrecord where ACTIVITY = '%1' and SIGNSTATUS = '候补中'").arg(actName));
+        if (qWait.next())
+            waitNum = qWait.value(0).toInt();
+        exportContent += QString("候补人数,%1\n").arg(waitNum);
 
         // 活动最大名额
         int maxQuota = 0;
         QSqlQuery qQuota;
-        qQuota.exec(QString("SELECT MAXCOUNT FROM activity WHERE ACTNAME = '%1'").arg(actName));
-        if (qQuota.next()) maxQuota = qQuota.value(0).toInt();
-        out << "活动最大名额," << maxQuota << "\n";
+        qQuota.exec(QString("select MAXCOUNT from activity where ACTNAME = '%1'").arg(actName));
+        if (qQuota.next())
+            maxQuota = qQuota.value(0).toInt();
+        exportContent += QString("活动最大名额,%1\n").arg(maxQuota);
 
         // 已签到人数
         int checkedNum = 0;
         QSqlQuery qChecked;
-        qChecked.exec(QString("SELECT COUNT(*) FROM signrecord WHERE ACTIVITY = '%1' AND SIGNSTATUS = '已报名' AND CHECKSTATUS = '已签到'").arg(actName));
-        if (qChecked.next()) checkedNum = qChecked.value(0).toInt();
-        out << "已签到人数," << checkedNum << "\n";
+        qChecked.exec(QString("select COUNT(*) from signrecord where ACTIVITY = '%1' and SIGNSTATUS = '已报名' and CHECKSTATUS = '已签到'").arg(actName));
+        if (qChecked.next())
+            checkedNum = qChecked.value(0).toInt();
+        exportContent += QString("已签到人数,%1\n").arg(checkedNum);
 
         // 未签到人数
         int unCheckedNum = 0;
         QSqlQuery qUnChecked;
-        qUnChecked.exec(QString("SELECT COUNT(*) FROM signrecord WHERE ACTIVITY = '%1' AND SIGNSTATUS = '已报名' AND (CHECKSTATUS = '未签到' OR CHECKSTATUS IS NULL)").arg(actName));
-        if (qUnChecked.next()) unCheckedNum = qUnChecked.value(0).toInt();
-        out << "未签到人数," << unCheckedNum << "\n";
+        qUnChecked.exec(QString("select COUNT(*) from signrecord where ACTIVITY = '%1' and SIGNSTATUS = '已报名' "
+                                "and (CHECKSTATUS = '未签到' or CHECKSTATUS IS NULL)").arg(actName));
+        if (qUnChecked.next())
+            unCheckedNum = qUnChecked.value(0).toInt();
+        exportContent += QString("未签到人数,%1\n").arg(unCheckedNum);
 
-        qDebug() << "[导出成功] 统计报表导出完成！文件路径：" << savePath;
+        msg = "[导出成功] 统计报表查询完成";
+        success = true;
     }
+    return exportContent;
+}
+
+bool IDatabase::exportData(const QString &savePath,const QString &data,QString &msg)
+{
+    QFile file(savePath);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        msg = "文件打开失败：" + file.errorString();
+        return false;
+    }
+
+    QTextStream out(&file);
+    out.setEncoding(QStringConverter::Utf8);
+    out << "\xef\xbb\xbf";
+    out << data;// 写入数据
+
     file.close();
+    msg = "文件写入成功，路径：" + savePath;
+    return true;
 }

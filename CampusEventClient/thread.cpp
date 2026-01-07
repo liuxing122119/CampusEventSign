@@ -10,8 +10,10 @@ Thread::Thread(QObject *parent)
 void Thread::run()
 {
     QString msg;
-    bool success = IDatabase::getInstance().exportData(m_actName,m_savePath,m_exportType,msg);
+    bool success = false;
+    success = IDatabase::getInstance().exportData(m_savePath,m_exportData,msg);
     emit exportFinished(success,msg);
+
 }
 
 void Thread::doCheck(const QString &studentName,const QString &actName)
@@ -21,10 +23,9 @@ void Thread::doCheck(const QString &studentName,const QString &actName)
     emit conflictCheckResult(!hasConflict,conflictMsg);
 }
 
-void Thread::startExport(const QString &actName,const QString &savePath,const QString &exportType)
+void Thread::startExport(const QString &savePath,const QString &exportData)
 {
-    m_actName = actName;
     m_savePath = savePath;
-    m_exportType = exportType;
+    m_exportData = exportData;
     start();
 }

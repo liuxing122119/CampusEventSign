@@ -146,7 +146,15 @@ void SponsorView::on_btExport_clicked()
         return;
     }
 
-    m_exportThread->startExport(actName,savePath,selectType);
+    bool querySuccess;
+    QString msg;
+    QString exportData = IDatabase::getInstance().getExportData(actName,selectType,querySuccess,msg);
+    if (!querySuccess) {
+        qDebug() << msg;
+        return;
+    }
+
+    m_exportThread->startExport(savePath,exportData);
     qDebug() << "[导出提示] 后台导出线程已启动，处理活动：" << actName;
 }
 

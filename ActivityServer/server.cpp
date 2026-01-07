@@ -46,9 +46,8 @@ void Server::stopServer()
     this->close();
     for (ServerWorker *worker: m_clients) {
         disconnect(worker,&ServerWorker::disconnectedFromClient,this,nullptr);
-        if (worker->m_serverSocket->state() == QAbstractSocket::ConnectedState) {
+        if (worker->m_serverSocket->state() == QAbstractSocket::ConnectedState)
             worker->m_serverSocket->disconnectFromHost();
-        }
         worker->disconnect();
         worker->deleteLater();
     }

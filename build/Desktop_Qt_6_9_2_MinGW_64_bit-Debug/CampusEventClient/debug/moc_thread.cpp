@@ -50,7 +50,7 @@ template <> constexpr inline auto Thread::qt_create_metaobjectdata<qt_meta_tag_Z
         "actName",
         "startExport",
         "savePath",
-        "exportType"
+        "exportData"
     };
 
     QtMocHelpers::UintData qt_methods {
@@ -67,8 +67,8 @@ template <> constexpr inline auto Thread::qt_create_metaobjectdata<qt_meta_tag_Z
             { QMetaType::QString, 8 }, { QMetaType::QString, 9 },
         }}),
         // Slot 'startExport'
-        QtMocHelpers::SlotData<void(const QString &, const QString &, const QString &)>(10, 2, QMC::AccessPublic, QMetaType::Void, {{
-            { QMetaType::QString, 9 }, { QMetaType::QString, 11 }, { QMetaType::QString, 12 },
+        QtMocHelpers::SlotData<void(const QString &, const QString &)>(10, 2, QMC::AccessPublic, QMetaType::Void, {{
+            { QMetaType::QString, 11 }, { QMetaType::QString, 12 },
         }}),
     };
     QtMocHelpers::UintData qt_properties {
@@ -96,7 +96,7 @@ void Thread::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void
         case 0: _t->conflictCheckResult((*reinterpret_cast< std::add_pointer_t<bool>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2]))); break;
         case 1: _t->exportFinished((*reinterpret_cast< std::add_pointer_t<bool>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2]))); break;
         case 2: _t->doCheck((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2]))); break;
-        case 3: _t->startExport((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[3]))); break;
+        case 3: _t->startExport((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2]))); break;
         default: ;
         }
     }

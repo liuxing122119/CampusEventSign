@@ -28,7 +28,7 @@ private:
 
     QSqlDatabase database;
 
-    void ininDatabase();
+    void initDatabase();
 
 public:
     bool initActivityModel();
@@ -61,7 +61,8 @@ public:
     QItemSelectionModel *theSignRecordSelection;
 
     bool checkSignConflict(const QString &studentName,const QString &actName,QString &conflictMsg);
-    bool exportData(const QString &actName,const QString &savePath,const QString &exportType,QString &msg);
+    QString getExportData(const QString &actName,const QString &exportType,bool &success,QString &msg);
+    bool exportData(const QString &savePath,const QString &data,QString &msg);
 };
 
 #endif // IDATABASE_H

@@ -95,7 +95,7 @@ void AdminView::on_btSearch_clicked()
     if (status != "全部")
         filters << QString("STATUS = '%1'").arg(status);
     if (!name.isEmpty())
-        filters << QString("ACTNAME LIKE '%%1%' OR SPONSOR LIKE '%%1%'").arg(name);
+        filters << QString("(ACTNAME LIKE '%%1%' OR SPONSOR LIKE '%%1%')").arg(name);
 
     QString filter = filters.join(" AND ");
     IDatabase::getInstance().searchActivity(filter);

@@ -19,12 +19,12 @@ protected:
 
 public slots:
     void doCheck(const QString &studentName,const QString &actName);
-    void startExport(const QString &actName,const QString &savePath,const QString &exportType);
+    void startExport(const QString &savePath,const QString &exportData);
 
 private:
     QString m_actName;
     QString m_savePath;
-    QString m_exportType;
+    QString m_exportData;
 };
 
 #endif // THREAD_H
