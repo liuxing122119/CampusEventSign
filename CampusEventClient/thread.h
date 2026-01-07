@@ -24,9 +24,11 @@ public slots:
 private:
     QString m_studentName;
     QString m_actName;
+    QString m_conflictMsg;
     QString m_savePath;
     QString m_exportData;
     bool m_isCheck = false;
+    bool m_hasConflict = false;
 };
 
 #endif // THREAD_H

@@ -10,9 +10,7 @@ Thread::Thread(QObject *parent)
 void Thread::run()
 {
     if (m_isCheck) {
-        QString conflictMsg;
-        bool hasConflict = IDatabase::getInstance().checkSignConflict(m_studentName, m_actName, conflictMsg);
-        emit conflictCheckResult(!hasConflict, conflictMsg);
+        emit conflictCheckResult(!m_hasConflict,m_conflictMsg);
         m_isCheck = false;
     } else {
         QString msg;
@@ -24,8 +22,7 @@ void Thread::run()
 void Thread::doCheck(const QString &studentName,const QString &actName)
 {
     m_isCheck = true;
-    m_studentName = studentName;
-    m_actName = actName;
+    m_hasConflict = IDatabase::getInstance().checkSignConflict(studentName,actName,m_conflictMsg);
     start();
 }
 
