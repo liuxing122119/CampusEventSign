@@ -7,6 +7,7 @@ debug/main.o
 debug/masterview.o
 debug/sponsorview.o
 debug/studentview.o
+debug/thread.o
 debug/usereditview.o
 debug/moc_activityeditview.o
 debug/moc_adminview.o
@@ -16,4 +17,5 @@ debug/moc_loginview.o
 debug/moc_masterview.o
 debug/moc_sponsorview.o
 debug/moc_studentview.o
+debug/moc_thread.o
 debug/moc_usereditview.o

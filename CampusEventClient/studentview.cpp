@@ -2,24 +2,6 @@
 #include "ui_studentview.h"
 #include "idatabase.h"
 
-SignConflictCheckThread::SignConflictCheckThread(QObject *parent)
-    : QThread(parent)
-{
-
-}
-
-SignConflictCheckThread::~SignConflictCheckThread()
-{
-    wait();
-}
-
-void SignConflictCheckThread::doCheck(const QString &studentName,const QString &actName)
-{
-    QString conflictMsg;
-    bool hasConflict = IDatabase::getInstance().checkSignConflict(studentName,actName,conflictMsg);
-    emit conflictCheckResult(!hasConflict,conflictMsg);
-}
-
 StudentView::StudentView(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::StudentView)
@@ -71,14 +53,18 @@ StudentView::StudentView(QWidget *parent)
     ui->btCancelWait->setEnabled(false);
     connect(iDatabase.theSignRecordSelection,SIGNAL(selectionChanged(QItemSelection,QItemSelection)),this,SLOT(onSelectionChanged()));
 
-    m_conflictThread = new SignConflictCheckThread(this);
-    connect(m_conflictThread,&SignConflictCheckThread::conflictCheckResult,
-            this,&StudentView::onConflictCheckResult);
+    m_conflictThread = new Thread(this);
+    connect(m_conflictThread,&Thread::conflictCheckResult,this,&StudentView::onConflictCheckResult);
 }
 
 StudentView::~StudentView()
 {
     delete ui;
+}
+
+void StudentView::setCurrentStudentName(const QString &studentName) {
+    m_curStudentName = studentName;
+    IDatabase::getInstance().searchSignRecord(QString("STUDENT = '%1'").arg(m_curStudentName));
 }
 
 void StudentView::on_listWidget_itemClicked(QListWidgetItem *item)
@@ -164,11 +150,6 @@ void StudentView::on_resetButton_clicked()
     ui->signstatus->setCurrentIndex(0);
     IDatabase::getInstance().activityTabModel->setFilter("");
     IDatabase::getInstance().activityTabModel->select();
-    IDatabase::getInstance().searchSignRecord(QString("STUDENT = '%1'").arg(m_curStudentName));
-}
-
-void StudentView::setCurrentStudentName(const QString &studentName) {
-    m_curStudentName = studentName;
     IDatabase::getInstance().searchSignRecord(QString("STUDENT = '%1'").arg(m_curStudentName));
 }
 

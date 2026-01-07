@@ -31,103 +31,6 @@ QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 QT_WARNING_DISABLE_GCC("-Wuseless-cast")
 namespace {
-struct qt_meta_tag_ZN23SignConflictCheckThreadE_t {};
-} // unnamed namespace
-
-template <> constexpr inline auto SignConflictCheckThread::qt_create_metaobjectdata<qt_meta_tag_ZN23SignConflictCheckThreadE_t>()
-{
-    namespace QMC = QtMocConstants;
-    QtMocHelpers::StringRefStorage qt_stringData {
-        "SignConflictCheckThread",
-        "conflictCheckResult",
-        "",
-        "isOk",
-        "msg",
-        "doCheck",
-        "studentName",
-        "actName"
-    };
-
-    QtMocHelpers::UintData qt_methods {
-        // Signal 'conflictCheckResult'
-        QtMocHelpers::SignalData<void(bool, QString)>(1, 2, QMC::AccessPublic, QMetaType::Void, {{
-            { QMetaType::Bool, 3 }, { QMetaType::QString, 4 },
-        }}),
-        // Slot 'doCheck'
-        QtMocHelpers::SlotData<void(const QString &, const QString &)>(5, 2, QMC::AccessPublic, QMetaType::Void, {{
-            { QMetaType::QString, 6 }, { QMetaType::QString, 7 },
-        }}),
-    };
-    QtMocHelpers::UintData qt_properties {
-    };
-    QtMocHelpers::UintData qt_enums {
-    };
-    return QtMocHelpers::metaObjectData<SignConflictCheckThread, qt_meta_tag_ZN23SignConflictCheckThreadE_t>(QMC::MetaObjectFlag{}, qt_stringData,
-            qt_methods, qt_properties, qt_enums);
-}
-Q_CONSTINIT const QMetaObject SignConflictCheckThread::staticMetaObject = { {
-    QMetaObject::SuperData::link<QThread::staticMetaObject>(),
-    qt_staticMetaObjectStaticContent<qt_meta_tag_ZN23SignConflictCheckThreadE_t>.stringdata,
-    qt_staticMetaObjectStaticContent<qt_meta_tag_ZN23SignConflictCheckThreadE_t>.data,
-    qt_static_metacall,
-    nullptr,
-    qt_staticMetaObjectRelocatingContent<qt_meta_tag_ZN23SignConflictCheckThreadE_t>.metaTypes,
-    nullptr
-} };
-
-void SignConflictCheckThread::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
-{
-    auto *_t = static_cast<SignConflictCheckThread *>(_o);
-    if (_c == QMetaObject::InvokeMetaMethod) {
-        switch (_id) {
-        case 0: _t->conflictCheckResult((*reinterpret_cast< std::add_pointer_t<bool>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2]))); break;
-        case 1: _t->doCheck((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2]))); break;
-        default: ;
-        }
-    }
-    if (_c == QMetaObject::IndexOfMethod) {
-        if (QtMocHelpers::indexOfMethod<void (SignConflictCheckThread::*)(bool , QString )>(_a, &SignConflictCheckThread::conflictCheckResult, 0))
-            return;
-    }
-}
-
-const QMetaObject *SignConflictCheckThread::metaObject() const
-{
-    return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
-}
-
-void *SignConflictCheckThread::qt_metacast(const char *_clname)
-{
-    if (!_clname) return nullptr;
-    if (!strcmp(_clname, qt_staticMetaObjectStaticContent<qt_meta_tag_ZN23SignConflictCheckThreadE_t>.strings))
-        return static_cast<void*>(this);
-    return QThread::qt_metacast(_clname);
-}
-
-int SignConflictCheckThread::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
-{
-    _id = QThread::qt_metacall(_c, _id, _a);
-    if (_id < 0)
-        return _id;
-    if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 2)
-            qt_static_metacall(this, _c, _id, _a);
-        _id -= 2;
-    }
-    if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 2)
-            *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 2;
-    }
-    return _id;
-}
-
-// SIGNAL 0
-void SignConflictCheckThread::conflictCheckResult(bool _t1, QString _t2)
-{
-    QMetaObject::activate<void>(this, &staticMetaObject, 0, nullptr, _t1, _t2);
-}
-namespace {
 struct qt_meta_tag_ZN11StudentViewE_t {};
 } // unnamed namespace
 
@@ -147,9 +50,13 @@ template <> constexpr inline auto StudentView::qt_create_metaobjectdata<qt_meta_
         "on_btCancelWait_clicked",
         "on_searchButton_clicked",
         "on_resetButton_clicked",
+        "getTargetSignRecordRow",
+        "stuName",
+        "actName",
         "onConflictCheckResult",
         "isOk",
         "msg",
+        "autoWaitSign",
         "onSelectionChanged"
     };
 
@@ -172,12 +79,20 @@ template <> constexpr inline auto StudentView::qt_create_metaobjectdata<qt_meta_
         QtMocHelpers::SlotData<void()>(10, 2, QMC::AccessPrivate, QMetaType::Void),
         // Slot 'on_resetButton_clicked'
         QtMocHelpers::SlotData<void()>(11, 2, QMC::AccessPrivate, QMetaType::Void),
+        // Slot 'getTargetSignRecordRow'
+        QtMocHelpers::SlotData<int(const QString &, const QString &)>(12, 2, QMC::AccessPrivate, QMetaType::Int, {{
+            { QMetaType::QString, 13 }, { QMetaType::QString, 14 },
+        }}),
         // Slot 'onConflictCheckResult'
-        QtMocHelpers::SlotData<void(bool, QString)>(12, 2, QMC::AccessPrivate, QMetaType::Void, {{
-            { QMetaType::Bool, 13 }, { QMetaType::QString, 14 },
+        QtMocHelpers::SlotData<void(bool, QString)>(15, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { QMetaType::Bool, 16 }, { QMetaType::QString, 17 },
+        }}),
+        // Slot 'autoWaitSign'
+        QtMocHelpers::SlotData<void(const QString &)>(18, 2, QMC::AccessPrivate, QMetaType::Void, {{
+            { QMetaType::QString, 14 },
         }}),
         // Slot 'onSelectionChanged'
-        QtMocHelpers::SlotData<void()>(15, 2, QMC::AccessPrivate, QMetaType::Void),
+        QtMocHelpers::SlotData<void()>(19, 2, QMC::AccessPrivate, QMetaType::Void),
     };
     QtMocHelpers::UintData qt_properties {
     };
@@ -209,8 +124,11 @@ void StudentView::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
         case 5: _t->on_btCancelWait_clicked(); break;
         case 6: _t->on_searchButton_clicked(); break;
         case 7: _t->on_resetButton_clicked(); break;
-        case 8: _t->onConflictCheckResult((*reinterpret_cast< std::add_pointer_t<bool>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2]))); break;
-        case 9: _t->onSelectionChanged(); break;
+        case 8: { int _r = _t->getTargetSignRecordRow((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2])));
+            if (_a[0]) *reinterpret_cast< int*>(_a[0]) = std::move(_r); }  break;
+        case 9: _t->onConflictCheckResult((*reinterpret_cast< std::add_pointer_t<bool>>(_a[1])),(*reinterpret_cast< std::add_pointer_t<QString>>(_a[2]))); break;
+        case 10: _t->autoWaitSign((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
+        case 11: _t->onSelectionChanged(); break;
         default: ;
         }
     }
@@ -235,14 +153,14 @@ int StudentView::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 10)
+        if (_id < 12)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 10;
+        _id -= 12;
     }
     if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 10)
+        if (_id < 12)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 10;
+        _id -= 12;
     }
     return _id;
 }

@@ -18,6 +18,7 @@ SOURCES += \
     masterview.cpp \
     sponsorview.cpp \
     studentview.cpp \
+    thread.cpp \
     usereditview.cpp
 
 HEADERS += \
@@ -29,6 +30,7 @@ HEADERS += \
     masterview.h \
     sponsorview.h \
     studentview.h \
+    thread.h \
     usereditview.h
 
 FORMS += \

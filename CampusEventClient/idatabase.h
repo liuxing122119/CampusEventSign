@@ -61,6 +61,7 @@ public:
     QItemSelectionModel *theSignRecordSelection;
 
     bool checkSignConflict(const QString &studentName,const QString &actName,QString &conflictMsg);
+    bool exportData(const QString &actName,const QString &savePath,const QString &exportType,QString &msg);
 };
 
 #endif // IDATABASE_H
