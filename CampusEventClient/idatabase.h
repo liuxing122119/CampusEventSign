@@ -5,6 +5,7 @@
 #include <QtSql>
 #include <QSqlDatabase>
 #include <QDataWidgetMapper>
+#include <QThread>
 
 class IDatabase : public QObject
 {
@@ -18,6 +19,8 @@ public:
 
     QString userLogin(QString useName,QString password);
     QString getUserRole(QString useName);
+
+    QSqlDatabase getThreadDb();
 
 signals:
 

@@ -19,12 +19,13 @@ protected:
 
 public slots:
     void doCheck(const QString &studentName,const QString &actName);
-    void startExport(const QString &savePath,const QString &exportData);
+    void startExport(const QString &actName,const QString &exportType,const QString &savePath);
 
 private:
     bool m_isCheck = false;
-    bool m_hasConflict = false;
-    QString m_conflictMsg;
+    QString m_studentName;
+    QString m_actName;
+    QString m_exportType;
     QString m_savePath;
     QString m_exportData;
 };

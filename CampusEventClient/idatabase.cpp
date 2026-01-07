@@ -6,6 +6,8 @@ IDatabase::IDatabase(QObject *parent)
     initDatabase();
 }
 
+
+
 void IDatabase::initDatabase()
 {
     database = QSqlDatabase::addDatabase("QSQLITE");
@@ -228,10 +230,11 @@ bool IDatabase::searchSignRecord(QString filter)
 
 bool IDatabase::checkSignConflict(const QString &studentName,const QString &actName,QString &conflictMsg)
 {
-    QSqlQuery query;
+    QSqlDatabase db = getThreadDb();
+    QSqlQuery query(db);
 
     // 重复报名冲突
-    QSqlQuery signQuery;
+    QSqlQuery signQuery(db);
     // 查询该学生是否已正式报名该活动
     signQuery.prepare("select * from signrecord where STUDENT = :STUDENT and ACTIVITY = :ACTIVITY and SIGNSTATUS IN ('已报名','候补中')");
     signQuery.bindValue(":STUDENT",studentName);
@@ -278,7 +281,7 @@ bool IDatabase::checkSignConflict(const QString &studentName,const QString &actN
 
     // 名额冲突（名额已满）
     int currentSignCount = 0;
-    QSqlQuery countQuery;
+    QSqlQuery countQuery(db);
     countQuery.prepare("select COUNT(*) from signrecord where ACTIVITY = :ACTIVITY and WAITRANK = 0");
     countQuery.bindValue(":ACTIVITY",actName);
     countQuery.exec();
@@ -306,7 +309,7 @@ bool IDatabase::checkSignConflict(const QString &studentName,const QString &actN
     QDateTime targetActEndTime = targetActTime.addSecs(activityDuration);// 目标活动结束时间
 
     // 查询学生已报名的所有正式活动
-    QSqlQuery existActQuery;
+    QSqlQuery existActQuery(db);
     existActQuery.prepare("select a.ACTNAME,a.ACTTIME from signrecord s "
                           "left join activity a ON s.ACTIVITY = a.ACTNAME where s.STUDENT = :STUDENT and s.WAITRANK = 0");
     existActQuery.bindValue(":STUDENT",studentName);
@@ -342,6 +345,7 @@ bool IDatabase::checkSignConflict(const QString &studentName,const QString &actN
 
 QString IDatabase::getExportData(const QString &actName,const QString &exportType,bool &success,QString &msg)
 {
+    QSqlDatabase db = getThreadDb();
     QString exportContent;
     success = false;
 
@@ -349,7 +353,7 @@ QString IDatabase::getExportData(const QString &actName,const QString &exportTyp
     if (exportType == "报名名单(CSV)") {
         exportContent = "学生姓名,活动名称,报名状态,报名时间,候补排名,签到状态\n";
 
-        QSqlQuery query;
+        QSqlQuery query(db);
         query.prepare("select STUDENT,ACTIVITY,SIGNSTATUS,SIGNTIME,WAITRANK,CHECKSTATUS from signrecord where ACTIVITY = :actName");
         query.bindValue(":actName",actName);
         query.exec();
@@ -381,7 +385,7 @@ QString IDatabase::getExportData(const QString &actName,const QString &exportTyp
 
         // 总报名人数
         int total = 0;
-        QSqlQuery qTotal;
+        QSqlQuery qTotal(db);
         qTotal.exec(QString("select COUNT(*) from signrecord where ACTIVITY = '%1'").arg(actName));
         if (qTotal.next())
             total = qTotal.value(0).toInt();
@@ -389,7 +393,7 @@ QString IDatabase::getExportData(const QString &actName,const QString &exportTyp
 
         // 已报名人数
         int signedNum = 0;
-        QSqlQuery qSigned;
+        QSqlQuery qSigned(db);
         qSigned.exec(QString("select COUNT(*) from signrecord where ACTIVITY = '%1' and SIGNSTATUS = '已报名'").arg(actName));
         if (qSigned.next())
             signedNum = qSigned.value(0).toInt();
@@ -397,7 +401,7 @@ QString IDatabase::getExportData(const QString &actName,const QString &exportTyp
 
         // 候补人数
         int waitNum = 0;
-        QSqlQuery qWait;
+        QSqlQuery qWait(db);
         qWait.exec(QString("select COUNT(*) from signrecord where ACTIVITY = '%1' and SIGNSTATUS = '候补中'").arg(actName));
         if (qWait.next())
             waitNum = qWait.value(0).toInt();
@@ -405,7 +409,7 @@ QString IDatabase::getExportData(const QString &actName,const QString &exportTyp
 
         // 活动最大名额
         int maxQuota = 0;
-        QSqlQuery qQuota;
+        QSqlQuery qQuota(db);
         qQuota.exec(QString("select MAXCOUNT from activity where ACTNAME = '%1'").arg(actName));
         if (qQuota.next())
             maxQuota = qQuota.value(0).toInt();
@@ -413,7 +417,7 @@ QString IDatabase::getExportData(const QString &actName,const QString &exportTyp
 
         // 已签到人数
         int checkedNum = 0;
-        QSqlQuery qChecked;
+        QSqlQuery qChecked(db);
         qChecked.exec(QString("select COUNT(*) from signrecord where ACTIVITY = '%1' and SIGNSTATUS = '已报名' and CHECKSTATUS = '已签到'").arg(actName));
         if (qChecked.next())
             checkedNum = qChecked.value(0).toInt();
@@ -421,7 +425,7 @@ QString IDatabase::getExportData(const QString &actName,const QString &exportTyp
 
         // 未签到人数
         int unCheckedNum = 0;
-        QSqlQuery qUnChecked;
+        QSqlQuery qUnChecked(db);
         qUnChecked.exec(QString("select COUNT(*) from signrecord where ACTIVITY = '%1' and SIGNSTATUS = '已报名' "
                                 "and (CHECKSTATUS = '未签到' or CHECKSTATUS IS NULL)").arg(actName));
         if (qUnChecked.next())
@@ -450,4 +454,14 @@ bool IDatabase::exportData(const QString &savePath,const QString &data,QString &
     file.close();
     msg = "文件写入成功，路径：" + savePath;
     return true;
+}
+
+QSqlDatabase IDatabase::getThreadDb() {
+    QString connName = QString("DB_%1").arg((quintptr)QThread::currentThreadId());
+    if (!QSqlDatabase::contains(connName)) {
+        QSqlDatabase db = QSqlDatabase::addDatabase("QSQLITE", connName);
+        db.setDatabaseName("D:/code/QT/exp/CampusEventSign/exp.db");
+        db.open();
+    }
+    return QSqlDatabase::database(connName, true);
 }

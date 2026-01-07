@@ -179,7 +179,7 @@ void StudentView::autoWaitSign(const QString &actName)
     int targetRow = getTargetSignRecordRow(m_curStudentName,actName);
     int maxWaitRank = 0;
 
-    QSqlQuery query;
+    QSqlQuery query(IDatabase::getInstance().getThreadDb());
     query.exec(QString("select MAX(WAITRANK) from signrecord where ACTIVITY = '%1' and SIGNSTATUS = '候补中'").arg(actName));
     if (query.first() && query.value(0).isValid())
         maxWaitRank = query.value(0).toInt();
