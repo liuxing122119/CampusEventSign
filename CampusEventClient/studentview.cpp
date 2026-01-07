@@ -240,11 +240,13 @@ void StudentView::onConflictCheckResult(bool isOk,QString msg) {
 void StudentView::onSelectionChanged() {
     if (ui->stackedWidget->currentWidget() == ui->actscanpage) {
         QItemSelectionModel *selectionModel = IDatabase::getInstance().theActivitySelection;
-        bool canSign = selectionModel->hasSelection();
+        bool hasSelected = selectionModel->hasSelection();
+        bool canSign = false;
+        if (hasSelected)
+            canSign = true;
         ui->btSign->setEnabled(canSign);
     } else if (ui->stackedWidget->currentWidget() == ui->myactpage) {
-        QItemSelectionModel *userSelectionModel =
-            IDatabase::getInstance().theSignRecordSelection;
+        QItemSelectionModel *userSelectionModel = IDatabase::getInstance().theSignRecordSelection;
         bool hasSelectedUser = userSelectionModel->hasSelection();
         bool canCancelSign = false;
         bool canCancelWait = false;

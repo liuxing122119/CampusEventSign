@@ -183,9 +183,8 @@ void AdminView::onSelectionChanged()
             int roleColumn = userModel->fieldIndex("ROLE");
             QModelIndex roleIndex = userModel->index(curUserIndex.row(),roleColumn);
             QString userRole = userModel->data(roleIndex).toString().trimmed();
-            if (userRole == "管理员") {
+            if (userRole == "管理员")
                 canUpdateUser = false;
-            }
         }
         ui->btUpdate->setEnabled(canUpdateUser);
         ui->btDelete->setEnabled(canUpdateUser);

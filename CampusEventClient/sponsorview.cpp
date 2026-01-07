@@ -32,6 +32,7 @@ SponsorView::SponsorView(QWidget *parent)
     }
 
     ui->btUpdate->setEnabled(false);
+    ui->btExport->setEnabled(false);
     connect(iDatabase.theActivitySelection,SIGNAL(selectionChanged(QItemSelection,QItemSelection)),this,SLOT(onSelectionChanged()));
 }
 
@@ -106,7 +107,9 @@ void SponsorView::onSelectionChanged()
     QItemSelectionModel *selectionModel = IDatabase::getInstance().theActivitySelection;
     bool hasSelectedRow = selectionModel->hasSelection();
     bool canEdit = false;
+    bool canExport = false;
     if (hasSelectedRow) {
+        canExport = true;
         QModelIndex curIndex = selectionModel->currentIndex();
         QSqlTableModel *activityModel = IDatabase::getInstance().activityTabModel;
         int statusColumn = activityModel->fieldIndex("STATUS");
@@ -116,47 +119,33 @@ void SponsorView::onSelectionChanged()
             canEdit = true;
     }
     ui->btUpdate->setEnabled(canEdit);
+    ui->btExport->setEnabled(canExport);
 }
 
 void SponsorView::on_btExport_clicked()
 {
     QString actName = getSelectedActName();
-    if (actName.isEmpty()) {
-        qDebug() << "[导出提示] 请先选中要导出数据的活动！";
-        return;
-    }
-
     QStringList exportTypes;
     exportTypes << "报名名单(CSV)" << "统计报表(CSV)";
     bool isOk;
-    QString selectType = QInputDialog::getItem(this,"选择导出类型",
-                                               "请选择导出内容：",exportTypes,0,false,&isOk);
+    QString selectType = QInputDialog::getItem(this,"选择导出类型","请选择导出内容：",exportTypes,0,false,&isOk);
+
     if (!isOk || selectType.isEmpty()) {
-        qDebug() << "[导出提示] 用户取消选择导出类型！";
-        return;// 用户取消选择
+        qDebug() << "用户取消选择导出类型";
+        return;
     }
 
     // 选择保存路径
-    QString savePath = QFileDialog::getSaveFileName(
-        this,
-        "选择CSV文件保存路径",
-        "",
-        "CSV文件 (*.csv);;所有文件 (*)"
-        );
+    QString savePath = QFileDialog::getSaveFileName(this,"选择CSV文件保存路径","","CSV文件 (*.csv);;所有文件 (*)");
     if (savePath.isEmpty()) {
-        qDebug() << "[导出提示] 用户取消选择保存路径！";
-        return;// 用户取消保存
+        qDebug() << "用户取消选择保存路径";
+        return;
     }
 
-    if (!savePath.endsWith(".csv",Qt::CaseInsensitive)) {
-        savePath += ".csv";
-        qDebug() << "[导出提示] 自动补充.csv后缀，最终路径：" << savePath;
-    }
-
-    // 打开文件 + 设置 UTF-8 编码
+    // 打开文件并设置 UTF-8 编码
     QFile file(savePath);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
-        qDebug() << "[导出错误] 文件打开失败：" << file.errorString();
+        qDebug() << "文件打开失败：" << file.errorString();
         return;
     }
     QTextStream out(&file);
@@ -165,11 +154,11 @@ void SponsorView::on_btExport_clicked()
 
     // 导出报名名单
     if (selectType == "报名名单(CSV)") {
-        out << "学生姓名,活动名称,报名状态,报名时间,候补排名\n";
+        out << "学生姓名,活动名称,报名状态,报名时间,候补排名,签到状态\n";
 
         // 查询该活动的所有报名记录
         QSqlQuery query;
-        query.prepare("select STUDENT,ACTIVITY,SIGNSTATUS,SIGNTIME,WAITRANK from signrecord where ACTIVITY = :actName");
+        query.prepare("select STUDENT,ACTIVITY,SIGNSTATUS,SIGNTIME,WAITRANK,CHECKSTATUS from signrecord where ACTIVITY = :actName");
         query.bindValue(":actName",actName);
         if (!query.exec()) {
             qDebug() << "[导出错误] 查询报名数据失败：" << query.lastError().text();
@@ -185,8 +174,9 @@ void SponsorView::on_btExport_clicked()
             QString status = query.value(2).toString().trimmed();
             QString waitRank = query.value(3).toInt() > 0 ? query.value(3).toString() : "无";
             QString signTime = query.value(4).toString().trimmed();
+            QString checkStatus = query.value(5).toString().trimmed();
 
-            out << student << "," << activity << "," << status << "," << waitRank << "," << signTime << "\n";
+            out << student << "," << activity << "," << status << "," << waitRank << "," << signTime << "," << checkStatus << "\n";
             recordCount++;
         }
 
@@ -228,14 +218,22 @@ void SponsorView::on_btExport_clicked()
         if (qQuota.next()) maxQuota = qQuota.value(0).toInt();
         out << "活动最大名额," << maxQuota << "\n";
 
-        // 名额使用率（百分比）
-        double usageRate = maxQuota > 0 ? (signedNum * 100.0 / maxQuota) : 0;
-        out << "名额使用率," << QString::asprintf("%.1f%%",usageRate) << "\n";
+        // 已签到人数
+        int checkedNum = 0;
+        QSqlQuery qChecked;
+        qChecked.exec(QString("SELECT COUNT(*) FROM signrecord WHERE ACTIVITY = '%1' AND SIGNSTATUS = '已报名' AND CHECKSTATUS = '已签到'").arg(actName));
+        if (qChecked.next()) checkedNum = qChecked.value(0).toInt();
+        out << "已签到人数," << checkedNum << "\n";
+
+        // 未签到人数
+        int unCheckedNum = 0;
+        QSqlQuery qUnChecked;
+        qUnChecked.exec(QString("SELECT COUNT(*) FROM signrecord WHERE ACTIVITY = '%1' AND SIGNSTATUS = '已报名' AND (CHECKSTATUS = '未签到' OR CHECKSTATUS IS NULL)").arg(actName));
+        if (qUnChecked.next()) unCheckedNum = qUnChecked.value(0).toInt();
+        out << "未签到人数," << unCheckedNum << "\n";
 
         qDebug() << "[导出成功] 统计报表导出完成！文件路径：" << savePath;
     }
-
-    // 关闭文件
     file.close();
 }
 
@@ -245,6 +243,5 @@ QString SponsorView::getSelectedActName()
     QSqlTableModel *activityModel = IDatabase::getInstance().activityTabModel;
     int actNameCol = activityModel->fieldIndex("ACTNAME");// 活动名字段
     QModelIndex actNameIndex = activityModel->index(selectedIndexes.first().row(),actNameCol);
-
     return activityModel->data(actNameIndex).toString().trimmed();
 }

@@ -196,6 +196,7 @@ int IDatabase::addNewSignRecord(const QString &studentName,const QString &actNam
     signRecordTabModel->setData(signRecordTabModel->index(newRow,signRecordTabModel->fieldIndex("ACTIVITY")),actName);
     signRecordTabModel->setData(signRecordTabModel->index(newRow,signRecordTabModel->fieldIndex("SIGNSTATUS")),"已报名");
     signRecordTabModel->setData(signRecordTabModel->index(newRow,signRecordTabModel->fieldIndex("WAITRANK")),0);
+    signRecordTabModel->setData(signRecordTabModel->index(newRow,signRecordTabModel->fieldIndex("CHECKSTATUS")),"未签到");
 
     return newRow;
 }
