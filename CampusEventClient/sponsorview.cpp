@@ -146,7 +146,6 @@ void SponsorView::on_btExport_clicked()
         return;
     }
 
-    // 启动后台导出线程
     m_exportThread->startExport(actName,savePath,selectType);
     qDebug() << "[导出提示] 后台导出线程已启动，处理活动：" << actName;
 }
