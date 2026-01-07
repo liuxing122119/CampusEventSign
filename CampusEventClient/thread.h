@@ -22,13 +22,11 @@ public slots:
     void startExport(const QString &savePath,const QString &exportData);
 
 private:
-    QString m_studentName;
-    QString m_actName;
+    bool m_isCheck = false;
+    bool m_hasConflict = false;
     QString m_conflictMsg;
     QString m_savePath;
     QString m_exportData;
-    bool m_isCheck = false;
-    bool m_hasConflict = false;
 };
 
 #endif // THREAD_H
